@@ -34,7 +34,7 @@ dependencies {
             'com.android.support:appcompat-v7:24.0.0',
             'com.shazam.android:aspects:1.0.0',
             'com.savvasdalkitsis:butterknife-aspects:1.0.0',
-            'com.jakewharton:butterknife:8.4.0',
+            'com.jakewharton:butterknife:6.1.0',
     )
     provided 'org.projectlombok:lombok:1.12.6'
     testCompile 'junit:junit:4.12'
