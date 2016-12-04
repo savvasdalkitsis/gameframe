@@ -21,4 +21,12 @@
         <item>Gallery</item>
         <item>Clock</item>
     </string-array>
+
+    <string-array name="clock_face">
+        <item>Color</item>
+        <item>Muted</item>
+        <item>Shadow</item>
+        <item>Binary 1</item>
+        <item>Binary 2</item>
+    </string-array>
 </resources>

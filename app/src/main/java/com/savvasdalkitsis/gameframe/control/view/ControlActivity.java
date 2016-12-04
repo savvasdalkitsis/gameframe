@@ -17,6 +17,7 @@ import com.savvasdalkitsis.gameframe.infra.view.Snackbars;
 import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector;
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector;
 import com.savvasdalkitsis.gameframe.model.Brightness;
+import com.savvasdalkitsis.gameframe.model.ClockFace;
 import com.savvasdalkitsis.gameframe.model.CycleInterval;
 import com.savvasdalkitsis.gameframe.model.DisplayMode;
 import com.savvasdalkitsis.gameframe.model.PlaybackMode;
@@ -40,6 +41,8 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
     Spinner cycleInterval;
     @Bind(R.id.view_display_mode)
     Spinner displayMode;
+    @Bind(R.id.view_clock_face)
+    Spinner clockFace;
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
         playbackMode.setAdapter(adapter(R.array.playback_mode));
         cycleInterval.setAdapter(adapter(R.array.cycle_interval));
         displayMode.setAdapter(adapter(R.array.display_mode));
+        clockFace.setAdapter(adapter(R.array.clock_face));
 
         presenter.bindView(this);
     }
@@ -80,6 +84,11 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
     @OnItemSelected(R.id.view_display_mode)
     public void displayMode(int position) {
         presenter.changeDisplayMode(DisplayMode.from(position));
+    }
+
+    @OnItemSelected(R.id.view_clock_face)
+    public void clockFace(int position) {
+        presenter.changeClockFace(ClockFace.from(position));
     }
 
     @Override
