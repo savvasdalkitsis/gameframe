@@ -10,6 +10,7 @@ import com.savvasdalkitsis.gameframe.ip.model.IpAddress;
 import com.savvasdalkitsis.gameframe.ip.model.IpNotFoundException;
 import com.savvasdalkitsis.gameframe.model.Brightness;
 import com.savvasdalkitsis.gameframe.model.CycleInterval;
+import com.savvasdalkitsis.gameframe.model.DisplayMode;
 import com.savvasdalkitsis.gameframe.model.PlaybackMode;
 
 import java.io.IOException;
@@ -60,6 +61,10 @@ public class GameFrameUseCase {
 
     public Observable<Void> setCycleInterval(CycleInterval cycleInterval) {
         return gameFrameApi.set(param(cycleInterval.getQueryParamName()));
+    }
+
+    public Observable<Void> setDisplayMode(DisplayMode displayMode) {
+        return gameFrameApi.set(param(displayMode.getQueryParamName()));
     }
 
     public Observable<IpAddress> discoverGameFrameIp() {

@@ -13,4 +13,5 @@
     <string name="game_frame_ip_found">Game Frame IP found</string>
     <string name="playback_mode">Playback Mode</string>
     <string name="cycle_interval">Cycle Interval</string>
+    <string name="display_mode">Display Mode</string>
 </resources>

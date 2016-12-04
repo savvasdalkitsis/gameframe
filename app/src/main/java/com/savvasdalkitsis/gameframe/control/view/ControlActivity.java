@@ -18,6 +18,7 @@ import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector;
 import com.savvasdalkitsis.gameframe.model.Brightness;
 import com.savvasdalkitsis.gameframe.model.CycleInterval;
+import com.savvasdalkitsis.gameframe.model.DisplayMode;
 import com.savvasdalkitsis.gameframe.model.PlaybackMode;
 import com.shazam.android.aspects.base.activity.AspectAppCompatActivity;
 
@@ -37,6 +38,8 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
     Spinner playbackMode;
     @Bind(R.id.view_cycle_interval)
     Spinner cycleInterval;
+    @Bind(R.id.view_display_mode)
+    Spinner displayMode;
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
         brightness.setOnSeekBarChangeListener(new BrightnessChangedListener());
         playbackMode.setAdapter(adapter(R.array.playback_mode));
         cycleInterval.setAdapter(adapter(R.array.cycle_interval));
+        displayMode.setAdapter(adapter(R.array.display_mode));
 
         presenter.bindView(this);
     }
@@ -71,6 +75,11 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
     @OnItemSelected(R.id.view_cycle_interval)
     public void cycleInterval(int position) {
         presenter.changeCycleInterval(CycleInterval.from(position));
+    }
+
+    @OnItemSelected(R.id.view_display_mode)
+    public void displayMode(int position) {
+        presenter.changeDisplayMode(DisplayMode.from(position));
     }
 
     @Override
