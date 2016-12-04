@@ -26,7 +26,7 @@ public class IpBaseHostInterceptor implements Interceptor {
                 .toBlocking()
                 .first();
         if (ipAddress == null) {
-            throw new IpBaseHostMissingException("No ip address in repository");
+            return chain.proceed(chain.request());
         }
         Request request = chain.request();
         return chain.proceed(request

@@ -16,4 +16,5 @@
     <string name="display_mode">Display Mode</string>
     <string name="clock_face">Clock Face</string>
     <string name="trying_to_find_game_frame">Trying to find the Game Frame on your local network</string>
+    <string name="game_frame_ip_not_found">Game Frame IP not found.\nSet it up now?</string>
 </resources>

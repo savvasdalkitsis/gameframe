@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_setup_ip"
-        android:icon="@android:drawable/ic_input_add"
+        android:icon="@drawable/ic_settings_ethernet_white_48px"
         android:title="@string/setup_ip_address"
         app:showAsAction="ifRoom"/>
 

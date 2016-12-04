@@ -1,85 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_margin="16dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
-    <Button
-        android:id="@+id/view_power"
-        android:text="@string/power"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
-
-    <Button
-        android:id="@+id/view_menu"
-        android:text="@string/menu"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
-
-    <Button
-        android:id="@+id/view_next"
-        android:text="@string/next"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
-
-    <SeekBar
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:id="@+id/view_brightness"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/view_control_content"
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="7"
-        android:progress="1" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:text="@string/playback_mode"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/view_ip"
+            android:textSize="8sp"
+            android:padding="8dp"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded,SmallSp" />
 
-    <Spinner
-        android:id="@+id/view_playback_mode"
+        <Button
+            android:id="@+id/view_power"
+            android:text="@string/power"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <Button
+            android:id="@+id/view_menu"
+            android:text="@string/menu"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <Button
+            android:id="@+id/view_next"
+            android:text="@string/next"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+        <SeekBar
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:id="@+id/view_brightness"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="7"
+            android:progress="1" />
+
+        <TextView
+            android:text="@string/playback_mode"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/view_playback_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="@string/cycle_interval"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/view_cycle_interval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="@string/display_mode"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/view_display_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:text="@string/clock_face"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:id="@+id/view_clock_face"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/view_control_error"
+        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:text="@string/cycle_interval"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:text="@string/game_frame_ip_not_found"
+            android:layout_margin="16dp"
+            android:lineSpacingExtra="8dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-    <Spinner
-        android:id="@+id/view_cycle_interval"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/view_control_setup"
+            android:padding="16dp"
+            android:drawableLeft="@drawable/ic_settings_ethernet_white_48px"
+            android:drawablePadding="16dp"
+            android:text="@string/setup_ip_address"
+            android:layout_gravity="center"
+            android:minHeight="120dp"
+            android:minWidth="240dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded" />
 
-    <TextView
-        android:text="@string/display_mode"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    </FrameLayout>
 
-    <Spinner
-        android:id="@+id/view_display_mode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:text="@string/clock_face"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Spinner
-        android:id="@+id/view_clock_face"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-</LinearLayout>
+</FrameLayout>

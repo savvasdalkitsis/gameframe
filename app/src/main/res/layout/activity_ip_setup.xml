@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -25,21 +26,25 @@
 
         <Button
             android:id="@+id/view_discover"
-            android:layout_margin="16dp"
+            android:drawableLeft="@drawable/ic_perm_scan_wifi_white_48px"
+            android:layout_margin="8dp"
+            android:padding="16dp"
             android:text="@string/discover_game_frame_ip"
             android:layout_above="@+id/view_setup"
             android:textAllCaps="true"
-            android:minHeight="48dp"
+            android:minHeight="64dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded" />
 
         <Button
             android:id="@+id/view_setup"
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
+            android:padding="16dp"
             android:text="@string/setup"
             android:layout_alignParentBottom="true"
             android:textAllCaps="true"
-            android:minHeight="48dp"
+            android:minHeight="64dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

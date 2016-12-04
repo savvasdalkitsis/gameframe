@@ -6,11 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
@@ -20,6 +23,7 @@ import com.savvasdalkitsis.gameframe.infra.view.BaseActivity;
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars;
 import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector;
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector;
+import com.savvasdalkitsis.gameframe.ip.model.IpAddress;
 import com.savvasdalkitsis.gameframe.model.Brightness;
 import com.savvasdalkitsis.gameframe.model.ClockFace;
 import com.savvasdalkitsis.gameframe.model.CycleInterval;
@@ -47,6 +51,12 @@ public class ControlActivity extends BaseActivity implements ControlView {
     Spinner displayMode;
     @Bind(R.id.view_clock_face)
     Spinner clockFace;
+    @Bind(R.id.view_ip)
+    TextView ip;
+    @Bind(R.id.view_control_content)
+    View content;
+    @Bind(R.id.view_control_error)
+    View error;
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
@@ -60,8 +70,13 @@ public class ControlActivity extends BaseActivity implements ControlView {
         cycleInterval.setAdapter(adapter(R.array.cycle_interval));
         displayMode.setAdapter(adapter(R.array.display_mode));
         clockFace.setAdapter(adapter(R.array.clock_face));
-
         presenter.bindView(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.loadIpAddress();
     }
 
     @OnClick(R.id.view_power)
@@ -77,6 +92,11 @@ public class ControlActivity extends BaseActivity implements ControlView {
     @OnClick(R.id.view_next)
     public void next() {
         presenter.next();
+    }
+
+    @OnClick(R.id.view_control_setup)
+    public void setup() {
+        navigator.navigateToIpSetup();
     }
 
     @OnItemSelected(R.id.view_playback_mode)
@@ -101,7 +121,7 @@ public class ControlActivity extends BaseActivity implements ControlView {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.control_menu, menu);
         return true;
     }
 
@@ -109,7 +129,7 @@ public class ControlActivity extends BaseActivity implements ControlView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_setup_ip :
-                navigator.navigateToIpSetup();
+                setup();
                 return true;
         }
         return false;
@@ -123,6 +143,20 @@ public class ControlActivity extends BaseActivity implements ControlView {
     @Override
     public void operationFailure(Throwable e) {
         Snackbars.error(findViewById(android.R.id.content), R.string.operation_failed).show();
+    }
+
+    @Override
+    public void ipAddressLoaded(IpAddress ipAddress) {
+        ip.setText(String.format("Game Frame IP: %s", ipAddress.toString()));
+        error.setVisibility(View.GONE);
+        content.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void ipCouldNotBeFound(Throwable throwable) {
+        Log.e(ControlActivity.class.getName(), "Could not find ip", throwable);
+        error.setVisibility(View.VISIBLE);
+        content.setVisibility(View.GONE);
     }
 
     @NonNull

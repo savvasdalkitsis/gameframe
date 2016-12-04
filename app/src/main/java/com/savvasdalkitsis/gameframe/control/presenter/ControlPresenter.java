@@ -1,6 +1,7 @@
 package com.savvasdalkitsis.gameframe.control.presenter;
 
 import com.savvasdalkitsis.gameframe.control.view.ControlView;
+import com.savvasdalkitsis.gameframe.ip.repository.IpRepository;
 import com.savvasdalkitsis.gameframe.model.Brightness;
 import com.savvasdalkitsis.gameframe.model.ClockFace;
 import com.savvasdalkitsis.gameframe.model.CycleInterval;
@@ -13,15 +14,23 @@ import rx.Observable;
 
 public class ControlPresenter {
 
+    private final IpRepository ipRepository;
     private ControlView controlView;
     private final GameFrameUseCase gameFrameUseCase;
 
-    public ControlPresenter(GameFrameUseCase gameFrameUseCase) {
+    public ControlPresenter(GameFrameUseCase gameFrameUseCase, IpRepository ipRepository) {
         this.gameFrameUseCase = gameFrameUseCase;
+        this.ipRepository = ipRepository;
     }
 
     public void bindView(ControlView controlView) {
         this.controlView = controlView;
+    }
+
+    public void loadIpAddress() {
+        ipRepository.getIpAddress()
+                .compose(RxTransformers.schedulers())
+                .subscribe(controlView::ipAddressLoaded, controlView::ipCouldNotBeFound);
     }
 
     public void togglePower() {

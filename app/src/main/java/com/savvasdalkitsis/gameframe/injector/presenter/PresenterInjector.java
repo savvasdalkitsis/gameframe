@@ -14,6 +14,6 @@ public class PresenterInjector {
     }
 
     public static ControlPresenter controlPresenter() {
-        return new ControlPresenter(gameFrameUseCase());
+        return new ControlPresenter(gameFrameUseCase(), ipRepository());
     }
 }
