@@ -137,12 +137,12 @@ public class ControlActivity extends BaseActivity implements ControlView {
 
     @Override
     public void operationSuccess() {
-        Snackbars.success(findViewById(android.R.id.content), R.string.success).show();
+        Snackbars.success(content, R.string.success).show();
     }
 
     @Override
     public void operationFailure(Throwable e) {
-        Snackbars.error(findViewById(android.R.id.content), R.string.operation_failed).show();
+        Snackbars.error(content, R.string.operation_failed).show();
     }
 
     @Override

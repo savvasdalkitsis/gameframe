@@ -39,6 +39,7 @@
 
         <Button
             android:id="@+id/view_setup"
+            android:drawableLeft="@drawable/ic_done_white_48px"
             android:layout_margin="8dp"
             android:padding="16dp"
             android:text="@string/setup"
@@ -46,7 +47,8 @@
             android:textAllCaps="true"
             android:minHeight="64dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded" />
 
     </RelativeLayout>
 

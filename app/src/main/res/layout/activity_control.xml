@@ -1,104 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <android.support.design.widget.CoordinatorLayout
         android:id="@+id/view_control_content"
-        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/view_ip"
-            android:textSize="8sp"
-            android:padding="8dp"
-            android:layout_gravity="right"
-            android:gravity="right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:ignore="RtlHardcoded,SmallSp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <Button
+            <TextView
+                android:id="@+id/view_ip"
+                android:textSize="8sp"
+                android:padding="8dp"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="RtlHardcoded,SmallSp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_margin="24dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/view_menu"
+                    android:drawableLeft="@drawable/ic_view_headline_white_48px"
+                    android:drawablePadding="8dp"
+                    android:padding="16dp"
+                    android:text="@string/menu"
+                    android:minHeight="72dp"
+                    android:minWidth="72dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    tools:ignore="RtlHardcoded" />
+
+                <Button
+                    android:id="@+id/view_next"
+                    android:drawableLeft="@drawable/ic_skip_next_white_48px"
+                    android:drawablePadding="8dp"
+                    android:padding="16dp"
+                    android:text="@string/next"
+                    android:minHeight="72dp"
+                    android:minWidth="72dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    tools:ignore="RtlHardcoded" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/view_brightness_low"
+                    android:src="@drawable/ic_brightness_low_black_48px"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription" />
+
+                <SeekBar
+                    style="@style/Widget.AppCompat.SeekBar.Discrete"
+                    android:id="@+id/view_brightness"
+                    android:layout_toRightOf="@id/view_brightness_low"
+                    android:layout_toLeftOf="@+id/view_brightness_high"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="7"
+                    android:progress="1"
+                    tools:ignore="RtlHardcoded" />
+
+                <ImageView
+                    android:id="@+id/view_brightness_high"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_brightness_high_black_48px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:text="@string/playback_mode"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/view_playback_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="@string/cycle_interval"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/view_cycle_interval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="@string/display_mode"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/view_display_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="@string/clock_face"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Spinner
+                android:id="@+id/view_clock_face"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/view_power"
-            android:text="@string/power"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
-
-        <Button
-            android:id="@+id/view_menu"
-            android:text="@string/menu"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
-
-        <Button
-            android:id="@+id/view_next"
-            android:text="@string/next"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
-
-        <SeekBar
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:id="@+id/view_brightness"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="7"
-            android:progress="1" />
-
-        <TextView
-            android:text="@string/playback_mode"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_power_settings_new_white_48px"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            app:fabSize="normal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded" />
 
-        <Spinner
-            android:id="@+id/view_playback_mode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="@string/cycle_interval"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Spinner
-            android:id="@+id/view_cycle_interval"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="@string/display_mode"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Spinner
-            android:id="@+id/view_display_mode"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:text="@string/clock_face"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Spinner
-            android:id="@+id/view_clock_face"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
     <FrameLayout
         android:id="@+id/view_control_error"
