@@ -1,18 +1,18 @@
 package com.savvasdalkitsis.gameframe.control.presenter;
 
 import com.savvasdalkitsis.gameframe.control.view.ControlView;
-import com.savvasdalkitsis.gameframe.gameframe.api.GameFrameApi;
 import com.savvasdalkitsis.gameframe.rx.RxTransformers;
+import com.savvasdalkitsis.gameframe.usecase.GameFrameUseCase;
 
 import rx.Observable;
 
 public class ControlPresenter {
 
     private ControlView controlView;
-    private GameFrameApi gameFrameApi;
+    private final GameFrameUseCase gameFrameUseCase;
 
-    public ControlPresenter(GameFrameApi gameFrameApi) {
-        this.gameFrameApi = gameFrameApi;
+    public ControlPresenter(GameFrameUseCase gameFrameUseCase) {
+        this.gameFrameUseCase = gameFrameUseCase;
     }
 
     public void bindView(ControlView controlView) {
@@ -20,11 +20,15 @@ public class ControlPresenter {
     }
 
     public void togglePower() {
-        runCommand(gameFrameApi.togglePower(""));
+        runCommand(gameFrameUseCase.togglePower());
     }
 
     public void menu() {
-        runCommand(gameFrameApi.menu(""));
+        runCommand(gameFrameUseCase.menu());
+    }
+
+    public void next() {
+        runCommand(gameFrameUseCase.next());
     }
 
     private void runCommand(Observable<Void> command) {

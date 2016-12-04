@@ -38,6 +38,11 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
         presenter.menu();
     }
 
+    @OnClick(R.id.view_next)
+    public void next() {
+        presenter.next();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);

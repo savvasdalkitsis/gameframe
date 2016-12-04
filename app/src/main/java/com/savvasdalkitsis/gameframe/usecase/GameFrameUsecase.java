@@ -1,13 +1,16 @@
 package com.savvasdalkitsis.gameframe.usecase;
 
 import android.net.wifi.WifiManager;
+import android.support.annotation.NonNull;
 import android.text.format.Formatter;
 import android.util.Log;
 
+import com.savvasdalkitsis.gameframe.gameframe.api.GameFrameApi;
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress;
 import com.savvasdalkitsis.gameframe.ip.model.IpNotFoundException;
 
 import java.io.IOException;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -18,15 +21,30 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import static com.savvasdalkitsis.gameframe.ip.model.IpAddress.Builder.ipAddress;
+import static java.util.Collections.singletonMap;
 
 public class GameFrameUseCase {
 
     private final OkHttpClient okHttpClient;
     private final WifiManager wifiManager;
+    private final GameFrameApi gameFrameApi;
 
-    public GameFrameUseCase(OkHttpClient okHttpClient, WifiManager wifiManager) {
+    public GameFrameUseCase(OkHttpClient okHttpClient, WifiManager wifiManager, GameFrameApi gameFrameApi) {
         this.okHttpClient = okHttpClient;
         this.wifiManager = wifiManager;
+        this.gameFrameApi = gameFrameApi;
+    }
+
+    public Observable<Void> togglePower() {
+        return gameFrameApi.command(param("power"));
+    }
+
+    public Observable<Void> menu() {
+        return gameFrameApi.command(param("menu"));
+    }
+
+    public Observable<Void> next() {
+        return gameFrameApi.command(param("next"));
     }
 
     public Observable<IpAddress> discoverGameFrameIp() {
@@ -70,4 +88,8 @@ public class GameFrameUseCase {
                 .build()).execute();
     }
 
+    @NonNull
+    private Map<String, String> param(String name) {
+        return singletonMap(name, "");
+    }
 }
