@@ -9,4 +9,8 @@ public interface IpSetupView {
     void errorLoadingIpAddress(Throwable throwable);
 
     void addressSaved(IpAddress ipAddress);
+
+    void displayLoading();
+
+    void ipAddressDiscovered(IpAddress ipAddress);
 }

@@ -28,7 +28,8 @@ public class ControlPresenter {
     }
 
     private void runCommand(Observable<Void> command) {
-        command.compose(RxTransformers.globalTransformation())
+        command.compose(RxTransformers.interceptIpMissingException())
+                .compose(RxTransformers.schedulers())
                 .subscribe(n -> controlView.operationSuccess(), e -> controlView.operationFailure(e));
     }
 }

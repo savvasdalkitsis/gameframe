@@ -14,16 +14,14 @@ public class RxTransformers {
 
     private static final Navigator navigator = NavigatorInjector.navigator();
 
-    public static <T> Observable.Transformer<T, T> globalTransformation() {
+    public static <T> Observable.Transformer<T, T> interceptIpMissingException() {
         return o -> o
                 .doOnError(error -> {
                     if (error instanceof IpBaseHostMissingException) {
                         Log.e(RxTransformers.class.getName(), "Error: ", error);
                         navigator.navigateToIpSetup();
                     }
-                })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                });
     }
 
     public static <T> Observable.Transformer<T, T> schedulers() {

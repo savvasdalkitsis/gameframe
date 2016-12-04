@@ -8,4 +8,6 @@
     <string name="operation_failed">Operation failed</string>
     <string name="power">Power</string>
     <string name="menu">Menu</string>
+    <string name="discover_game_frame_ip">Discover Game Frame IP</string>
+    <string name="game_frame_ip_found">Game Frame IP found</string>
 </resources>

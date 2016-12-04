@@ -74,6 +74,14 @@ public class IpAddress {
             return new Builder();
         }
 
+        public static Builder ipAddress(IpAddress address) {
+            return ipAddress()
+                    .part1(address.getPart1())
+                    .part2(address.getPart2())
+                    .part3(address.getPart3())
+                    .part4(address.getPart4());
+        }
+
         private Builder() {
         }
 

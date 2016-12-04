@@ -4,28 +4,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="@string/enter_ip_address"
-        android:layout_margin="16dp"
-        android:textSize="24sp"
-        android:gravity="center_horizontal"
+    <RelativeLayout
+        android:id="@+id/view_setup_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    <include layout="@layout/view_ip_text_view"
-        android:layout_margin="16dp"
+        <TextView
+            android:text="@string/enter_ip_address"
+            android:layout_margin="16dp"
+            android:textSize="24sp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <include layout="@layout/view_ip_text_view"
+            android:layout_margin="16dp"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent" />
+
+        <Button
+            android:id="@+id/view_discover"
+            android:layout_margin="16dp"
+            android:text="@string/discover_game_frame_ip"
+            android:layout_above="@+id/view_setup"
+            android:textAllCaps="true"
+            android:minHeight="48dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/view_setup"
+            android:layout_margin="16dp"
+            android:text="@string/setup"
+            android:layout_alignParentBottom="true"
+            android:textAllCaps="true"
+            android:minHeight="48dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/view_setup_progress"
+        android:visibility="gone"
         android:layout_gravity="center"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
-
-    <Button
-        android:id="@+id/view_setup"
-        android:layout_margin="16dp"
-        android:text="@string/setup"
-        android:layout_gravity="bottom"
-        android:textAllCaps="true"
-        android:minHeight="48dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
 </FrameLayout>
