@@ -2,13 +2,20 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:layout_margin="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.savvasdalkitsis.gameframe.view.grid.LedGridView
-        android:id="@+id/view_led_grid_view"
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/view_power"
+        android:text="@string/power"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
+
+    <Button
+        android:id="@+id/view_menu"
+        android:text="@string/menu"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
 
 </LinearLayout>

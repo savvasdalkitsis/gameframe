@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.activity;
+package com.savvasdalkitsis.gameframe.led;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import com.shazam.android.aspects.base.activity.AspectAppCompatActivity;
 import butterknife.Bind;
 
 @BindLayout(R.layout.activity_main)
-public class MainActivity extends AspectAppCompatActivity {
+public class LedActivity extends AspectAppCompatActivity {
 
     @Bind(R.id.view_led_grid_view)
     public LedGridView ledGridView;

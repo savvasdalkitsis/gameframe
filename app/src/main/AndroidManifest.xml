@@ -1,19 +1,27 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.savvasdalkitsis.gameframe">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name=".GameFrameApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".control.view.ControlActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".led.LedActivity" />
+
+        <activity android:name=".ip.view.IpSetupActivity"
+            android:windowSoftInputMode="adjustResize"/>
 
     </application>
 

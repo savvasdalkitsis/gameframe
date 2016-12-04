@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_setup_ip"
+        android:icon="@android:drawable/ic_input_add"
+        android:title="@string/setup_ip_address"
+        app:showAsAction="ifRoom"/>
+
+</menu>

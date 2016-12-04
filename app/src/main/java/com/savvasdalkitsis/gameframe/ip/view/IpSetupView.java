@@ -1,0 +1,12 @@
+package com.savvasdalkitsis.gameframe.ip.view;
+
+import com.savvasdalkitsis.gameframe.ip.model.IpAddress;
+
+public interface IpSetupView {
+
+    void displayIpAddress(IpAddress ipAddress);
+
+    void errorLoadingIpAddress(Throwable throwable);
+
+    void addressSaved(IpAddress ipAddress);
+}
