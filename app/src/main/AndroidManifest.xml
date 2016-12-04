@@ -25,6 +25,8 @@
         <activity android:name=".led.LedActivity" />
 
         <activity android:name=".ip.view.IpSetupActivity"
+            android:label="@string/setup_ip_address"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"/>
 
     </application>

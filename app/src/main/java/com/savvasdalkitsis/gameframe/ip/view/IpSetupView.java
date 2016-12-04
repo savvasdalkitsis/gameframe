@@ -13,4 +13,6 @@ public interface IpSetupView {
     void displayLoading();
 
     void ipAddressDiscovered(IpAddress ipAddress);
+
+    void tryingAddress(IpAddress ipAddress);
 }

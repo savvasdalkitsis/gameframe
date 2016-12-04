@@ -1,8 +1,11 @@
 package com.savvasdalkitsis.gameframe.control.view;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -26,6 +29,7 @@ import com.savvasdalkitsis.gameframe.model.PlaybackMode;
 import butterknife.Bind;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
+import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 @BindLayout(R.layout.activity_control)
 public class ControlActivity extends BaseActivity implements ControlView {
@@ -47,6 +51,10 @@ public class ControlActivity extends BaseActivity implements ControlView {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        SpannableString s = new SpannableString(getTitle().toString());
+        s.setSpan(new CalligraphyTypefaceSpan(Typeface.createFromAsset(getAssets(), "fonts/Pixel-Noir.ttf")),
+                0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        setTitle(s);
         brightness.setOnSeekBarChangeListener(new BrightnessChangedListener());
         playbackMode.setAdapter(adapter(R.array.playback_mode));
         cycleInterval.setAdapter(adapter(R.array.cycle_interval));

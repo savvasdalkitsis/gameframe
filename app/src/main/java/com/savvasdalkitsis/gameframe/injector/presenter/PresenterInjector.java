@@ -5,11 +5,12 @@ import com.savvasdalkitsis.gameframe.ip.presenter.IpSetupPresenter;
 
 import static com.savvasdalkitsis.gameframe.injector.ip.repository.IpRepositoryInjector.ipRepository;
 import static com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.gameFrameUseCase;
+import static com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.ipDiscoveryUseCase;
 
 public class PresenterInjector {
 
     public static IpSetupPresenter ipSetupPresenter() {
-        return new IpSetupPresenter(gameFrameUseCase(), ipRepository());
+        return new IpSetupPresenter(gameFrameUseCase(), ipRepository(), ipDiscoveryUseCase());
     }
 
     public static ControlPresenter controlPresenter() {

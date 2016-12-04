@@ -8,6 +8,7 @@ import android.util.Log;
 import com.savvasdalkitsis.gameframe.gameframe.api.GameFrameApi;
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress;
 import com.savvasdalkitsis.gameframe.ip.model.IpNotFoundException;
+import com.savvasdalkitsis.gameframe.ip.usecase.IpDiscoveryUseCase;
 import com.savvasdalkitsis.gameframe.model.Brightness;
 import com.savvasdalkitsis.gameframe.model.ClockFace;
 import com.savvasdalkitsis.gameframe.model.CycleInterval;
@@ -33,11 +34,13 @@ public class GameFrameUseCase {
     private final OkHttpClient okHttpClient;
     private final WifiManager wifiManager;
     private final GameFrameApi gameFrameApi;
+    private final IpDiscoveryUseCase ipDiscoveryUseCase;
 
-    public GameFrameUseCase(OkHttpClient okHttpClient, WifiManager wifiManager, GameFrameApi gameFrameApi) {
+    public GameFrameUseCase(OkHttpClient okHttpClient, WifiManager wifiManager, GameFrameApi gameFrameApi, IpDiscoveryUseCase ipDiscoveryUseCase) {
         this.okHttpClient = okHttpClient;
         this.wifiManager = wifiManager;
         this.gameFrameApi = gameFrameApi;
+        this.ipDiscoveryUseCase = ipDiscoveryUseCase;
     }
 
     public Observable<Void> togglePower() {
@@ -76,6 +79,7 @@ public class GameFrameUseCase {
         return Observable.defer(this::getDeviceIp)
                 .flatMap(wholePart4Subrange())
                 .concatMap(ip -> {
+                    ipDiscoveryUseCase.emitMonitoredAddress(ip);
                     try {
                         if (isFromGameFrame(ping(ip))) {
                             return Observable.just(ip);

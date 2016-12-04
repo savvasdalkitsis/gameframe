@@ -3,8 +3,10 @@ package com.savvasdalkitsis.gameframe.ip.view;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
@@ -32,12 +34,38 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
     View content;
     @Bind(R.id.view_setup_progress)
     View progress;
+    @Bind(R.id.view_setup_trying_current_ip)
+    TextView tryingCurrentIp;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         ipTextView.setOnIpChangedListener(ipAddress -> setup.setEnabled(ipAddress.isValid()));
         ipSetupPresenter.bindView(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ipSetupPresenter.unbind();
     }
 
     @Override
@@ -79,5 +107,10 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
     public void ipAddressDiscovered(IpAddress ipAddress) {
         displayIpAddress(ipAddress);
         Snackbars.success(findViewById(android.R.id.content), R.string.game_frame_ip_found).show();
+    }
+
+    @Override
+    public void tryingAddress(IpAddress ipAddress) {
+        tryingCurrentIp.setText(ipAddress.toString());
     }
 }
