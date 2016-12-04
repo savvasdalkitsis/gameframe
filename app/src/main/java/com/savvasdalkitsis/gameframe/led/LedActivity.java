@@ -12,7 +12,7 @@ import com.shazam.android.aspects.base.activity.AspectAppCompatActivity;
 
 import butterknife.Bind;
 
-@BindLayout(R.layout.activity_main)
+@BindLayout(R.layout.activity_control)
 public class LedActivity extends AspectAppCompatActivity {
 
     @Bind(R.id.view_led_grid_view)

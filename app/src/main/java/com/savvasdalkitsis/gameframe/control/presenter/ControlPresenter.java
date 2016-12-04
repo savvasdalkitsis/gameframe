@@ -2,6 +2,7 @@ package com.savvasdalkitsis.gameframe.control.presenter;
 
 import com.savvasdalkitsis.gameframe.control.view.ControlView;
 import com.savvasdalkitsis.gameframe.model.Brightness;
+import com.savvasdalkitsis.gameframe.model.PlaybackMode;
 import com.savvasdalkitsis.gameframe.rx.RxTransformers;
 import com.savvasdalkitsis.gameframe.usecase.GameFrameUseCase;
 
@@ -33,8 +34,11 @@ public class ControlPresenter {
     }
 
     public void changeBrightness(Brightness brightness) {
-        runCommand(gameFrameUseCase.setBrightness(brightness))
-                .subscribe(n -> {}, e -> {});
+        runCommandAndIgnoreResult(gameFrameUseCase.setBrightness(brightness));
+    }
+
+    public void changePlaybackMode(PlaybackMode playbackMode) {
+        runCommandAndIgnoreResult(gameFrameUseCase.setPlaybackMode(playbackMode));
     }
 
     private Observable<Void> runCommand(Observable<Void> command) {
@@ -44,5 +48,9 @@ public class ControlPresenter {
 
     private void runCommandAndNotifyView(Observable<Void> command) {
         runCommand(command).subscribe(n -> controlView.operationSuccess(), e -> controlView.operationFailure(e));
+    }
+
+    private void runCommandAndIgnoreResult(Observable<Void> command) {
+        runCommand(command).subscribe(n -> {}, e -> {});
     }
 }

@@ -9,6 +9,7 @@ import com.savvasdalkitsis.gameframe.gameframe.api.GameFrameApi;
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress;
 import com.savvasdalkitsis.gameframe.ip.model.IpNotFoundException;
 import com.savvasdalkitsis.gameframe.model.Brightness;
+import com.savvasdalkitsis.gameframe.model.PlaybackMode;
 
 import java.io.IOException;
 import java.util.Map;
@@ -50,6 +51,10 @@ public class GameFrameUseCase {
 
     public Observable<Void> setBrightness(Brightness brightness) {
         return gameFrameApi.set(param(brightness.getQueryParamName()));
+    }
+
+    public Observable<Void> setPlaybackMode(PlaybackMode playbackMode) {
+        return gameFrameApi.set(param(playbackMode.getQueryParamName()));
     }
 
     public Observable<IpAddress> discoverGameFrameIp() {

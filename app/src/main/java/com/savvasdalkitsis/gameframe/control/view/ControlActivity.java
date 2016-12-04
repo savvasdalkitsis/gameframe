@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
@@ -14,12 +16,14 @@ import com.savvasdalkitsis.gameframe.infra.view.Snackbars;
 import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector;
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector;
 import com.savvasdalkitsis.gameframe.model.Brightness;
+import com.savvasdalkitsis.gameframe.model.PlaybackMode;
 import com.shazam.android.aspects.base.activity.AspectAppCompatActivity;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
 
-@BindLayout(R.layout.activity_main)
+@BindLayout(R.layout.activity_control)
 public class ControlActivity extends AspectAppCompatActivity implements ControlView {
 
     private final Navigator navigator = NavigatorInjector.navigator();
@@ -27,11 +31,17 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
 
     @Bind(R.id.view_brightness)
     SeekBar brightness;
+    @Bind(R.id.view_playback_mode)
+    Spinner playbackMode;
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         brightness.setOnSeekBarChangeListener(new BrightnessChangedListener());
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.playback_mode, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        playbackMode.setAdapter(adapter);
+
         presenter.bindView(this);
     }
 
@@ -48,6 +58,11 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
     @OnClick(R.id.view_next)
     public void next() {
         presenter.next();
+    }
+
+    @OnItemSelected(R.id.view_playback_mode)
+    public void playbackMode(int position) {
+        presenter.changePlaybackMode(PlaybackMode.from(position));
     }
 
     @Override

@@ -34,4 +34,15 @@
         android:max="7"
         android:progress="1" />
 
+    <TextView
+        android:text="@string/playback_mode"
+        android:layout_marginBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/view_playback_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 </LinearLayout>
