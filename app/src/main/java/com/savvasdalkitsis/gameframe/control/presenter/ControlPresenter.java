@@ -1,6 +1,7 @@
 package com.savvasdalkitsis.gameframe.control.presenter;
 
 import com.savvasdalkitsis.gameframe.control.view.ControlView;
+import com.savvasdalkitsis.gameframe.model.Brightness;
 import com.savvasdalkitsis.gameframe.rx.RxTransformers;
 import com.savvasdalkitsis.gameframe.usecase.GameFrameUseCase;
 
@@ -20,20 +21,28 @@ public class ControlPresenter {
     }
 
     public void togglePower() {
-        runCommand(gameFrameUseCase.togglePower());
+        runCommandAndNotifyView(gameFrameUseCase.togglePower());
     }
 
     public void menu() {
-        runCommand(gameFrameUseCase.menu());
+        runCommandAndNotifyView(gameFrameUseCase.menu());
     }
 
     public void next() {
-        runCommand(gameFrameUseCase.next());
+        runCommandAndNotifyView(gameFrameUseCase.next());
     }
 
-    private void runCommand(Observable<Void> command) {
-        command.compose(RxTransformers.interceptIpMissingException())
-                .compose(RxTransformers.schedulers())
-                .subscribe(n -> controlView.operationSuccess(), e -> controlView.operationFailure(e));
+    public void changeBrightness(Brightness brightness) {
+        runCommand(gameFrameUseCase.setBrightness(brightness))
+                .subscribe(n -> {}, e -> {});
+    }
+
+    private Observable<Void> runCommand(Observable<Void> command) {
+        return command.compose(RxTransformers.interceptIpMissingException())
+                .compose(RxTransformers.schedulers());
+    }
+
+    private void runCommandAndNotifyView(Observable<Void> command) {
+        runCommand(command).subscribe(n -> controlView.operationSuccess(), e -> controlView.operationFailure(e));
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.SeekBar;
 
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
@@ -12,8 +13,10 @@ import com.savvasdalkitsis.gameframe.infra.navigation.Navigator;
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars;
 import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector;
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector;
+import com.savvasdalkitsis.gameframe.model.Brightness;
 import com.shazam.android.aspects.base.activity.AspectAppCompatActivity;
 
+import butterknife.Bind;
 import butterknife.OnClick;
 
 @BindLayout(R.layout.activity_main)
@@ -22,9 +25,13 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
     private final Navigator navigator = NavigatorInjector.navigator();
     private final ControlPresenter presenter = PresenterInjector.controlPresenter();
 
+    @Bind(R.id.view_brightness)
+    SeekBar brightness;
+
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+        brightness.setOnSeekBarChangeListener(new BrightnessChangedListener());
         presenter.bindView(this);
     }
 
@@ -67,5 +74,18 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
     @Override
     public void operationFailure(Throwable e) {
         Snackbars.error(findViewById(android.R.id.content), R.string.operation_failed).show();
+    }
+
+    private class BrightnessChangedListener implements SeekBar.OnSeekBarChangeListener {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int level, boolean b) {
+            presenter.changeBrightness(Brightness.from(level));
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {}
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {}
     }
 }
