@@ -1,6 +1,7 @@
 package com.savvasdalkitsis.gameframe.control.view;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import com.savvasdalkitsis.gameframe.infra.view.Snackbars;
 import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector;
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector;
 import com.savvasdalkitsis.gameframe.model.Brightness;
+import com.savvasdalkitsis.gameframe.model.CycleInterval;
 import com.savvasdalkitsis.gameframe.model.PlaybackMode;
 import com.shazam.android.aspects.base.activity.AspectAppCompatActivity;
 
@@ -33,14 +35,15 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
     SeekBar brightness;
     @Bind(R.id.view_playback_mode)
     Spinner playbackMode;
+    @Bind(R.id.view_cycle_interval)
+    Spinner cycleInterval;
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         brightness.setOnSeekBarChangeListener(new BrightnessChangedListener());
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.playback_mode, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        playbackMode.setAdapter(adapter);
+        playbackMode.setAdapter(adapter(R.array.playback_mode));
+        cycleInterval.setAdapter(adapter(R.array.cycle_interval));
 
         presenter.bindView(this);
     }
@@ -63,6 +66,11 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
     @OnItemSelected(R.id.view_playback_mode)
     public void playbackMode(int position) {
         presenter.changePlaybackMode(PlaybackMode.from(position));
+    }
+
+    @OnItemSelected(R.id.view_cycle_interval)
+    public void cycleInterval(int position) {
+        presenter.changeCycleInterval(CycleInterval.from(position));
     }
 
     @Override
@@ -89,6 +97,13 @@ public class ControlActivity extends AspectAppCompatActivity implements ControlV
     @Override
     public void operationFailure(Throwable e) {
         Snackbars.error(findViewById(android.R.id.content), R.string.operation_failed).show();
+    }
+
+    @NonNull
+    private ArrayAdapter<CharSequence> adapter(int data) {
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, data, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return adapter;
     }
 
     private class BrightnessChangedListener implements SeekBar.OnSeekBarChangeListener {

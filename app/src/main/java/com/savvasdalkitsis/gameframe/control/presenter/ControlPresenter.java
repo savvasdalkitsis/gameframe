@@ -2,6 +2,7 @@ package com.savvasdalkitsis.gameframe.control.presenter;
 
 import com.savvasdalkitsis.gameframe.control.view.ControlView;
 import com.savvasdalkitsis.gameframe.model.Brightness;
+import com.savvasdalkitsis.gameframe.model.CycleInterval;
 import com.savvasdalkitsis.gameframe.model.PlaybackMode;
 import com.savvasdalkitsis.gameframe.rx.RxTransformers;
 import com.savvasdalkitsis.gameframe.usecase.GameFrameUseCase;
@@ -39,6 +40,10 @@ public class ControlPresenter {
 
     public void changePlaybackMode(PlaybackMode playbackMode) {
         runCommandAndIgnoreResult(gameFrameUseCase.setPlaybackMode(playbackMode));
+    }
+
+    public void changeCycleInterval(CycleInterval cycleInterval) {
+        runCommandAndIgnoreResult(gameFrameUseCase.setCycleInterval(cycleInterval));
     }
 
     private Observable<Void> runCommand(Observable<Void> command) {
