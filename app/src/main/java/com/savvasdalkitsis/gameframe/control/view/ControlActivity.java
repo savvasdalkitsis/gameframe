@@ -13,6 +13,7 @@ import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
 import com.savvasdalkitsis.gameframe.control.presenter.ControlPresenter;
 import com.savvasdalkitsis.gameframe.infra.navigation.Navigator;
+import com.savvasdalkitsis.gameframe.infra.view.BaseActivity;
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars;
 import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector;
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector;
@@ -21,14 +22,13 @@ import com.savvasdalkitsis.gameframe.model.ClockFace;
 import com.savvasdalkitsis.gameframe.model.CycleInterval;
 import com.savvasdalkitsis.gameframe.model.DisplayMode;
 import com.savvasdalkitsis.gameframe.model.PlaybackMode;
-import com.shazam.android.aspects.base.activity.AspectAppCompatActivity;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 
 @BindLayout(R.layout.activity_control)
-public class ControlActivity extends AspectAppCompatActivity implements ControlView {
+public class ControlActivity extends BaseActivity implements ControlView {
 
     private final Navigator navigator = NavigatorInjector.navigator();
     private final ControlPresenter presenter = PresenterInjector.controlPresenter();

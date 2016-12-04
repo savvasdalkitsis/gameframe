@@ -8,10 +8,10 @@ import android.widget.Button;
 
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
+import com.savvasdalkitsis.gameframe.infra.view.BaseActivity;
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars;
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress;
 import com.savvasdalkitsis.gameframe.ip.presenter.IpSetupPresenter;
-import com.shazam.android.aspects.base.activity.AspectAppCompatActivity;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -20,7 +20,7 @@ import static com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 import static com.savvasdalkitsis.gameframe.ip.model.IpAddress.Builder.ipAddress;
 
 @BindLayout(R.layout.activity_ip_setup)
-public class IpSetupActivity extends AspectAppCompatActivity implements IpSetupView {
+public class IpSetupActivity extends BaseActivity implements IpSetupView {
 
     private final IpSetupPresenter ipSetupPresenter = ipSetupPresenter();
 

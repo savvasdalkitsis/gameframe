@@ -48,6 +48,7 @@ dependencies {
             'com.squareup.retrofit2:adapter-rxjava:2.1.0',
             'com.squareup.okhttp3:logging-interceptor:3.4.2',
             'com.github.andrewlord1990:snackbarbuilder:0.7.0',
+            'uk.co.chrisjenx:calligraphy:2.2.0',
     )
     provided 'org.projectlombok:lombok:1.12.6'
     testCompile 'junit:junit:4.12'
