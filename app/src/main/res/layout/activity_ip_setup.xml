@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <android.support.design.widget.CoordinatorLayout
         android:id="@+id/view_setup_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -13,44 +13,63 @@
         <TextView
             android:text="@string/enter_ip_address"
             android:layout_marginTop="24dp"
+            android:layout_gravity="center_horizontal|top"
             android:textSize="18sp"
-            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <include layout="@layout/view_ip_text_view"
+        <android.support.v7.widget.CardView
+            android:id="@+id/view_ip_text_view_container"
             android:layout_margin="16dp"
+            android:layout_gravity="center"
             android:layout_centerInParent="true"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-        <Button
+            <include layout="@layout/view_ip_text_view"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="48dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:text="@string/discover_game_frame_ip"
+                android:textSize="8dp"
+                android:layout_marginRight="64dp"
+                android:layout_marginBottom="8dp"
+                android:layout_gravity="bottom|right"
+                android:textAllCaps="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="RtlHardcoded,SpUsage" />
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/view_discover"
-            android:drawableLeft="@drawable/ic_perm_scan_wifi_white_48px"
-            android:layout_margin="8dp"
+            android:src="@drawable/ic_perm_scan_wifi_white_48px"
             android:padding="16dp"
-            android:text="@string/discover_game_frame_ip"
-            android:layout_above="@+id/view_setup"
-            android:textAllCaps="true"
-            android:minHeight="64dp"
-            android:layout_width="match_parent"
+            app:layout_anchor="@id/view_ip_text_view_container"
+            app:layout_anchorGravity="bottom|right|end"
+            app:fabSize="mini"
+            android:layout_marginRight="32dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:ignore="RtlHardcoded" />
 
-        <Button
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/view_setup"
-            android:drawableLeft="@drawable/ic_done_white_48px"
-            android:layout_margin="8dp"
-            android:padding="16dp"
-            android:text="@string/setup"
-            android:layout_alignParentBottom="true"
-            android:textAllCaps="true"
-            android:minHeight="64dp"
-            android:layout_width="match_parent"
+            android:src="@drawable/ic_done_white_48px"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            app:fabSize="normal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:ignore="RtlHardcoded" />
 
-    </RelativeLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
     <FrameLayout
         android:id="@+id/view_setup_progress"

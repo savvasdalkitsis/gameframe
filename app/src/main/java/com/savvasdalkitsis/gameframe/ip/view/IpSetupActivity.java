@@ -29,7 +29,7 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
     @Bind(R.id.view_ip_text_view)
     IpTextView ipTextView;
     @Bind(R.id.view_setup)
-    Button setup;
+    View setup;
     @Bind(R.id.view_setup_content)
     View content;
     @Bind(R.id.view_setup_progress)
@@ -48,7 +48,18 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        ipTextView.setOnIpChangedListener(ipAddress -> setup.setEnabled(ipAddress.isValid()));
+        ipTextView.setOnIpChangedListener(ipAddress -> {
+            boolean valid = ipAddress.isValid();
+            float scale = valid ? 1 : 0;
+            float rotation = valid ? 0 : 45;
+            setup.setEnabled(valid);
+            setup.animate()
+                    .setDuration(200)
+                    .rotation(rotation)
+                    .scaleX(scale)
+                    .scaleY(scale)
+                    .start();
+        });
         ipSetupPresenter.bindView(this);
     }
 
@@ -89,7 +100,7 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
     public void errorLoadingIpAddress(Throwable throwable) {
         Log.e(IpSetupActivity.class.getName(), "Could not load ip address", throwable);
         displayIpAddress(ipAddress().build());
-        Snackbars.error(findViewById(android.R.id.content), R.string.operation_failed).show();
+        Snackbars.error(content, R.string.operation_failed).show();
     }
 
     @Override
@@ -106,7 +117,7 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
     @Override
     public void ipAddressDiscovered(IpAddress ipAddress) {
         displayIpAddress(ipAddress);
-        Snackbars.success(findViewById(android.R.id.content), R.string.game_frame_ip_found).show();
+        Snackbars.success(content, R.string.game_frame_ip_found).show();
     }
 
     @Override
