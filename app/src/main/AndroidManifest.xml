@@ -15,14 +15,12 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
-        <activity android:name=".control.view.ControlActivity">
+        <activity android:name=".main.view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".led.LedActivity" />
 
         <activity android:name=".ip.view.IpSetupActivity"
             android:label="@string/setup_ip_address"

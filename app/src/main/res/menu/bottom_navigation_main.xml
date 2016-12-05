@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_manage"
+        android:enabled="true"
+        android:icon="@drawable/ic_grid_on_white_48px"
+        android:title="@string/manage"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_draw"
+        android:enabled="true"
+        android:icon="@drawable/ic_brush_white_48px"
+        android:title="@string/draw"
+        app:showAsAction="ifRoom" />
+</menu>

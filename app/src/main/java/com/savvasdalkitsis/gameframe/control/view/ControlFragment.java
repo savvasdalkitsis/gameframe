@@ -1,14 +1,10 @@
 package com.savvasdalkitsis.gameframe.control.view;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.Spannable;
-import android.text.SpannableString;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
@@ -19,7 +15,7 @@ import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
 import com.savvasdalkitsis.gameframe.control.presenter.ControlPresenter;
 import com.savvasdalkitsis.gameframe.infra.navigation.Navigator;
-import com.savvasdalkitsis.gameframe.infra.view.BaseActivity;
+import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener;
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars;
 import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector;
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector;
@@ -29,14 +25,14 @@ import com.savvasdalkitsis.gameframe.model.ClockFace;
 import com.savvasdalkitsis.gameframe.model.CycleInterval;
 import com.savvasdalkitsis.gameframe.model.DisplayMode;
 import com.savvasdalkitsis.gameframe.model.PlaybackMode;
+import com.shazam.android.aspects.base.fragment.AspectSupportFragment;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
-import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
-@BindLayout(R.layout.activity_control)
-public class ControlActivity extends BaseActivity implements ControlView {
+@BindLayout(R.layout.fragment_control)
+public class ControlFragment extends AspectSupportFragment implements ControlView, FragmentSelectedListener {
 
     private final Navigator navigator = NavigatorInjector.navigator();
     private final ControlPresenter presenter = PresenterInjector.controlPresenter();
@@ -57,14 +53,17 @@ public class ControlActivity extends BaseActivity implements ControlView {
     View content;
     @Bind(R.id.view_control_error)
     View error;
+    FloatingActionButton fab;
 
     @Override
-    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        SpannableString s = new SpannableString(getTitle().toString());
-        s.setSpan(new CalligraphyTypefaceSpan(Typeface.createFromAsset(getAssets(), "fonts/Pixel-Noir.ttf")),
-                0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        setTitle(s);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.view_fab);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         brightness.setOnSeekBarChangeListener(new BrightnessChangedListener());
         playbackMode.setAdapter(adapter(R.array.playback_mode));
         cycleInterval.setAdapter(adapter(R.array.cycle_interval));
@@ -74,14 +73,16 @@ public class ControlActivity extends BaseActivity implements ControlView {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         presenter.loadIpAddress();
     }
 
-    @OnClick(R.id.view_power)
-    public void power() {
-        presenter.togglePower();
+    @Override
+    public void onFragmentSelected() {
+        presenter.loadIpAddress();
+        fab.setImageResource(R.drawable.ic_power_settings_new_white_48px);
+        fab.setOnClickListener(v -> presenter.togglePower());
     }
 
     @OnClick(R.id.view_menu)
@@ -130,29 +131,13 @@ public class ControlActivity extends BaseActivity implements ControlView {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.control_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_setup_ip :
-                setup();
-                return true;
-        }
-        return false;
-    }
-
-    @Override
     public void operationSuccess() {
-        Snackbars.success(content, R.string.success).show();
+        Snackbars.success(getActivity().findViewById(R.id.view_coordinator), R.string.success).show();
     }
 
     @Override
     public void operationFailure(Throwable e) {
-        Snackbars.error(content, R.string.operation_failed).show();
+        Snackbars.error(getActivity().findViewById(R.id.view_coordinator), R.string.operation_failed).show();
     }
 
     @Override
@@ -164,14 +149,14 @@ public class ControlActivity extends BaseActivity implements ControlView {
 
     @Override
     public void ipCouldNotBeFound(Throwable throwable) {
-        Log.e(ControlActivity.class.getName(), "Could not find ip", throwable);
+        Log.e(ControlFragment.class.getName(), "Could not find ip", throwable);
         error.setVisibility(View.VISIBLE);
         content.setVisibility(View.GONE);
     }
 
     @NonNull
     private ArrayAdapter<CharSequence> adapter(int data) {
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, data, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), data, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         return adapter;
     }
