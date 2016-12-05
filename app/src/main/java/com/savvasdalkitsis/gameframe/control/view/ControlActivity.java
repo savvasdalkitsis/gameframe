@@ -99,6 +99,16 @@ public class ControlActivity extends BaseActivity implements ControlView {
         navigator.navigateToIpSetup();
     }
 
+    @OnClick(R.id.view_brightness_low)
+    public void brightnessLow() {
+        brightness.incrementProgressBy(-1);
+    }
+
+    @OnClick(R.id.view_brightness_high)
+    public void brightnessHigh() {
+        brightness.incrementProgressBy(1);
+    }
+
     @OnItemSelected(R.id.view_playback_mode)
     public void playbackMode(int position) {
         presenter.changePlaybackMode(PlaybackMode.from(position));
