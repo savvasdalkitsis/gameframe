@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.view.grid;
+package com.savvasdalkitsis.gameframe.grid.model;
 
 import android.support.annotation.ColorInt;
 
@@ -10,6 +10,14 @@ public class ColorGrid {
         checkValue(column, "Column");
         checkValue(row, "Row");
         colors[column - 1][row -1] = color;
+    }
+
+    public void fill(int color) {
+        for (int i = 1; i <= 16; i++) {
+            for (int j = 1; j <= 16; j++) {
+                setColor(color, i, j);
+            }
+        }
     }
 
     @ColorInt

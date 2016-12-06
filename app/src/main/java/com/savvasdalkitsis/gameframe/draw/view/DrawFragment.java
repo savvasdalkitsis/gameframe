@@ -1,6 +1,5 @@
 package com.savvasdalkitsis.gameframe.draw.view;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -8,19 +7,32 @@ import android.view.View;
 
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
+import com.savvasdalkitsis.gameframe.draw.model.DrawingMode;
+import com.savvasdalkitsis.gameframe.grid.view.GridTouchedListener;
 import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener;
-import com.savvasdalkitsis.gameframe.view.grid.ColorGrid;
-import com.savvasdalkitsis.gameframe.view.grid.LedGridView;
+import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
+import com.savvasdalkitsis.gameframe.grid.view.LedGridView;
 import com.shazam.android.aspects.base.fragment.AspectSupportFragment;
 
 import butterknife.Bind;
 
-@BindLayout(R.layout.fragment_draw)
-public class DrawFragment extends AspectSupportFragment implements FragmentSelectedListener {
+import static com.savvasdalkitsis.gameframe.draw.model.Palette.Builder.palette;
 
-    @Bind(R.id.view_led_grid_view)
+@BindLayout(R.layout.fragment_draw)
+public class DrawFragment extends AspectSupportFragment implements FragmentSelectedListener,
+        SwatchSelectedListener, GridTouchedListener {
+
+    @Bind(R.id.view_draw_led_grid_view)
     public LedGridView ledGridView;
+    @Bind(R.id.view_draw_palette)
+    public PaletteView paletteView;
     FloatingActionButton fab;
+    @Bind(R.id.view_draw_pencil)
+    View pencil;
+    @Bind(R.id.view_draw_fill)
+    View fill;
+    private DrawingMode drawingMode;
+    private int color;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -31,19 +43,47 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ColorGrid colorGrid = new ColorGrid();
-        colorGrid.setColor(Color.RED, 4, 4);
-        colorGrid.setColor(Color.RED, 4, 5);
-        colorGrid.setColor(Color.RED, 4, 6);
-        colorGrid.setColor(Color.BLUE, 6, 4);
-        colorGrid.setColor(Color.BLUE, 6, 5);
-        colorGrid.setColor(Color.BLUE, 6, 6);
-        ledGridView.display(colorGrid);
+        ledGridView.setOnGridTouchedListener(this);
+        paletteView.bind(palette()
+                .colors(getResources().getIntArray(R.array.palette))
+                .build());
+        paletteView.setOnSwatchSelectedListener(this);
+        fill.setOnClickListener(v -> {
+            fill.setAlpha(1);
+            pencil.setAlpha(0.2f);
+            drawingMode = DrawingMode.FILL;
+        });
+        pencil.setOnClickListener(v -> {
+            pencil.setAlpha(1);
+            fill.setAlpha(0.2f);
+            drawingMode = DrawingMode.PENCIL;
+        });
+        pencil.performClick();
     }
 
     @Override
     public void onFragmentSelected() {
         fab.setOnClickListener(v -> {});
         fab.setImageResource(R.drawable.ic_publish_white_48px);
+    }
+
+    @Override
+    public void onSwatchSelected(int color) {
+        this.color = color;
+    }
+
+    @Override
+    public void onGridTouchedListener(int column, int row) {
+        ColorGrid colorGrid = ledGridView.getColorGrid();
+        ledGridView.display(colorGrid);
+        switch (drawingMode) {
+            case FILL:
+                colorGrid.fill(color);
+                break;
+            case PENCIL:
+                colorGrid.setColor(color, column, row);
+                break;
+        }
+        ledGridView.invalidate();
     }
 }

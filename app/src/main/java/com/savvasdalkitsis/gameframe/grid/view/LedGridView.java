@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.view.grid;
+package com.savvasdalkitsis.gameframe.grid.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,15 +6,18 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.savvasdalkitsis.gameframe.R;
+import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
 
 public class LedGridView extends View {
 
     private ColorGrid colorGrid = new ColorGrid();
     private float side;
     private Paint paint;
+    private GridTouchedListener gridTouchedListener = GridTouchedListener.NO_OP;
 
     public LedGridView(Context context) {
         super(context);
@@ -33,6 +36,7 @@ public class LedGridView extends View {
         super.onFinishInflate();
         paint = new Paint();
         paint.setStrokeWidth(getResources().getDimensionPixelSize(R.dimen.grid_line_width));
+        setOnTouchListener(touched());
     }
 
     @Override
@@ -44,6 +48,7 @@ public class LedGridView extends View {
 
     public void display(@NonNull ColorGrid colorGrid) {
         this.colorGrid = colorGrid;
+        invalidate();
     }
 
     @Override
@@ -60,9 +65,40 @@ public class LedGridView extends View {
             }
         }
         paint.setColor(Color.BLACK);
-        for (int i = 1; i <= 15; i++) {
+        for (int i = 0; i <= 16; i++) {
             canvas.drawLine(0, i * side, width, i * side, paint);
+            //noinspection SuspiciousNameCombination
             canvas.drawLine(i * side, 0, i * side, width, paint);
         }
+    }
+
+    public void setOnGridTouchedListener(GridTouchedListener gridTouchedListener) {
+        this.gridTouchedListener = gridTouchedListener;
+    }
+
+    public ColorGrid getColorGrid() {
+        return colorGrid;
+    }
+
+    @NonNull
+    private OnTouchListener touched() {
+        return (view, motionEvent) -> {
+            int block = getWidth() / 16;
+            switch (motionEvent.getActionMasked()) {
+                case MotionEvent.ACTION_MOVE:
+                case MotionEvent.ACTION_DOWN:
+                    gridTouchedListener.onGridTouchedListener(
+                            blockCoordinate(block, motionEvent.getX()),
+                            blockCoordinate(block, motionEvent.getY())
+                    );
+                    return true;
+            }
+            return false;
+        };
+    }
+
+    private int blockCoordinate(int block, float coordinate) {
+        int c = (int) (coordinate / block) + 1;
+        return Math.max(1, Math.min(c, 16));
     }
 }

@@ -1,14 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.savvasdalkitsis.gameframe.view.grid.LedGridView
-        android:id="@+id/view_led_grid_view"
-        android:layout_margin="10dp"
+    <com.savvasdalkitsis.gameframe.grid.view.LedGridView
+        android:id="@+id/view_draw_led_grid_view"
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-</LinearLayout>
+    <include
+        android:id="@+id/view_draw_palette"
+        layout="@layout/view_palette"
+        android:layout_below="@id/view_draw_led_grid_view"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginRight="72dp"
+        android:layout_marginBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="RtlHardcoded" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/view_draw_palette"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/view_draw_pencil"
+            style="?attr/actionButtonStyle"
+            android:src="@drawable/ic_create_black_48px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <ImageButton
+            android:id="@+id/view_draw_fill"
+            style="?attr/actionButtonStyle"
+            android:src="@drawable/ic_format_color_fill_black_48px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+    </LinearLayout>
+
+</RelativeLayout>
