@@ -37,6 +37,7 @@ public class LedGridView extends View {
         paint = new Paint();
         paint.setStrokeWidth(getResources().getDimensionPixelSize(R.dimen.grid_line_width));
         setOnTouchListener(touched());
+        colorGrid.fill(Color.GRAY);
     }
 
     @Override

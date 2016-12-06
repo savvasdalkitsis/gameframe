@@ -32,7 +32,7 @@
 
     <integer-array name="palette">
         <item>0xff000000</item>
-        <item>0xff7f7f7f</item>
+        <item>0xff888888</item>
         <item>0xff870000</item>
         <item>0xff7d8500</item>
         <item>0xff008200</item>
