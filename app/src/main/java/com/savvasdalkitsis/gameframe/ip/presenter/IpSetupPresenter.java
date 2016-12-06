@@ -9,6 +9,8 @@ import com.savvasdalkitsis.gameframe.usecase.GameFrameUseCase;
 
 import rx.subscriptions.CompositeSubscription;
 
+import static com.savvasdalkitsis.gameframe.ip.model.IpAddress.Builder.ipAddress;
+
 public class IpSetupPresenter {
 
     private final IpRepository ipRepository;
@@ -25,10 +27,7 @@ public class IpSetupPresenter {
 
     public void bindView(IpSetupView ipSetupView) {
         this.ipSetupView = ipSetupView;
-        ipSetupView.displayLoading();
-        subscriptions.add(ipRepository.getIpAddress()
-                .compose(RxTransformers.schedulers())
-                .subscribe(ipSetupView::displayIpAddress, ipSetupView::errorLoadingIpAddress));
+        loadStoredIp();
     }
 
     public void unbind() {
@@ -41,13 +40,27 @@ public class IpSetupPresenter {
     }
 
     public void discoverIp() {
-        ipSetupView.displayLoading();
+        ipSetupView.displayDiscovering();
         subscriptions.add(ipDiscoveryUseCase.monitoredIps()
                 .compose(RxTransformers.schedulers())
                 .subscribe(ipSetupView::tryingAddress, e -> {}));
         subscriptions.add(gameFrameUseCase.discoverGameFrameIp()
                 .compose(RxTransformers.schedulers())
-                .subscribe(ipSetupView::ipAddressDiscovered, ipSetupView::errorLoadingIpAddress));
+                .doOnCompleted(() -> ipSetupView.displayIdleView())
+                .subscribe(ipSetupView::ipAddressDiscovered, ipSetupView::errorDiscoveringIpAddress));
     }
 
+    public void cancelDiscover() {
+        subscriptions.clear();
+        loadStoredIp();
+    }
+
+    private void loadStoredIp() {
+        ipSetupView.displayIdleView();
+        ipRepository.getIpAddress()
+                .subscribe(
+                        ipSetupView::displayIpAddress,
+                        e -> { ipSetupView.displayIpAddress(ipAddress().build());}
+                );
+    }
 }

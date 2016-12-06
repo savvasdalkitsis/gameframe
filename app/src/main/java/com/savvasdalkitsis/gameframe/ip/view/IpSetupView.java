@@ -6,13 +6,15 @@ public interface IpSetupView {
 
     void displayIpAddress(IpAddress ipAddress);
 
-    void errorLoadingIpAddress(Throwable throwable);
+    void errorDiscoveringIpAddress(Throwable throwable);
 
     void addressSaved(IpAddress ipAddress);
 
-    void displayLoading();
+    void displayDiscovering();
 
     void ipAddressDiscovered(IpAddress ipAddress);
 
     void tryingAddress(IpAddress ipAddress);
+
+    void displayIdleView();
 }

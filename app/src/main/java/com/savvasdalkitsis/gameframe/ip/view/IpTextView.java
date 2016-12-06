@@ -76,6 +76,15 @@ public class IpTextView extends LinearLayout {
         return ipAddress;
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        part1.setEnabled(enabled);
+        part2.setEnabled(enabled);
+        part3.setEnabled(enabled);
+        part4.setEnabled(enabled);
+    }
+
     private class IpTextChanged implements TextWatcher {
 
         private TextView textView;
@@ -89,6 +98,7 @@ public class IpTextView extends LinearLayout {
             rebuildIpAddress();
             ipChangedListener.onIpChangedListener(ipAddress);
             if (editable.toString().length() == 3) {
+                //noinspection WrongConstant
                 textView.focusSearch(View.FOCUS_FORWARD).requestFocus();
             }
         }

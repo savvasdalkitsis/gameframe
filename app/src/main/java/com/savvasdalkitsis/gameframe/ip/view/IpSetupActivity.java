@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
@@ -28,14 +27,18 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
 
     @Bind(R.id.view_ip_text_view)
     IpTextView ipTextView;
-    @Bind(R.id.view_setup)
-    View setup;
     @Bind(R.id.view_setup_content)
     View content;
-    @Bind(R.id.view_setup_progress)
-    View progress;
-    @Bind(R.id.view_setup_trying_current_ip)
-    TextView tryingCurrentIp;
+    @Bind(R.id.view_setup_title)
+    TextView title;
+    @Bind(R.id.view_discover)
+    View discover;
+    @Bind(R.id.view_discover_title)
+    View discoverTitle;
+    @Bind(R.id.view_setup)
+    View fab;
+    @Bind(R.id.view_cancel_discover)
+    View cancelDiscover;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,16 +52,10 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         ipTextView.setOnIpChangedListener(ipAddress -> {
-            boolean valid = ipAddress.isValid();
-            float scale = valid ? 1 : 0;
-            float rotation = valid ? 0 : 45;
-            setup.setEnabled(valid);
-            setup.animate()
-                    .setDuration(200)
-                    .rotation(rotation)
-                    .scaleX(scale)
-                    .scaleY(scale)
-                    .start();
+            if (!ipTextView.isEnabled()) {
+                return;
+            }
+            showFab(fab, ipAddress.isValid());
         });
         ipSetupPresenter.bindView(this);
     }
@@ -81,8 +78,6 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
 
     @Override
     public void displayIpAddress(IpAddress ipAddress) {
-        progress.setVisibility(View.GONE);
-        content.setVisibility(View.VISIBLE);
         ipTextView.bind(ipAddress);
     }
 
@@ -91,13 +86,18 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
         ipSetupPresenter.setup(ipTextView.getIpAddress());
     }
 
+    @OnClick(R.id.view_cancel_discover)
+    public void cancelDiscover() {
+        ipSetupPresenter.cancelDiscover();
+    }
+
     @OnClick(R.id.view_discover)
     public void discover() {
         ipSetupPresenter.discoverIp();
     }
 
     @Override
-    public void errorLoadingIpAddress(Throwable throwable) {
+    public void errorDiscoveringIpAddress(Throwable throwable) {
         Log.e(IpSetupActivity.class.getName(), "Could not load ip address", throwable);
         displayIpAddress(ipAddress().build());
         Snackbars.error(content, R.string.operation_failed).show();
@@ -109,19 +109,55 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
     }
 
     @Override
-    public void displayLoading() {
-        progress.setVisibility(View.VISIBLE);
-        content.setVisibility(View.GONE);
+    public void displayDiscovering() {
+        title.setText(R.string.trying_to_find_game_frame);
+        scale(discover, 0);
+        alpha(discoverTitle, 0);
+        ipTextView.setEnabled(false);
+
+        showFab(fab, false);
+        showFab(cancelDiscover, true);
     }
 
     @Override
     public void ipAddressDiscovered(IpAddress ipAddress) {
-        displayIpAddress(ipAddress);
         Snackbars.success(content, R.string.game_frame_ip_found).show();
     }
 
     @Override
     public void tryingAddress(IpAddress ipAddress) {
-        tryingCurrentIp.setText(ipAddress.toString());
+        ipTextView.bind(ipAddress);
+    }
+
+    @Override
+    public void displayIdleView() {
+        title.setText(R.string.enter_ip_address);
+        scale(discover, 1);
+        alpha(discoverTitle, 1);
+        ipTextView.setEnabled(true);
+        showFab(fab, true);
+        showFab(cancelDiscover, false);
+    }
+
+    private void scale(View view, float value) {
+        view.clearAnimation();
+        view.animate().setDuration(200).scaleX(value).scaleY(value).start();
+    }
+
+    private void alpha(View view, float value) {
+        view.clearAnimation();
+        view.animate().setDuration(200).alpha(value).start();
+    }
+
+    private void showFab(View fab, boolean show) {
+        float scale = show ? 1 : 0;
+        float rotation = show ? 0 : 45;
+        fab.setEnabled(show);
+        fab.animate()
+                .setDuration(200)
+                .rotation(rotation)
+                .scaleX(scale)
+                .scaleY(scale)
+                .start();
     }
 }
