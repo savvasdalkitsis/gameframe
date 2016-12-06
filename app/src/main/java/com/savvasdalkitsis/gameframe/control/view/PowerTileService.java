@@ -3,6 +3,7 @@ package com.savvasdalkitsis.gameframe.control.view;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.service.quicksettings.TileService;
+import android.util.Log;
 
 import com.savvasdalkitsis.gameframe.rx.RxTransformers;
 import com.savvasdalkitsis.gameframe.usecase.GameFrameUseCase;
@@ -19,6 +20,8 @@ public class PowerTileService extends TileService {
         super.onClick();
         gameFrameUseCase.togglePower()
                 .compose(RxTransformers.schedulers())
-                .subscribe(n->{}, e->{});
+                .subscribe(n -> {}, e -> {
+                    Log.e(PowerTileService.class.getName(), "Error toggling game frame power", e);
+                });
     }
 }
