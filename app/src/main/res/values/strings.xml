@@ -21,4 +21,5 @@
     <string name="manage">Manage</string>
     <string name="draw">Draw</string>
     <string name="sending">Sending to GameFrame</string>
+    <string name="error_communicating">There was an error communicating with the GameFrame</string>
 </resources>

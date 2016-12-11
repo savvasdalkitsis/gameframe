@@ -40,7 +40,7 @@
         </service>
         
         <receiver
-            android:name=".control.view.PowerWidgetProvider"
+            android:name=".widget.view.PowerWidgetProvider"
             android:label="@string/power">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -50,7 +50,7 @@
         </receiver>
 
         <receiver
-            android:name=".control.view.NextWidgetProvider"
+            android:name=".widget.view.NextWidgetProvider"
             android:label="@string/next">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -60,7 +60,7 @@
         </receiver>
 
         <receiver
-            android:name=".control.view.MenuWidgetProvider"
+            android:name=".widget.view.MenuWidgetProvider"
             android:label="@string/menu">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

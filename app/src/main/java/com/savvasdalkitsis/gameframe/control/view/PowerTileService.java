@@ -3,25 +3,35 @@ package com.savvasdalkitsis.gameframe.control.view;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.service.quicksettings.TileService;
-import android.util.Log;
 
-import com.savvasdalkitsis.gameframe.rx.RxTransformers;
-import com.savvasdalkitsis.gameframe.usecase.GameFrameUseCase;
-
-import static com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.gameFrameUseCase;
+import com.github.andrewlord1990.snackbarbuilder.toastbuilder.ToastBuilder;
+import com.savvasdalkitsis.gameframe.R;
+import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector;
+import com.savvasdalkitsis.gameframe.widget.presenter.WidgetPresenter;
+import com.savvasdalkitsis.gameframe.widget.view.WidgetView;
 
 @TargetApi(Build.VERSION_CODES.N)
-public class PowerTileService extends TileService {
+public class PowerTileService extends TileService implements WidgetView {
 
-    private final GameFrameUseCase gameFrameUseCase = gameFrameUseCase();
+    private final WidgetPresenter widgetPresenter = PresenterInjector.widgetPresenter();
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        widgetPresenter.bindView(this);
+    }
 
     @Override
     public void onClick() {
         super.onClick();
-        gameFrameUseCase.togglePower()
-                .compose(RxTransformers.schedulers())
-                .subscribe(n -> {}, e -> {
-                    Log.e(PowerTileService.class.getName(), "Error toggling game frame power", e);
-                });
+        widgetPresenter.power();
+    }
+
+    @Override
+    public void operationError() {
+        new ToastBuilder(this)
+                .message(R.string.error_communicating)
+                .build()
+                .show();
     }
 }

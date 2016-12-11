@@ -2,7 +2,7 @@
 <ImageView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/view_widget_power"
+    android:id="@+id/view_widget_action"
     android:src="@drawable/ic_widget_power"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
