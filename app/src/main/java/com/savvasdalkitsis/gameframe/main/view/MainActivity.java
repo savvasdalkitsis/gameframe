@@ -1,13 +1,11 @@
 package com.savvasdalkitsis.gameframe.main.view;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.text.Spannable;
-import android.text.SpannableString;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ViewSwitcher;
@@ -23,7 +21,6 @@ import com.savvasdalkitsis.gameframe.ip.model.IpAddress;
 import com.savvasdalkitsis.gameframe.main.presenter.MainPresenter;
 
 import butterknife.Bind;
-import uk.co.chrisjenx.calligraphy.CalligraphyTypefaceSpan;
 
 @BindLayout(R.layout.activity_main)
 public class MainActivity extends BaseActivity implements MainView {
@@ -41,13 +38,15 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        SpannableString s = new SpannableString(getTitle().toString());
-        s.setSpan(new CalligraphyTypefaceSpan(Typeface.createFromAsset(getAssets(), "fonts/Pixel-Noir.ttf")),
-                0, s.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        setTitle(s);
         bottomNavigationView.setOnNavigationItemSelectedListener(this::onOptionsItemSelected);
         notifyFragmentSelected(R.id.fragment_manage);
         presenter.bindView(this);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setLogo(R.drawable.ic_logo);
+            actionBar.setDisplayUseLogoEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
     }
 
     @Override
