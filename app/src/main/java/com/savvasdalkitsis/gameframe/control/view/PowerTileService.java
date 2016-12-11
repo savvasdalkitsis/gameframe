@@ -13,18 +13,18 @@ import com.savvasdalkitsis.gameframe.widget.view.WidgetView;
 @TargetApi(Build.VERSION_CODES.N)
 public class PowerTileService extends TileService implements WidgetView {
 
-    private final WidgetPresenter widgetPresenter = PresenterInjector.widgetPresenter();
+    private final WidgetPresenter presenter = PresenterInjector.widgetPresenter();
 
     @Override
     public void onCreate() {
         super.onCreate();
-        widgetPresenter.bindView(this);
+        presenter.bindView(this);
     }
 
     @Override
     public void onClick() {
         super.onClick();
-        widgetPresenter.power();
+        presenter.power();
     }
 
     @Override
