@@ -1,102 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_setup_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/view_setup_content"
+    <TextView
+        android:id="@+id/view_setup_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|top"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:lineSpacingExtra="3dp"
+        android:text="@string/enter_ip_address"
+        android:textSize="16sp" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/view_ip_text_view_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:layout_margin="16dp">
+
+        <include
+            layout="@layout/view_ip_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="48dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp" />
 
         <TextView
-            android:id="@+id/view_setup_title"
-            android:text="@string/enter_ip_address"
-            android:layout_marginTop="24dp"
-            android:gravity="center"
-            android:layout_gravity="center_horizontal|top"
-            android:lineSpacingExtra="3dp"
-            android:textSize="16sp"
+            android:id="@+id/view_discover_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="64dp"
+            android:text="@string/discover_game_frame_ip"
+            android:textAllCaps="true"
+            android:textSize="8dp"
+            tools:ignore="RtlHardcoded,SpUsage" />
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/view_discover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="32dp"
+        android:padding="16dp"
+        android:src="@drawable/ic_perm_scan_wifi_white_48px"
+        app:fabSize="mini"
+        app:layout_anchor="@id/view_ip_text_view_container"
+        app:layout_anchorGravity="bottom|right|end"
+        tools:ignore="RtlHardcoded" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/view_setup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_done_white_48px"
+        app:fabSize="normal"
+        tools:ignore="RtlHardcoded" />
+
+    <com.dmitrymalkovich.android.ProgressFloatingActionButton
+        android:id="@+id/view_cancel_discover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:layout_anchor="@id/view_setup"
+        app:layout_anchorGravity="center"
+        tools:ignore="RtlHardcoded">
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_clear_white_48px"
+            app:backgroundTint="@color/colorPrimary"
+            app:fabSize="normal" />
+
+        <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/view_ip_text_view_container"
-            android:layout_margin="16dp"
-            android:layout_gravity="center"
-            android:layout_centerInParent="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+    </com.dmitrymalkovich.android.ProgressFloatingActionButton>
 
-            <include layout="@layout/view_ip_text_view"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="48dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/view_discover_title"
-                android:text="@string/discover_game_frame_ip"
-                android:textSize="8dp"
-                android:layout_marginRight="64dp"
-                android:layout_marginBottom="8dp"
-                android:layout_gravity="bottom|right"
-                android:textAllCaps="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="RtlHardcoded,SpUsage" />
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/view_discover"
-            android:src="@drawable/ic_perm_scan_wifi_white_48px"
-            android:padding="16dp"
-            app:layout_anchor="@id/view_ip_text_view_container"
-            app:layout_anchorGravity="bottom|right|end"
-            app:fabSize="mini"
-            android:layout_marginRight="32dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:ignore="RtlHardcoded" />
-
-        <com.dmitrymalkovich.android.ProgressFloatingActionButton
-            android:id="@+id/view_cancel_discover"
-            android:layout_gravity="bottom|right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:clickable="true"
-            tools:ignore="RtlHardcoded">
-
-            <android.support.design.widget.FloatingActionButton
-                android:src="@drawable/ic_clear_white_48px"
-                android:layout_margin="16dp"
-                app:fabSize="normal"
-                app:backgroundTint="@color/colorPrimary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <ProgressBar
-                style="@style/Widget.AppCompat.ProgressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </com.dmitrymalkovich.android.ProgressFloatingActionButton>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/view_setup"
-            android:src="@drawable/ic_done_white_48px"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            app:fabSize="normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:ignore="RtlHardcoded" />
-
-    </android.support.design.widget.CoordinatorLayout>
-
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

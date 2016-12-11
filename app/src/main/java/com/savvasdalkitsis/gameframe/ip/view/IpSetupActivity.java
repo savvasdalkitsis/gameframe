@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 import android.widget.TextView;
 
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
@@ -114,6 +115,9 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
         scale(discover, 0);
         alpha(discoverTitle, 0);
         ipTextView.setEnabled(false);
+        animate(ipTextView)
+                .translationY(getResources().getDimensionPixelSize(R.dimen.ip_view_offset))
+                .start();
 
         showFab(fab, false);
         showFab(cancelDiscover, true);
@@ -135,26 +139,32 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
         scale(discover, 1);
         alpha(discoverTitle, 1);
         ipTextView.setEnabled(true);
+        animate(ipTextView)
+                .translationY(0)
+                .start();
         showFab(fab, true);
         showFab(cancelDiscover, false);
     }
 
     private void scale(View view, float value) {
-        view.clearAnimation();
-        view.animate().setDuration(200).scaleX(value).scaleY(value).start();
+        animate(view).scaleX(value).scaleY(value).start();
     }
 
     private void alpha(View view, float value) {
+        animate(view).alpha(value).start();
+    }
+
+    private ViewPropertyAnimator animate(View view) {
         view.clearAnimation();
-        view.animate().setDuration(200).alpha(value).start();
+        return view.animate().setDuration(200);
     }
 
     private void showFab(View fab, boolean show) {
         float scale = show ? 1 : 0;
         float rotation = show ? 0 : 45;
         fab.setEnabled(show);
-        fab.animate()
-                .setDuration(200)
+        fab.setClickable(show);
+        animate(fab)
                 .rotation(rotation)
                 .scaleX(scale)
                 .scaleY(scale)
