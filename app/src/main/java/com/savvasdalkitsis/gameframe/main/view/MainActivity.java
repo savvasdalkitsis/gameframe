@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity implements MainView {
         presenter.bindView(this);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
+            actionBar.setTitle("");
             actionBar.setLogo(R.drawable.ic_logo);
             actionBar.setDisplayUseLogoEnabled(true);
             actionBar.setDisplayShowHomeEnabled(true);
