@@ -5,4 +5,5 @@
     <color name="colorAccent">#1e88e5</color>
     <color name="success">#66bb6a</color>
     <color name="error">#e57373</color>
+    <color name="progress">#ff852d</color>
 </resources>

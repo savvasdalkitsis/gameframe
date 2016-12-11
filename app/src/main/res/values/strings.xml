@@ -20,4 +20,5 @@
     <string name="game_frame_ip_not_found">Game Frame IP not found.\nSet it up now?</string>
     <string name="manage">Manage</string>
     <string name="draw">Draw</string>
+    <string name="sending">Sending to GameFrame</string>
 </resources>
