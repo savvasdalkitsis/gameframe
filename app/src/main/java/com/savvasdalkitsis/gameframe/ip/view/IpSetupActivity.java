@@ -24,7 +24,7 @@ import static com.savvasdalkitsis.gameframe.ip.model.IpAddress.Builder.ipAddress
 @BindLayout(R.layout.activity_ip_setup)
 public class IpSetupActivity extends BaseActivity implements IpSetupView {
 
-    private final IpSetupPresenter ipSetupPresenter = ipSetupPresenter();
+    private final IpSetupPresenter presenter = ipSetupPresenter();
 
     @Bind(R.id.view_ip_text_view)
     IpTextView ipTextView;
@@ -58,7 +58,7 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
             }
             showFab(fab, ipAddress.isValid());
         });
-        ipSetupPresenter.bindView(this);
+        presenter.bindView(this);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
     @Override
     protected void onStop() {
         super.onStop();
-        ipSetupPresenter.unbind();
+        presenter.unbind();
     }
 
     @Override
@@ -84,17 +84,17 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
 
     @OnClick(R.id.view_setup)
     public void setup() {
-        ipSetupPresenter.setup(ipTextView.getIpAddress());
+        presenter.setup(ipTextView.getIpAddress());
     }
 
     @OnClick(R.id.view_cancel_discover)
     public void cancelDiscover() {
-        ipSetupPresenter.cancelDiscover();
+        presenter.cancelDiscover();
     }
 
     @OnClick(R.id.view_discover)
     public void discover() {
-        ipSetupPresenter.discoverIp();
+        presenter.discoverIp();
     }
 
     @Override
