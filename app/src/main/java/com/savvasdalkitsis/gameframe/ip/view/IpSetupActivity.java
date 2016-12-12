@@ -100,7 +100,6 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
     @Override
     public void errorDiscoveringIpAddress(Throwable throwable) {
         Log.e(IpSetupActivity.class.getName(), "Could not load ip address", throwable);
-        displayIpAddress(ipAddress().build());
         Snackbars.error(content, R.string.operation_failed).show();
     }
 

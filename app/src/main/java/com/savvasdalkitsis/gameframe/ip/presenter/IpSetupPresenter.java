@@ -47,7 +47,10 @@ public class IpSetupPresenter {
         subscriptions.add(gameFrameUseCase.discoverGameFrameIp()
                 .compose(RxTransformers.schedulers())
                 .doOnCompleted(() -> ipSetupView.displayIdleView())
-                .subscribe(ipSetupView::ipAddressDiscovered, ipSetupView::errorDiscoveringIpAddress));
+                .subscribe(ipSetupView::ipAddressDiscovered, (throwable) -> {
+                    ipSetupView.errorDiscoveringIpAddress(throwable);
+                    loadStoredIp();
+                }));
     }
 
     public void cancelDiscover() {
