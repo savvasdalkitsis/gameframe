@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
 import com.savvasdalkitsis.gameframe.infra.view.BaseActivity;
+import com.savvasdalkitsis.gameframe.infra.view.ProgressFloatingActionButton;
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars;
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress;
 import com.savvasdalkitsis.gameframe.ip.presenter.IpSetupPresenter;
@@ -19,7 +20,6 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 import static com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.ipSetupPresenter;
-import static com.savvasdalkitsis.gameframe.ip.model.IpAddress.Builder.ipAddress;
 
 @BindLayout(R.layout.activity_ip_setup)
 public class IpSetupActivity extends BaseActivity implements IpSetupView {
@@ -36,10 +36,14 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
     View discover;
     @Bind(R.id.view_discover_title)
     View discoverTitle;
+    @Bind(R.id.view_setup_fab_container)
+    ProgressFloatingActionButton fabContainer;
     @Bind(R.id.view_setup)
     View fab;
     @Bind(R.id.view_cancel_discover)
     View cancelDiscover;
+    @Bind(R.id.view_fab_progress)
+    View fabProgress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -119,6 +123,8 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
                 .start();
 
         showFab(fab, false);
+        scale(fabProgress, 1);
+        fabContainer.setActiveFab(1);
         showFab(cancelDiscover, true);
     }
 
@@ -141,8 +147,10 @@ public class IpSetupActivity extends BaseActivity implements IpSetupView {
         animate(ipTextView)
                 .translationY(0)
                 .start();
-        showFab(fab, true);
+        fabContainer.setActiveFab(0);
         showFab(cancelDiscover, false);
+        scale(fabProgress, 0);
+        showFab(fab, true);
     }
 
     private void scale(View view, float value) {

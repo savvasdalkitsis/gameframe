@@ -52,7 +52,6 @@ dependencies {
             'com.github.andrewlord1990:snackbarbuilder:0.7.0',
             'uk.co.chrisjenx:calligraphy:2.2.0',
             'com.android.support.constraint:constraint-layout:1.0.0-beta4',
-            'com.dmitrymalkovich.android:progress-fab:1.6',
     )
     provided 'org.projectlombok:lombok:1.12.6'
     testCompile 'junit:junit:4.12'
