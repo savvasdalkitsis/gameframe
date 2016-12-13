@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.text.format.Formatter;
 import android.util.Log;
 
+import com.savvasdalkitsis.gameframe.gameframe.api.CommandResponse;
 import com.savvasdalkitsis.gameframe.gameframe.api.GameFrameApi;
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress;
 import com.savvasdalkitsis.gameframe.ip.model.IpNotFoundException;
@@ -15,10 +16,12 @@ import com.savvasdalkitsis.gameframe.model.CycleInterval;
 import com.savvasdalkitsis.gameframe.model.DisplayMode;
 import com.savvasdalkitsis.gameframe.model.PlaybackMode;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -44,15 +47,15 @@ public class GameFrameUseCase {
     }
 
     public Observable<Void> togglePower() {
-        return gameFrameApi.command(param("power"));
+        return gameFrameApi.command(param("power")).compose(mapResponse());
     }
 
     public Observable<Void> menu() {
-        return gameFrameApi.command(param("menu"));
+        return gameFrameApi.command(param("menu")).compose(mapResponse());
     }
 
     public Observable<Void> next() {
-        return gameFrameApi.command(param("next"));
+        return gameFrameApi.command(param("next")).compose(mapResponse());
     }
 
     public Observable<Void> setBrightness(Brightness brightness) {
@@ -73,6 +76,29 @@ public class GameFrameUseCase {
 
     public Observable<Void> setClockFace(ClockFace clockFace) {
         return gameFrameApi.set(param(clockFace.getQueryParamName()));
+    }
+
+    public Observable<CreateFolderResponse> createFolder(String name) {
+        return gameFrameApi.command(singletonMap("mkdir", name))
+                .flatMap(response -> {
+                    if (isSuccess(response)) {
+                        return Observable.just(CreateFolderResponse.SUCCESS);
+                    } else if (response.getMessage().contains("exists")) {
+                        return Observable.just(CreateFolderResponse.ALREADY_EXISTS);
+                    } else {
+                        return Observable.error(wrap(response));
+                    }
+                });
+    }
+
+    public Observable<Void> removeFolder(String name) {
+        return gameFrameApi.command(singletonMap("rmdir", name)).compose(mapResponse());
+    }
+
+    public Observable<Void> uploadFile(File file) {
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/bmp"), file);
+        MultipartBody.Part filePart = MultipartBody.Part.createFormData("my_file[]", "0.bmp", requestFile);
+        return gameFrameApi.upload(filePart).compose(mapResponse());
     }
 
     public Observable<IpAddress> discoverGameFrameIp() {
@@ -120,5 +146,24 @@ public class GameFrameUseCase {
     @NonNull
     private Map<String, String> param(String name) {
         return singletonMap(name, "");
+    }
+
+    private Observable.Transformer<CommandResponse, Void> mapResponse() {
+        return o -> o
+                .flatMap(response -> {
+                    if (isSuccess(response)) {
+                        return Observable.just(null);
+                    } else {
+                        return Observable.error(wrap(response));
+                    }
+                });
+    }
+
+    private GameFrameCommandError wrap(CommandResponse response) {
+        return new GameFrameCommandError("Command was not successful. response: " + response);
+    }
+
+    private boolean isSuccess(CommandResponse response) {
+        return "status".equals(response.getStatus());
     }
 }
