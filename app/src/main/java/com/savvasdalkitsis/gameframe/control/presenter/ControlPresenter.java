@@ -8,7 +8,7 @@ import com.savvasdalkitsis.gameframe.model.CycleInterval;
 import com.savvasdalkitsis.gameframe.model.DisplayMode;
 import com.savvasdalkitsis.gameframe.model.PlaybackMode;
 import com.savvasdalkitsis.gameframe.rx.RxTransformers;
-import com.savvasdalkitsis.gameframe.usecase.GameFrameUseCase;
+import com.savvasdalkitsis.gameframe.gameframe.usecase.GameFrameUseCase;
 
 import rx.Observable;
 

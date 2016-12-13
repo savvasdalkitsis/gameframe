@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.usecase;
+package com.savvasdalkitsis.gameframe.gameframe.usecase;
 
 import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;

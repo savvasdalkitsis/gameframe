@@ -4,7 +4,8 @@ import android.support.annotation.ColorInt;
 
 public class ColorGrid {
 
-    private final int[][] colors = new int[16][16];
+    public static final int SIDE = 16;
+    private final int[][] colors = new int[SIDE][SIDE];
 
     public void setColor(@ColorInt int color, int column, int row) {
         checkValue(column, "Column");
@@ -13,8 +14,8 @@ public class ColorGrid {
     }
 
     public void fill(int color) {
-        for (int i = 1; i <= 16; i++) {
-            for (int j = 1; j <= 16; j++) {
+        for (int i = 1; i <= SIDE; i++) {
+            for (int j = 1; j <= SIDE; j++) {
                 setColor(color, i, j);
             }
         }
@@ -28,7 +29,7 @@ public class ColorGrid {
     }
 
     private void checkValue(int value, final String valueName) {
-        if (value < 1 || value > 16) {
+        if (value < 1 || value > SIDE) {
             throw new IllegalArgumentException(valueName + " value should be between 1 and 16");
         }
     }

@@ -6,7 +6,7 @@ import com.savvasdalkitsis.gameframe.control.view.PowerTileService;
 import com.savvasdalkitsis.gameframe.infra.navigation.Navigator;
 import com.savvasdalkitsis.gameframe.ip.repository.IpRepository;
 import com.savvasdalkitsis.gameframe.rx.RxTransformers;
-import com.savvasdalkitsis.gameframe.usecase.GameFrameUseCase;
+import com.savvasdalkitsis.gameframe.gameframe.usecase.GameFrameUseCase;
 import com.savvasdalkitsis.gameframe.widget.view.WidgetView;
 
 import rx.Observable;

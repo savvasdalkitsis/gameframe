@@ -5,7 +5,7 @@ import com.savvasdalkitsis.gameframe.ip.repository.IpRepository;
 import com.savvasdalkitsis.gameframe.ip.usecase.IpDiscoveryUseCase;
 import com.savvasdalkitsis.gameframe.ip.view.IpSetupView;
 import com.savvasdalkitsis.gameframe.rx.RxTransformers;
-import com.savvasdalkitsis.gameframe.usecase.GameFrameUseCase;
+import com.savvasdalkitsis.gameframe.gameframe.usecase.GameFrameUseCase;
 
 import rx.subscriptions.CompositeSubscription;
 
