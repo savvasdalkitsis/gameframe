@@ -27,5 +27,5 @@ public interface GameFrameApi {
     @Multipart
     @POST("upload")
     @Headers("Connection: close")
-    Observable<CommandResponse> upload(@Part("my_file[]") MultipartBody.Part file);
+    Observable<CommandResponse> upload(@Part MultipartBody.Part file);
 }

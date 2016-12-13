@@ -101,6 +101,10 @@ public class GameFrameUseCase {
         return gameFrameApi.upload(filePart).compose(mapResponse());
     }
 
+    public Observable<Void> play(String name) {
+        return gameFrameApi.command(singletonMap("play", name)).compose(mapResponse());
+    }
+
     public Observable<IpAddress> discoverGameFrameIp() {
         return Observable.defer(this::getDeviceIp)
                 .flatMap(wholePart4Subrange())
@@ -164,6 +168,6 @@ public class GameFrameUseCase {
     }
 
     private boolean isSuccess(CommandResponse response) {
-        return "status".equals(response.getStatus());
+        return "success".equals(response.getStatus());
     }
 }
