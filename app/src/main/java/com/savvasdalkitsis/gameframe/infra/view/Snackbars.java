@@ -1,5 +1,6 @@
 package com.savvasdalkitsis.gameframe.infra.view;
 
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -9,7 +10,7 @@ import com.savvasdalkitsis.gameframe.R;
 
 public class Snackbars {
 
-    public static Snackbar success(View view, int message) {
+    public static Snackbar success(View view, @StringRes int message) {
         return new SnackbarBuilder(view)
                 .message(message)
                 .duration(Snackbar.LENGTH_LONG)
@@ -17,7 +18,7 @@ public class Snackbars {
                 .build();
     }
 
-    public static Snackbar error(View view, int message) {
+    public static Snackbar error(View view, @StringRes int message) {
         return new SnackbarBuilder(view)
                 .message(message)
                 .duration(Snackbar.LENGTH_LONG)
@@ -25,15 +26,14 @@ public class Snackbars {
                 .build();
     }
 
-    public static Snackbar progress(View view, int message) {
-        Snackbar snackbar = new SnackbarBuilder(view)
-                .actionText(message)
-                .duration(3000)
-                .actionTextColorRes(android.R.color.white)
-                .backgroundColorRes(R.color.progress)
+    public static Snackbar actionError(View view, @StringRes int message, @StringRes int actionText, View.OnClickListener actionClick) {
+        return new SnackbarBuilder(view)
+                .message(message)
+                .actionText(actionText)
+                .actionClickListener(actionClick)
+                .duration(Snackbar.LENGTH_LONG)
+                .backgroundColorRes(R.color.error)
                 .build();
-        Snackbar.SnackbarLayout layout = (Snackbar.SnackbarLayout) snackbar.getView();
-        layout.addView(new ProgressBar(view.getContext()));
-        return snackbar;
+
     }
 }

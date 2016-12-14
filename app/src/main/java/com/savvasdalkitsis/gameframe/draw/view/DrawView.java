@@ -1,5 +1,7 @@
 package com.savvasdalkitsis.gameframe.draw.view;
 
+import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
+
 import rx.functions.Action1;
 
 public interface DrawView {
@@ -12,7 +14,7 @@ public interface DrawView {
 
     void displayUploading();
 
-    void savedDrawingAlreadyExists(Throwable e);
+    void drawingAlreadyExists(String name, ColorGrid colorGrid, Throwable e);
 
-    void alreadyExistsOnGameFrame(Throwable e);
+    void failedToDelete(Throwable e);
 }

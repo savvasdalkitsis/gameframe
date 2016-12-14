@@ -1,11 +1,14 @@
 package com.savvasdalkitsis.gameframe.saves.usecase;
 
+import android.support.annotation.NonNull;
 import android.support.v4.util.Pair;
 
 import com.savvasdalkitsis.gameframe.GameFrameApplication;
 import com.savvasdalkitsis.gameframe.bmp.usecase.BmpUseCase;
 import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
 import com.savvasdalkitsis.gameframe.saves.model.SavedDrawingAlreadyExistsException;
+
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,7 +27,7 @@ public class SavedDrawingUseCase {
     }
 
     public Observable<File> saveDrawing(String name, ColorGrid colorGrid) {
-        return Observable.just(new File(application.getExternalFilesDir(null), name))
+        return file(name)
                 .flatMap(dir -> {
                     if (dir.exists()) {
                         return Observable.error(new SavedDrawingAlreadyExistsException("The directory '" + name + "' already exists"));
@@ -47,4 +50,23 @@ public class SavedDrawingUseCase {
                 });
     }
 
+    public Observable<Void> deleteDrawing(String name) {
+        return file(name)
+                .flatMap(dir -> {
+                    if (!dir.exists()) {
+                        return Observable.just(null);
+                    }
+                    try {
+                        FileUtils.deleteDirectory(dir);
+                        return Observable.just(null);
+                    } catch (IOException e) {
+                        return Observable.error(e);
+                    }
+                });
+    }
+
+    @NonNull
+    private Observable<File> file(String name) {
+        return Observable.just(new File(application.getExternalFilesDir(null), name));
+    }
 }

@@ -24,4 +24,6 @@
     <string name="upload">Upload</string>
     <string name="enter_name_for_drawing">Enter name for the drawing</string>
     <string name="name_of_drawing">Name of drawing</string>
+    <string name="replace">Replace</string>
+    <string name="already_exists">Drawing already exists.</string>
 </resources>

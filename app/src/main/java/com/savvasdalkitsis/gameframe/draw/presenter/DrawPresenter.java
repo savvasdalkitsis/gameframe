@@ -13,6 +13,7 @@ public class DrawPresenter {
     private final GameFrameUseCase gameFrameUseCase;
     private final SavedDrawingUseCase savedDrawingUseCase;
     private DrawView view;
+    private boolean uploading;
 
     public DrawPresenter(GameFrameUseCase gameFrameUseCase, SavedDrawingUseCase savedDrawingUseCase) {
         this.gameFrameUseCase = gameFrameUseCase;
@@ -24,22 +25,35 @@ public class DrawPresenter {
     }
 
     public void upload(ColorGrid colorGrid) {
-        view.askForFileName(name -> {
-            view.displayUploading();
-            savedDrawingUseCase.saveDrawing(name, colorGrid)
-                    .flatMap(file -> gameFrameUseCase.createFolder(name).map(n -> file))
-                    .flatMap(gameFrameUseCase::uploadFile)
-                    .flatMap(n -> gameFrameUseCase.play(name))
-                    .compose(RxTransformers.schedulers())
-                    .subscribe(n -> view.fileUploaded(), (e) -> {
-                        if (e instanceof SavedDrawingAlreadyExistsException) {
-                            view.savedDrawingAlreadyExists(e);
-                        } else if (e instanceof AlreadyExistsOnGameFrameException) {
-                            view.alreadyExistsOnGameFrame(e);
-                        } else {
-                            view.failedToUpload(e);
-                        }
-                    });
-        });
+        if (!uploading) {
+            view.askForFileName(name -> upload(name, colorGrid));
+        }
+    }
+
+    public void replaceDrawing(String name, ColorGrid colorGrid) {
+        view.displayUploading();
+        savedDrawingUseCase.deleteDrawing(name)
+                .flatMap(n -> gameFrameUseCase.removeFolder(name))
+                .compose(RxTransformers.schedulers())
+                .subscribe(n -> upload(name, colorGrid), view::failedToDelete);
+    }
+
+    private void upload(String name, ColorGrid colorGrid) {
+        view.displayUploading();
+        uploading = true;
+        savedDrawingUseCase.saveDrawing(name, colorGrid)
+                .flatMap(file -> gameFrameUseCase.createFolder(name).map(n -> file))
+                .flatMap(gameFrameUseCase::uploadFile)
+                .flatMap(n -> gameFrameUseCase.play(name))
+                .compose(RxTransformers.schedulers())
+                .doOnTerminate(() -> uploading = false)
+                .subscribe(n -> view.fileUploaded(), (e) -> {
+                    if (e instanceof SavedDrawingAlreadyExistsException
+                            || e instanceof AlreadyExistsOnGameFrameException) {
+                        view.drawingAlreadyExists(name, colorGrid, e);
+                    } else {
+                        view.failedToUpload(e);
+                    }
+                });
     }
 }

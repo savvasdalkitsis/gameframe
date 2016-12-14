@@ -156,7 +156,7 @@ public class GameFrameUseCase {
     private Observable.Transformer<CommandResponse, Void> mapResponse() {
         return o -> o
                 .flatMap(response -> {
-                    if (isSuccess(response)) {
+                    if (response == null || isSuccess(response)) {
                         return Observable.just(null);
                     } else {
                         return Observable.error(wrap(response));

@@ -137,6 +137,7 @@ public class ControlFragment extends AspectSupportFragment implements ControlVie
 
     @Override
     public void operationFailure(Throwable e) {
+        Log.e(ControlFragment.class.getName(), "Operation failure", e);
         Snackbars.error(getActivity().findViewById(R.id.view_coordinator), R.string.operation_failed).show();
     }
 

@@ -51,7 +51,7 @@ public class ProgressFloatingActionButton extends FrameLayout {
         super.onLayout(changed, left, top, right, bottom);
 
         if (getChildCount() == 0 || getChildCount() > 3) {
-            throw new IllegalStateException("Specify only 3 views.");
+            throw new IllegalStateException("Specify only 2 or 3 views.");
         }
 
         if (getLayoutParams() instanceof CoordinatorLayout.LayoutParams) {
@@ -61,12 +61,15 @@ public class ProgressFloatingActionButton extends FrameLayout {
         }
 
         firstFab = (FloatingActionButton) getChildAt(0);
-        secondFab = (FloatingActionButton) getChildAt(1);
-        mProgressBar = (ProgressBar) getChildAt(2);
+        int progressIndex = 1;
+        if (getChildCount() == 3) {
+            progressIndex = 2;
+            secondFab = (FloatingActionButton) getChildAt(1);
+        }
+        mProgressBar = (ProgressBar) getChildAt(progressIndex);
         mFab = firstFab;
 
         LayoutParams mFabParams1 = ((LayoutParams) firstFab.getLayoutParams());
-        LayoutParams mFabParams2 = ((LayoutParams) secondFab.getLayoutParams());
         LayoutParams mProgressParams = ((LayoutParams) mProgressBar.getLayoutParams());
 
         int additionSize = getResources().getDimensionPixelSize(R.dimen.progress_bar_size);
@@ -74,8 +77,11 @@ public class ProgressFloatingActionButton extends FrameLayout {
         mProgressBar.getLayoutParams().width = mFab.getWidth() + additionSize;
 
         mFabParams1.gravity = Gravity.CENTER;
-        mFabParams2.gravity = Gravity.CENTER;
         mProgressParams.gravity = Gravity.CENTER;
+        if (secondFab != null) {
+            LayoutParams mFabParams2 = ((LayoutParams) secondFab.getLayoutParams());
+            mFabParams2.gravity = Gravity.CENTER;
+        }
     }
 
     public void setActiveFab(int index) {
@@ -93,7 +99,6 @@ public class ProgressFloatingActionButton extends FrameLayout {
 
         if (mFab != null && mProgressBar != null) {
             LayoutParams mFabParams1 = ((LayoutParams) firstFab.getLayoutParams());
-            LayoutParams mFabParams2 = ((LayoutParams) secondFab.getLayoutParams());
             LayoutParams mProgressParams = ((LayoutParams) mProgressBar.getLayoutParams());
 
             int additionSize = getResources().getDimensionPixelSize(R.dimen.progress_bar_size);
@@ -101,8 +106,11 @@ public class ProgressFloatingActionButton extends FrameLayout {
             mProgressBar.getLayoutParams().width = mFab.getWidth() + additionSize;
 
             mFabParams1.gravity = Gravity.CENTER;
-            mFabParams2.gravity = Gravity.CENTER;
             mProgressParams.gravity = Gravity.CENTER;
+            if (secondFab != null) {
+                LayoutParams mFabParams2 = ((LayoutParams) secondFab.getLayoutParams());
+                mFabParams2.gravity = Gravity.CENTER;
+            }
         }
     }
 

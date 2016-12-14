@@ -3,10 +3,12 @@ package com.savvasdalkitsis.gameframe.draw.view;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.github.andrewlord1990.snackbarbuilder.SnackbarBuilder;
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
 import com.savvasdalkitsis.gameframe.draw.model.DrawingMode;
@@ -39,6 +41,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     View fill;
     private DrawingMode drawingMode;
     private int color;
+    private View fabProgress;
     private final DrawPresenter presenter = drawPresenter();
 
     @Override
@@ -51,6 +54,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         fab = (FloatingActionButton) getActivity().findViewById(R.id.view_fab);
+        fabProgress = getActivity().findViewById(R.id.view_fab_progress);
     }
 
     @Override
@@ -114,30 +118,37 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     @Override
     public void fileUploaded() {
         Snackbars.success(coordinator(), R.string.success).show();
+        scaleProgress(0);
     }
 
     @Override
     public void failedToUpload(Throwable e) {
         Log.e(DrawPresenter.class.getName(), "Error uploading to game frame", e);
         Snackbars.error(coordinator(), R.string.operation_failed).show();
+        scaleProgress(0);
     }
 
     @Override
     public void displayUploading() {
-        // TODO implement progress fab
-        Snackbars.progress(coordinator(), R.string.upload).show();
+        scaleProgress(1);
     }
 
     @Override
-    public void savedDrawingAlreadyExists(Throwable e) {
-        // TODO implement ui asking user to replace save
-        failedToUpload(e);
+    public void drawingAlreadyExists(String name, ColorGrid colorGrid, Throwable e) {
+        Log.e(DrawPresenter.class.getName(), "Drawing already exists", e);
+        Snackbars.actionError(coordinator(), R.string.already_exists, R.string.replace,
+                view -> presenter.replaceDrawing(name, colorGrid)).show();
+        scaleProgress(0);
     }
 
     @Override
-    public void alreadyExistsOnGameFrame(Throwable e) {
-        // TODO ask user to replace drawing on game frame
-        failedToUpload(e);
+    public void failedToDelete(Throwable e) {
+        Log.e(DrawPresenter.class.getName(), "Failed to delete drawing", e);
+        Snackbars.error(coordinator(), R.string.operation_failed).show();
+    }
+
+    private void scaleProgress(int value) {
+        fabProgress.animate().scaleX(value).scaleY(value).start();
     }
 
     private View coordinator() {

@@ -54,6 +54,7 @@ dependencies {
             'uk.co.chrisjenx:calligraphy:2.2.0',
             'com.android.support.constraint:constraint-layout:1.0.0-beta4',
             'com.afollestad.material-dialogs:core:0.9.1.0',
+            'commons-io:commons-io:2.5',
     )
     provided 'org.projectlombok:lombok:1.12.6'
     testCompile 'junit:junit:4.12'
