@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.savvasdalkitsis.gameframe.gameframe.api.CommandResponse;
 import com.savvasdalkitsis.gameframe.gameframe.api.GameFrameApi;
+import com.savvasdalkitsis.gameframe.gameframe.model.AlreadyExistsOnGameFrameException;
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress;
 import com.savvasdalkitsis.gameframe.ip.model.IpNotFoundException;
 import com.savvasdalkitsis.gameframe.ip.usecase.IpDiscoveryUseCase;
@@ -78,13 +79,13 @@ public class GameFrameUseCase {
         return gameFrameApi.set(param(clockFace.getQueryParamName()));
     }
 
-    public Observable<CreateFolderResponse> createFolder(String name) {
+    public Observable<Void> createFolder(String name) {
         return gameFrameApi.command(singletonMap("mkdir", name))
                 .flatMap(response -> {
                     if (isSuccess(response)) {
-                        return Observable.just(CreateFolderResponse.SUCCESS);
+                        return Observable.just(null);
                     } else if (response.getMessage().contains("exists")) {
-                        return Observable.just(CreateFolderResponse.ALREADY_EXISTS);
+                        return Observable.error(new AlreadyExistsOnGameFrameException("Could not create folder on game frame with name '" + name + "' as it already exists"));
                     } else {
                         return Observable.error(wrap(response));
                     }

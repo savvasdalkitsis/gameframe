@@ -20,6 +20,8 @@
     <string name="game_frame_ip_not_found">Game Frame IP not found.\nSet it up now?</string>
     <string name="manage">Manage</string>
     <string name="draw">Draw</string>
-    <string name="sending">Sending to GameFrame</string>
     <string name="error_communicating">There was an error communicating with the GameFrame</string>
+    <string name="upload">Upload</string>
+    <string name="enter_name_for_drawing">Enter name for the drawing</string>
+    <string name="name_of_drawing">Name of drawing</string>
 </resources>
