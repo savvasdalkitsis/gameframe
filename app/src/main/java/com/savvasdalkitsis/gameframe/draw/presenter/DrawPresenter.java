@@ -32,9 +32,11 @@ public class DrawPresenter {
 
     public void replaceDrawing(String name, ColorGrid colorGrid) {
         view.displayUploading();
+        uploading = true;
         savedDrawingUseCase.deleteDrawing(name)
                 .flatMap(n -> gameFrameUseCase.removeFolder(name))
                 .compose(RxTransformers.schedulers())
+                .doOnTerminate(() -> uploading = false)
                 .subscribe(n -> upload(name, colorGrid), view::failedToDelete);
     }
 
