@@ -1,22 +1,24 @@
 package com.savvasdalkitsis.gameframe.draw.view;
 
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.andrewlord1990.snackbarbuilder.SnackbarBuilder;
+import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
 import com.savvasdalkitsis.gameframe.draw.model.DrawingMode;
 import com.savvasdalkitsis.gameframe.draw.presenter.DrawPresenter;
-import com.savvasdalkitsis.gameframe.grid.view.GridTouchedListener;
-import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener;
 import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
+import com.savvasdalkitsis.gameframe.grid.view.GridTouchedListener;
 import com.savvasdalkitsis.gameframe.grid.view.LedGridView;
+import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener;
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars;
 import com.shazam.android.aspects.base.fragment.AspectSupportFragment;
 
@@ -28,7 +30,7 @@ import static com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 
 @BindLayout(R.layout.fragment_draw)
 public class DrawFragment extends AspectSupportFragment implements FragmentSelectedListener,
-        SwatchSelectedListener, GridTouchedListener, DrawView {
+        SwatchSelectedListener, GridTouchedListener, DrawView, ColorChooserDialog.ColorCallback {
 
     @Bind(R.id.view_draw_led_grid_view)
     public LedGridView ledGridView;
@@ -43,6 +45,8 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     private int color;
     private View fabProgress;
     private final DrawPresenter presenter = drawPresenter();
+    @Nullable
+    private SwatchView swatchToModify;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +91,21 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     @Override
     public void onSwatchSelected(int color) {
         this.color = color;
+    }
+
+    @Override
+    public void onSwatchLongPressed(SwatchView swatch) {
+        swatchToModify = swatch;
+        new ColorChooserDialog.Builder((AppCompatActivity & ColorChooserDialog.ColorCallback) getContext(), R.string.change_color)
+                .allowUserColorInputAlpha(false)
+                .show();
+    }
+
+    @Override
+    public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
+        if (swatchToModify != null) {
+            swatchToModify.bind(selectedColor);
+        }
     }
 
     @Override

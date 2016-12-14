@@ -26,4 +26,5 @@
     <string name="name_of_drawing">Name of drawing</string>
     <string name="replace">Replace</string>
     <string name="already_exists">Drawing already exists.</string>
+    <string name="change_color">Change color</string>
 </resources>

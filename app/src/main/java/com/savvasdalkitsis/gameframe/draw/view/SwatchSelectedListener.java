@@ -4,5 +4,15 @@ interface SwatchSelectedListener {
 
     void onSwatchSelected(int color);
 
-    SwatchSelectedListener NO_OP = color -> {};
+    void onSwatchLongPressed(SwatchView swatch);
+
+    SwatchSelectedListener NO_OP = new SwatchSelectedListener() {
+        @Override
+        public void onSwatchSelected(int color) {
+        }
+
+        @Override
+        public void onSwatchLongPressed(SwatchView swatch) {
+        }
+    };
 }

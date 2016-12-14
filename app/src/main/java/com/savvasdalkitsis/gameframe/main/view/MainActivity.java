@@ -1,6 +1,8 @@
 package com.savvasdalkitsis.gameframe.main.view;
 
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ViewSwitcher;
 
+import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
 import com.savvasdalkitsis.gameframe.infra.navigation.Navigator;
@@ -23,7 +26,7 @@ import com.savvasdalkitsis.gameframe.main.presenter.MainPresenter;
 import butterknife.Bind;
 
 @BindLayout(R.layout.activity_main)
-public class MainActivity extends BaseActivity implements MainView {
+public class MainActivity extends BaseActivity implements MainView, ColorChooserDialog.ColorCallback {
 
     private final MainPresenter presenter = PresenterInjector.mainPresenter();
     private final Navigator navigator = NavigatorInjector.navigator();
@@ -65,7 +68,7 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_setup_ip :
+            case R.id.action_setup_ip:
                 navigator.navigateToIpSetup();
                 return true;
             case R.id.action_manage:
@@ -93,5 +96,10 @@ public class MainActivity extends BaseActivity implements MainView {
     @Override
     public void ipCouldNotBeFound(Throwable throwable) {
         fab.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
+        ((ColorChooserDialog.ColorCallback) getSupportFragmentManager().findFragmentById(R.id.fragment_draw)).onColorSelection(dialog, selectedColor);
     }
 }

@@ -34,6 +34,11 @@ public class PaletteView extends GridLayout {
         swatches = new SwatchView[SWATCH_COUNT];
         for (int i = 0; i < SWATCH_COUNT; i++) {
             swatches[i] = (SwatchView) getChildAt(i);
+            SwatchView swatch = swatches[i];
+            swatch.setOnLongClickListener(view -> {
+                swatchSelectedListener.onSwatchLongPressed(swatch);
+                return true;
+            });
         }
     }
 
