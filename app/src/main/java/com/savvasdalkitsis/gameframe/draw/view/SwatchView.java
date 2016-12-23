@@ -1,18 +1,15 @@
 package com.savvasdalkitsis.gameframe.draw.view;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.os.Build;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.View;
 
-import com.savvasdalkitsis.gameframe.R;
+import com.afollestad.materialdialogs.color.CircleView;
 
-public class SwatchView extends View {
+public class SwatchView extends CircleView {
 
     private int color;
     private PaletteView paletteView;
-    private float elevation;
 
     public SwatchView(Context context) {
         super(context);
@@ -29,11 +26,14 @@ public class SwatchView extends View {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        elevation = getResources().getDimension(R.dimen.swatch_elevation);
         setOnClickListener(view -> {
             paletteView.deselectAllSwatches();
-            elevate(elevation);
+            setSelected(true);
             paletteView.notifyListenerOfSwatchSelected(this);
+        });
+        setOnLongClickListener(view -> {
+            paletteView.notifyListenerOfSwatchLongClicked(this);
+            return true;
         });
     }
 
@@ -43,8 +43,10 @@ public class SwatchView extends View {
         paletteView = (PaletteView) getParent();
     }
 
-    public void deselect() {
-        elevate(0);
+    @SuppressWarnings("deprecation")
+    @Override
+    public void setBackground(Drawable background) {
+        // needed to avoid parent illegal argument exception when inflating from xml
     }
 
     @Override
@@ -60,11 +62,5 @@ public class SwatchView extends View {
 
     public int getColor() {
         return color;
-    }
-
-    private void elevate(float elevation) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ObjectAnimator.ofFloat(this, "elevation", elevation).start();
-        }
     }
 }
