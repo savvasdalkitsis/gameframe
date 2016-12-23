@@ -10,11 +10,10 @@ import android.util.Log;
 import android.view.View;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.color.CircleView;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
-import com.savvasdalkitsis.gameframe.draw.model.DrawingMode;
+import com.savvasdalkitsis.gameframe.draw.model.DrawingTool;
 import com.savvasdalkitsis.gameframe.draw.presenter.DrawPresenter;
 import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
 import com.savvasdalkitsis.gameframe.grid.view.GridTouchedListener;
@@ -31,7 +30,8 @@ import static com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 
 @BindLayout(R.layout.fragment_draw)
 public class DrawFragment extends AspectSupportFragment implements FragmentSelectedListener,
-        SwatchSelectedListener, GridTouchedListener, DrawView, ColorChooserDialog.ColorCallback {
+        SwatchSelectedListener, GridTouchedListener, DrawView, ColorChooserDialog.ColorCallback,
+        ToolSelectedListener {
 
     @Bind(R.id.view_draw_led_grid_view)
     public LedGridView ledGridView;
@@ -39,15 +39,15 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     public PaletteView paletteView;
     FloatingActionButton fab;
     @Bind(R.id.view_draw_pencil)
-    View pencil;
+    PencilToolView pencil;
     @Bind(R.id.view_draw_fill)
-    View fill;
-    private DrawingMode drawingMode;
-    private int color;
+    FillToolView fill;
     private View fabProgress;
     private final DrawPresenter presenter = drawPresenter();
     @Nullable
     private SwatchView swatchToModify;
+    private DrawingTool drawingTool;
+    private int color;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,16 +70,9 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
                 .colors(getResources().getIntArray(R.array.palette))
                 .build());
         paletteView.setOnSwatchSelectedListener(this);
-        fill.setOnClickListener(v -> {
-            fill.setAlpha(1);
-            pencil.setAlpha(0.2f);
-            drawingMode = DrawingMode.FILL;
-        });
-        pencil.setOnClickListener(v -> {
-            pencil.setAlpha(1);
-            fill.setAlpha(0.2f);
-            drawingMode = DrawingMode.PENCIL;
-        });
+        fill.setToolSelectedListener(this);
+        pencil.setToolSelectedListener(this);
+
         pencil.performClick();
     }
 
@@ -113,14 +106,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     public void onGridTouchedListener(int column, int row) {
         ColorGrid colorGrid = ledGridView.getColorGrid();
         ledGridView.display(colorGrid);
-        switch (drawingMode) {
-            case FILL:
-                colorGrid.fill(color);
-                break;
-            case PENCIL:
-                colorGrid.setColor(color, column, row);
-                break;
-        }
+        drawingTool.drawOn(colorGrid, column, row, color);
         ledGridView.invalidate();
     }
 
@@ -173,5 +159,12 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
 
     private View coordinator() {
         return getActivity().findViewById(R.id.view_coordinator);
+    }
+
+    @Override
+    public void onToolSelected(DrawingTool drawingTool) {
+        this.drawingTool = drawingTool;
+        fill.setAlpha(0.2f);
+        pencil.setAlpha(0.2f);
     }
 }
