@@ -2,6 +2,7 @@ package com.savvasdalkitsis.gameframe.draw.view;
 
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -22,7 +23,11 @@ import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener;
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars;
 import com.shazam.android.aspects.base.fragment.AspectSupportFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
+import rx.Observable;
 import rx.functions.Action1;
 
 import static com.savvasdalkitsis.gameframe.draw.model.Palette.Builder.palette;
@@ -38,16 +43,13 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     @Bind(R.id.view_draw_palette)
     public PaletteView paletteView;
     FloatingActionButton fab;
-    @Bind(R.id.view_draw_pencil)
-    PencilToolView pencil;
-    @Bind(R.id.view_draw_fill)
-    FillToolView fill;
     private View fabProgress;
     private final DrawPresenter presenter = drawPresenter();
     @Nullable
     private SwatchView swatchToModify;
     private DrawingTool drawingTool;
     private int color;
+    private final List<ToolView> toolsViews = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,10 +72,14 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
                 .colors(getResources().getIntArray(R.array.palette))
                 .build());
         paletteView.setOnSwatchSelectedListener(this);
-        fill.setToolSelectedListener(this);
-        pencil.setToolSelectedListener(this);
+        addTools(view,
+                R.id.view_draw_pencil,
+                R.id.view_draw_fill,
+                R.id.view_draw_clear
+        );
+        withAllTools(tool -> tool.setToolSelectedListener(this));
 
-        pencil.performClick();
+        toolsViews.get(0).performClick();
     }
 
     @Override
@@ -108,6 +114,12 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         ledGridView.display(colorGrid);
         drawingTool.drawOn(colorGrid, column, row, color);
         ledGridView.invalidate();
+    }
+
+    @Override
+    public void onToolSelected(DrawingTool drawingTool) {
+        this.drawingTool = drawingTool;
+        withAllTools(tool -> tool.setAlpha(0.2f));
     }
 
     @Override
@@ -161,10 +173,13 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         return getActivity().findViewById(R.id.view_coordinator);
     }
 
-    @Override
-    public void onToolSelected(DrawingTool drawingTool) {
-        this.drawingTool = drawingTool;
-        fill.setAlpha(0.2f);
-        pencil.setAlpha(0.2f);
+    private void withAllTools(Action1<ToolView> action) {
+        Observable.from(toolsViews).subscribe(action);
+    }
+
+    private void addTools(View view, @IdRes int... viewResIds) {
+        for (int viewResId : viewResIds) {
+            toolsViews.add((ToolView) view.findViewById(viewResId));
+        }
     }
 }

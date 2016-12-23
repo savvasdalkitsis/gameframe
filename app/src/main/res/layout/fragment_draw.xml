@@ -34,7 +34,6 @@
         <com.savvasdalkitsis.gameframe.draw.view.PencilToolView
             android:id="@+id/view_draw_pencil"
             style="?attr/actionButtonStyle"
-            android:src="@drawable/ic_create_black_48px"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:ignore="ContentDescription,RtlHardcoded" />
@@ -42,7 +41,13 @@
         <com.savvasdalkitsis.gameframe.draw.view.FillToolView
             android:id="@+id/view_draw_fill"
             style="?attr/actionButtonStyle"
-            android:src="@drawable/ic_format_color_fill_black_48px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <com.savvasdalkitsis.gameframe.draw.view.ClearToolView
+            android:id="@+id/view_draw_clear"
+            style="?attr/actionButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:ignore="ContentDescription,RtlHardcoded" />

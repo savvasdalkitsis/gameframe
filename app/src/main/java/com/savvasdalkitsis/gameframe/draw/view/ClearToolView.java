@@ -4,33 +4,33 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.savvasdalkitsis.gameframe.R;
+import com.savvasdalkitsis.gameframe.draw.model.ClearTool;
 import com.savvasdalkitsis.gameframe.draw.model.DrawingTool;
-import com.savvasdalkitsis.gameframe.draw.model.FillTool;
 
-public class FillToolView extends ToolView {
+public class ClearToolView extends ToolView {
 
-    private final FillTool fillTool = new FillTool();
+    private final ClearTool clearTool = new ClearTool();
 
-    public FillToolView(Context context) {
+    public ClearToolView(Context context) {
         super(context);
     }
 
-    public FillToolView(Context context, AttributeSet attrs) {
+    public ClearToolView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public FillToolView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ClearToolView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        setImageResource(R.drawable.ic_format_color_fill_black_48px);
+        setImageResource(R.drawable.ic_clear_all_black_48px);
     }
 
     @Override
     protected DrawingTool getDrawingTool() {
-        return fillTool;
+        return clearTool;
     }
 }
