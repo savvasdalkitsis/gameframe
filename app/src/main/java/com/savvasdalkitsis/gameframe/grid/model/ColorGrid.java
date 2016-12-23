@@ -33,4 +33,8 @@ public class ColorGrid {
             throw new IllegalArgumentException(valueName + " value should be between 1 and 16");
         }
     }
+
+    public boolean isOutOfBounds(int column, int row) {
+        return row < 1 || column < 1 || row > SIDE || column > SIDE;
+    }
 }
