@@ -24,6 +24,7 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
     private final Spinner porterDuffMode;
     private final View visibilityVisible;
     private final View visibilityInvisible;
+    private final View delete;
     private final SeekBar alpha;
     private final TextView title;
 
@@ -33,6 +34,7 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
         alpha = (SeekBar) itemView.findViewById(R.id.view_layer_alpha);
         visibilityVisible = itemView.findViewById(R.id.view_layer_visibility_visible);
         visibilityInvisible = itemView.findViewById(R.id.view_layer_visibility_invisible);
+        delete = itemView.findViewById(R.id.view_layer_delete);
         ledGridView = (LedGridView) itemView.findViewById(R.id.view_layer_thumbnail);
         ledGridView.setThumbnailMode();
         blendMode = (Spinner) itemView.findViewById(R.id.view_layer_blend_mode);
@@ -51,6 +53,7 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
     public void bind(Layer layer) {
         title.setText(layer.getTitle());
         ledGridView.display(layer.getColorGrid());
+        delete.setVisibility(View.VISIBLE);
         alpha.setVisibility(View.VISIBLE);
         blendMode.setVisibility(View.VISIBLE);
         blendMode.setSelection(AvailableBlendMode.indexOf(layer.getBlendMode()));
@@ -58,7 +61,7 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
         porterDuffMode.setVisibility(View.VISIBLE);
         visibilityVisible.setVisibility(layer.isVisible() ? View.VISIBLE : View.GONE);
         visibilityInvisible.setVisibility(layer.isVisible() ? View.GONE : View.VISIBLE);
-        hideControlsIfBackground(layer, alpha, visibilityInvisible, visibilityVisible, blendMode, porterDuffMode);
+        hideControlsIfBackground(layer, alpha, delete, visibilityInvisible, visibilityVisible, blendMode, porterDuffMode);
     }
 
     private void hideControlsIfBackground(Layer layer, View... views) {
@@ -75,6 +78,10 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
 
     void setOnClickListener(View.OnClickListener onClickListener) {
         itemView.setOnClickListener(onClickListener);
+    }
+
+    void setOnLayerDeletedListener(OnLayerDeletedListener onLayerDeletedListener) {
+        delete.setOnClickListener(v -> onLayerDeletedListener.onLayerDeleted());
     }
 
     void setOnLayerVisibilityChangedListener(OnLayerVisibilityChangedListener onLayerVisibilityChangedListener) {

@@ -74,4 +74,14 @@
         android:layout_height="wrap_content"
         tools:ignore="ContentDescription,RtlHardcoded" />
 
+    <ImageView
+        android:id="@+id/view_layer_delete"
+        style="?attr/actionButtonStyle"
+        android:src="@drawable/ic_delete_black_48px"
+        android:layout_alignBottom="@id/view_layer_thumbnail_container"
+        android:layout_toRightOf="@id/view_layer_thumbnail_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="ContentDescription,RtlHardcoded" />
+
 </RelativeLayout>

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.functions.Func1;
 import rx.subjects.BehaviorSubject;
 
 class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
@@ -33,14 +34,14 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
 
     @Override
     public void onBindViewHolder(LayerViewHolder holder, int position) {
-        Layer layer = layers.get(position);
         holder.setOnLayerBlendModeSelectedListener(blendMode ->
-                modifyLayer(position, Layer.from(layer).blendMode(blendMode).build()));
+                modifyLayer(holder, layer -> layer.blendMode(blendMode)));
         holder.setOnLayerPorterDuffOperatorSelectedListener(porterDuffOperator ->
-                modifyLayer(position, Layer.from(layer).porterDuffOperator(porterDuffOperator).build()));
+                modifyLayer(holder, layer -> layer.porterDuffOperator(porterDuffOperator)));
         holder.setOnLayerVisibilityChangedListener(visible ->
-                modifyLayer(position, Layer.from(layer).isVisible(visible).build()));
-        holder.bind(layer);
+                modifyLayer(holder, layer -> layer.isVisible(visible)));
+        holder.setOnLayerDeletedListener(() -> removeLayer(holder));
+        holder.bind(layers.get(position));
         holder.setSelected(selectedPosition == position);
     }
 
@@ -53,8 +54,10 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
         return layers;
     }
 
-    private void modifyLayer(int position, Layer layer) {
-        layers.set(position, layer);
+    private void modifyLayer(LayerViewHolder holder, Func1<Layer.LayerBuilder, Layer.LayerBuilder> layerBuilder) {
+        int position = holder.getAdapterPosition();
+        Layer layer = layers.get(position);
+        layers.set(position, layerBuilder.call(Layer.from(layer)).build());
         notifyItemChanged(position);
         notifyObservers();
     }
@@ -63,6 +66,16 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
         notifyItemChanged(selectedPosition);
         selectedPosition = position;
         notifyItemChanged(selectedPosition);
+    }
+
+    private void removeLayer(LayerViewHolder holder) {
+        int position = holder.getAdapterPosition();
+        if (selectedPosition >= position) {
+            selectedPosition--;
+        }
+        layers.remove(position);
+        notifyItemRemoved(position);
+        notifyObservers();
     }
 
     Layer getSelectedLayer() {
