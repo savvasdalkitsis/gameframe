@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.savvasdalkitsis.gameframe.R;
 import com.savvasdalkitsis.gameframe.composition.model.AvailableBlendMode;
@@ -22,9 +24,13 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
     private final Spinner porterDuffMode;
     private final View visibilityVisible;
     private final View visibilityInvisible;
+    private final SeekBar alpha;
+    private final TextView title;
 
     LayerViewHolder(ViewGroup parent) {
         super(LayoutInflater.from(parent.getContext()).inflate(R.layout.view_layer_view, parent, false));
+        title = (TextView) itemView.findViewById(R.id.view_layer_title);
+        alpha = (SeekBar) itemView.findViewById(R.id.view_layer_alpha);
         visibilityVisible = itemView.findViewById(R.id.view_layer_visibility_visible);
         visibilityInvisible = itemView.findViewById(R.id.view_layer_visibility_invisible);
         ledGridView = (LedGridView) itemView.findViewById(R.id.view_layer_thumbnail);
@@ -43,11 +49,24 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Layer layer) {
+        title.setText(layer.getTitle());
         ledGridView.display(layer.getColorGrid());
+        alpha.setVisibility(View.VISIBLE);
+        blendMode.setVisibility(View.VISIBLE);
         blendMode.setSelection(AvailableBlendMode.indexOf(layer.getBlendMode()));
         porterDuffMode.setSelection(AvailablePorterDuffOperator.indexOf(layer.getPorterDuffOperator()));
+        porterDuffMode.setVisibility(View.VISIBLE);
         visibilityVisible.setVisibility(layer.isVisible() ? View.VISIBLE : View.GONE);
         visibilityInvisible.setVisibility(layer.isVisible() ? View.GONE : View.VISIBLE);
+        hideControlsIfBackground(layer, alpha, visibilityInvisible, visibilityVisible, blendMode, porterDuffMode);
+    }
+
+    private void hideControlsIfBackground(Layer layer, View... views) {
+        if (layer.isBackground()) {
+            for (View view : views) {
+                view.setVisibility(View.GONE);
+            }
+        }
     }
 
     void setSelected(boolean selected) {

@@ -20,6 +20,7 @@ public class Layer {
     private ColorGrid colorGrid;
     private boolean isBackground;
     private boolean isVisible;
+    private String title;
 
     public void renderOn(LedGridView ledGridView) {
         if (!isVisible) {
@@ -35,6 +36,7 @@ public class Layer {
 
     public static Layer.LayerBuilder create() {
         return builder()
+                .title("")
                 .blendMode(AvailableBlendMode.defaultMode())
                 .porterDuffOperator(AvailablePorterDuffOperator.defaultOperator())
                 .alpha(1)
@@ -45,6 +47,7 @@ public class Layer {
 
     public static Layer.LayerBuilder from(Layer layer) {
         return builder()
+                .title(layer.title)
                 .isBackground(layer.isBackground)
                 .alpha(layer.alpha)
                 .colorGrid(layer.colorGrid)

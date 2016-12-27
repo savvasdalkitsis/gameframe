@@ -19,7 +19,7 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
     private int selectedPosition = 0;
 
     LayersAdapter() {
-        Layer layer = Layer.create().isBackground(true).build();
+        Layer layer = Layer.create().title("Background").isBackground(true).build();
         layer.getColorGrid().fill(Color.GRAY);
         layers.add(layer);
     }
@@ -70,7 +70,7 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
     }
 
     void addNewLayer() {
-        layers.add(Layer.create().build());
+        layers.add(Layer.create().title("Layer " + layers.size()).build());
         int position = layers.size() - 1;
         notifyItemInserted(position);
         select(position);
