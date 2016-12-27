@@ -7,6 +7,6 @@ class AbstractDrawingTool implements DrawingTool {
     }
 
     @Override
-    public void finishStroke(Layer selectedLayer) {
+    public void finishStroke(Layer layer) {
     }
 }

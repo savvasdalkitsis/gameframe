@@ -91,6 +91,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     tools:ignore="ContentDescription,RtlHardcoded" />
+
+                <com.savvasdalkitsis.gameframe.draw.view.OvalToolView
+                    style="?attr/actionButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
+
+                <com.savvasdalkitsis.gameframe.draw.view.FillOvalToolView
+                    style="?attr/actionButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
             </LinearLayout>
         </HorizontalScrollView>
     </RelativeLayout>

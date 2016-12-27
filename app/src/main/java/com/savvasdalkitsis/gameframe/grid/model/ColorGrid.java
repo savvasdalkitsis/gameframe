@@ -63,11 +63,11 @@ public class ColorGrid implements Grid {
 
     private void checkValue(int value, final String valueName) {
         if (value < 1 || value > SIDE) {
-            throw new IllegalArgumentException(valueName + " value should be between 1 and 16");
+            throw new IllegalArgumentException(valueName + " value should be between 1 and 16 but was " + value);
         }
     }
 
-    public boolean isOutOfBounds(int column, int row) {
+    public static boolean isOutOfBounds(int column, int row) {
         return row < 1 || column < 1 || row > SIDE || column > SIDE;
     }
 

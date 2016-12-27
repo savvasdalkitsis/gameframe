@@ -2,11 +2,10 @@ package com.savvasdalkitsis.gameframe.draw.model;
 
 import com.savvasdalkitsis.gameframe.grid.model.Grid;
 
-public class RectangleTool extends AbstractDrawingTool {
+public class RectangleTool extends ScratchTool {
 
     @Override
-    public void drawOn(Layer layer, int startColumn, int startRow, int column, int row, int color) {
-        Grid scratch = layer.getColorGrid().initializeScratch();
+    void drawOnScratch(Grid scratch, int startColumn, int startRow, int column, int row, int color) {
         for (int c = Math.min(startColumn, column); c <= Math.max(startColumn, column); c++) {
             scratch.setColor(color, c, startRow);
             scratch.setColor(color, c, row);
@@ -15,10 +14,5 @@ public class RectangleTool extends AbstractDrawingTool {
             scratch.setColor(color, startColumn, r);
             scratch.setColor(color, column, r);
         }
-    }
-
-    @Override
-    public void finishStroke(Layer layer) {
-        layer.getColorGrid().rasterScratch();
     }
 }
