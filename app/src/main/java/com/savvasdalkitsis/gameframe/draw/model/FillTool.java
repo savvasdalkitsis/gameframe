@@ -2,10 +2,10 @@ package com.savvasdalkitsis.gameframe.draw.model;
 
 import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
 
-public class FillTool implements DrawingTool {
+public class FillTool extends AbstractDrawingTool {
 
     @Override
-    public void drawOn(Layer layer, int column, int row, int color) {
+    public void drawOn(Layer layer, int startColumn, int startRow, int column, int row, int color) {
         fill(layer.getColorGrid(), column, row, color, layer.getColorGrid().getColor(column, row));
     }
 

@@ -20,6 +20,8 @@ public class LedGridView extends View {
     private Paint paint;
     private Drawable thumbBackground;
     private GridTouchedListener gridTouchedListener = GridTouchedListener.NO_OP;
+    private float startX;
+    private float startY;
 
     public LedGridView(Context context) {
         super(context);
@@ -99,14 +101,34 @@ public class LedGridView extends View {
                 return false;
             }
             int block = getWidth() / 16;
+            float x;
+            float y;
             switch (motionEvent.getActionMasked()) {
-                case MotionEvent.ACTION_MOVE:
                 case MotionEvent.ACTION_DOWN:
+                    startX = motionEvent.getX();
+                    startY = motionEvent.getY();
+                    x = motionEvent.getX();
+                    y = motionEvent.getY();
                     gridTouchedListener.onGridTouchedListener(
-                            blockCoordinate(block, motionEvent.getX()),
-                            blockCoordinate(block, motionEvent.getY())
+                            blockCoordinate(block, startX),
+                            blockCoordinate(block, startY),
+                            blockCoordinate(block, x),
+                            blockCoordinate(block, y)
                     );
                     return true;
+                case MotionEvent.ACTION_MOVE:
+                    x = motionEvent.getX();
+                    y = motionEvent.getY();
+                    gridTouchedListener.onGridTouchedListener(
+                            blockCoordinate(block, startX),
+                            blockCoordinate(block, startY),
+                            blockCoordinate(block, x),
+                            blockCoordinate(block, y)
+                    );
+                    return true;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    gridTouchedListener.onGridTouchFinished();
             }
             return false;
         };

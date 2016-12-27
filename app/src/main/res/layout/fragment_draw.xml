@@ -72,6 +72,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:ignore="ContentDescription,RtlHardcoded" />
+
+            <com.savvasdalkitsis.gameframe.draw.view.MoveToolView
+                android:id="@+id/view_draw_move"
+                style="?attr/actionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="ContentDescription,RtlHardcoded" />
         </LinearLayout>
     </RelativeLayout>
 

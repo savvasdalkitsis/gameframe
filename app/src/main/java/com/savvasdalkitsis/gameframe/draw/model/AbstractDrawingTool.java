@@ -1,9 +1,12 @@
 package com.savvasdalkitsis.gameframe.draw.model;
 
-public class PencilTool extends AbstractDrawingTool {
+class AbstractDrawingTool implements DrawingTool {
 
     @Override
     public void drawOn(Layer layer, int startColumn, int startRow, int column, int row, int color) {
-        layer.getColorGrid().setColor(color, column, row);
+    }
+
+    @Override
+    public void finishStroke(Layer selectedLayer) {
     }
 }
