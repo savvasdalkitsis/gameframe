@@ -16,9 +16,9 @@ import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
 public class LedGridView extends View {
 
     private ColorGrid colorGrid = new ColorGrid();
-    private float side;
+    private float tileSide;
     private Paint paint;
-    private Drawable tile;
+    private Drawable thumbBackground;
     private GridTouchedListener gridTouchedListener = GridTouchedListener.NO_OP;
 
     public LedGridView(Context context) {
@@ -38,21 +38,21 @@ public class LedGridView extends View {
         super.onFinishInflate();
         paint = new Paint();
         paint.setStrokeWidth(getResources().getDimensionPixelSize(R.dimen.grid_line_width));
-        //noinspection deprecation
-        tile = getResources().getDrawable(R.drawable.transparency_background);
         setOnTouchListener(touched());
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        side = getMeasuredWidth() / 16.0f;
+        tileSide = getMeasuredWidth() / 16.0f;
         setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth());
     }
 
     public void setThumbnailMode() {
         paint.setStrokeWidth(getResources().getDimensionPixelSize(R.dimen.grid_line_width_thumbnail));
         setEnabled(false);
+        //noinspection deprecation
+        thumbBackground = getResources().getDrawable(R.drawable.transparency_backround_tiled);
     }
 
     public void display(@NonNull ColorGrid colorGrid) {
@@ -63,22 +63,24 @@ public class LedGridView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        int width = getMeasuredWidth();
+        int gridSide = getMeasuredWidth();
+        if (thumbBackground != null) {
+            thumbBackground.setBounds(0, 0, gridSide, gridSide);
+            thumbBackground.draw(canvas);
+        }
         for (int column = 1; column <= 16; column++) {
             for (int row = 1; row <= 16; row++) {
-                float left = (column - 1) * side;
-                float top = (row - 1) * side;
+                float left = (column - 1) * tileSide;
+                float top = (row - 1) * tileSide;
                 paint.setColor(colorGrid.getColor(column, row));
-                tile.setBounds((int) left, (int) top, (int) (left + side), (int) (top + side));
-                tile.draw(canvas);
-                canvas.drawRect(left, top, left + side, top + side, paint);
+                canvas.drawRect(left, top, left + tileSide, top + tileSide, paint);
             }
         }
         paint.setColor(Color.BLACK);
         for (int i = 0; i <= 16; i++) {
-            canvas.drawLine(0, i * side, width, i * side, paint);
+            canvas.drawLine(0, i * tileSide, gridSide, i * tileSide, paint);
             //noinspection SuspiciousNameCombination
-            canvas.drawLine(i * side, 0, i * side, width, paint);
+            canvas.drawLine(i * tileSide, 0, i * tileSide, gridSide, paint);
         }
     }
 

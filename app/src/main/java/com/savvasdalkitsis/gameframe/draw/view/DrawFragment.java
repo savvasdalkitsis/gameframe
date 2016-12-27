@@ -79,6 +79,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         layers = new LayersAdapter();
         layers.onChange().subscribe(this::renderLayers);
         layersList.setAdapter(layers);
+        renderLayers(layers.getLayers());
         drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerOpened(View drawerView) {
