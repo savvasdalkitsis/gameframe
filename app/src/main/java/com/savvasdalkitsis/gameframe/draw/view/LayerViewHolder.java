@@ -55,6 +55,7 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
         ledGridView.display(layer.getColorGrid());
         delete.setVisibility(View.VISIBLE);
         alpha.setVisibility(View.VISIBLE);
+        alpha.setProgress((int) (layer.getAlpha() * 100));
         blendMode.setVisibility(View.VISIBLE);
         blendMode.setSelection(AvailableBlendMode.indexOf(layer.getBlendMode()));
         porterDuffMode.setSelection(AvailablePorterDuffOperator.indexOf(layer.getPorterDuffOperator()));
@@ -76,8 +77,32 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
         itemView.setSelected(selected);
     }
 
+    void clearListeners() {
+        setOnClickListener(null);
+        setOnLayerAlphaChangedListener(OnLayerAlphaChangedListener.NO_OP);
+        setOnLayerDeletedListener(OnLayerDeletedListener.NO_OP);
+        setOnLayerVisibilityChangedListener(OnLayerVisibilityChangedListener.NO_OP);
+        setOnLayerBlendModeSelectedListener(OnLayerBlendModeSelectedListener.NO_OP);
+        setOnLayerPorterDuffOperatorSelectedListener(OnLayerPorterDuffOperatorSelectedListener.NO_OP);
+    }
+
     void setOnClickListener(View.OnClickListener onClickListener) {
         itemView.setOnClickListener(onClickListener);
+    }
+
+    void setOnLayerAlphaChangedListener(OnLayerAlphaChangedListener onLayerAlphaChangedListener) {
+        alpha.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                onLayerAlphaChangedListener.onLayeralphaChanged(seekBar.getProgress() / 100f);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
     }
 
     void setOnLayerDeletedListener(OnLayerDeletedListener onLayerDeletedListener) {

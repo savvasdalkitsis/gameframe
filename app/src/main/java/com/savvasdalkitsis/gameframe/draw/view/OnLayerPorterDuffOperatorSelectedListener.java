@@ -4,5 +4,7 @@ import com.savvasdalkitsis.gameframe.composition.model.PorterDuffOperator;
 
 interface OnLayerPorterDuffOperatorSelectedListener {
 
+    OnLayerPorterDuffOperatorSelectedListener NO_OP = porterDuffOperator -> {};
+
     void onLayerPorterDuffOperatorSelected(PorterDuffOperator porterDuffOperator);
 }

@@ -27,22 +27,24 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
 
     @Override
     public LayerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayerViewHolder holder = new LayerViewHolder(parent);
-        holder.setOnClickListener(v -> select(holder.getAdapterPosition()));
-        return holder;
+        return new LayerViewHolder(parent);
     }
 
     @Override
     public void onBindViewHolder(LayerViewHolder holder, int position) {
+        holder.clearListeners();
+        holder.bind(layers.get(position));
+        holder.setSelected(selectedPosition == position);
+        holder.setOnClickListener(v -> select(holder.getAdapterPosition()));
         holder.setOnLayerBlendModeSelectedListener(blendMode ->
                 modifyLayer(holder, layer -> layer.blendMode(blendMode)));
         holder.setOnLayerPorterDuffOperatorSelectedListener(porterDuffOperator ->
                 modifyLayer(holder, layer -> layer.porterDuffOperator(porterDuffOperator)));
         holder.setOnLayerVisibilityChangedListener(visible ->
                 modifyLayer(holder, layer -> layer.isVisible(visible)));
+        holder.setOnLayerAlphaChangedListener(alpha ->
+                modifyLayer(holder, layer -> layer.alpha(alpha)));
         holder.setOnLayerDeletedListener(() -> removeLayer(holder));
-        holder.bind(layers.get(position));
-        holder.setSelected(selectedPosition == position);
     }
 
     @Override

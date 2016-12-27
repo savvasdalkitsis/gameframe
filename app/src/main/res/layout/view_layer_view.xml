@@ -34,6 +34,8 @@
 
     <SeekBar
         android:id="@+id/view_layer_alpha"
+        android:max="100"
+        android:progress="1"
         android:layout_below="@id/view_layer_porter_duff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
