@@ -3,7 +3,7 @@ package com.savvasdalkitsis.gameframe.draw.presenter;
 import com.savvasdalkitsis.gameframe.draw.view.DrawView;
 import com.savvasdalkitsis.gameframe.gameframe.model.AlreadyExistsOnGameFrameException;
 import com.savvasdalkitsis.gameframe.gameframe.usecase.GameFrameUseCase;
-import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
+import com.savvasdalkitsis.gameframe.grid.model.Grid;
 import com.savvasdalkitsis.gameframe.saves.model.SavedDrawingAlreadyExistsException;
 import com.savvasdalkitsis.gameframe.rx.RxTransformers;
 import com.savvasdalkitsis.gameframe.saves.usecase.SavedDrawingUseCase;
@@ -24,13 +24,13 @@ public class DrawPresenter {
         this.view = view;
     }
 
-    public void upload(ColorGrid colorGrid) {
+    public void upload(Grid colorGrid) {
         if (!uploading) {
             view.askForFileName(name -> upload(name, colorGrid));
         }
     }
 
-    public void replaceDrawing(String name, ColorGrid colorGrid) {
+    public void replaceDrawing(String name, Grid colorGrid) {
         view.displayUploading();
         uploading = true;
         savedDrawingUseCase.deleteDrawing(name)
@@ -40,7 +40,7 @@ public class DrawPresenter {
                 .subscribe(n -> upload(name, colorGrid), view::failedToDelete);
     }
 
-    private void upload(String name, ColorGrid colorGrid) {
+    private void upload(String name, Grid colorGrid) {
         view.displayUploading();
         uploading = true;
         savedDrawingUseCase.saveDrawing(name, colorGrid)

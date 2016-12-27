@@ -5,6 +5,7 @@ import com.savvasdalkitsis.gameframe.composition.model.BlendMode;
 import com.savvasdalkitsis.gameframe.composition.model.PorterDuffOperator;
 import com.savvasdalkitsis.gameframe.draw.model.Layer;
 import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
+import com.savvasdalkitsis.gameframe.grid.model.Grid;
 import com.savvasdalkitsis.gameframe.grid.view.LedGridView;
 
 public class BlendUseCase {
@@ -16,13 +17,13 @@ public class BlendUseCase {
         if (layer.isBackground()) {
             ledGridView.display(layer.getColorGrid());
         } else {
-            ColorGrid composite = compose(ledGridView.getColorGrid(), layer.getColorGrid(), layer.getBlendMode(), layer.getPorterDuffOperator(), layer.getAlpha());
+            Grid composite = compose(ledGridView.getColorGrid(), layer.getColorGrid(), layer.getBlendMode(), layer.getPorterDuffOperator(), layer.getAlpha());
             ledGridView.display(composite);
         }
     }
 
-    private ColorGrid compose(ColorGrid dest, ColorGrid source, BlendMode blendMode, PorterDuffOperator porterDuffOperator, float alpha) {
-        ColorGrid colorGrid = new ColorGrid();
+    public Grid compose(Grid dest, Grid source, BlendMode blendMode, PorterDuffOperator porterDuffOperator, float alpha) {
+        Grid colorGrid = new ColorGrid();
         for (int col = 1; col <= ColorGrid.SIDE; col++) {
             for (int row = 1; row <= ColorGrid.SIDE; row++) {
                 ARGB blend = mix(source.getColor(col, row), dest.getColor(col, row),
@@ -33,7 +34,7 @@ public class BlendUseCase {
         return colorGrid;
     }
 
-    private ARGB mix(int source, int dest, BlendMode blendMode, PorterDuffOperator porterDuffOperator, float alpha) {
+    public ARGB mix(int source, int dest, BlendMode blendMode, PorterDuffOperator porterDuffOperator, float alpha) {
         ARGB alphaSource = new ARGB(source).multiplyAlpha(alpha);
         ARGB destination = new ARGB(dest);
         ARGB blend = blend(alphaSource, destination, blendMode);

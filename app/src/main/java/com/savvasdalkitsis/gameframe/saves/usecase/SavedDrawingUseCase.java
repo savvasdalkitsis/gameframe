@@ -5,7 +5,7 @@ import android.support.v4.util.Pair;
 
 import com.savvasdalkitsis.gameframe.GameFrameApplication;
 import com.savvasdalkitsis.gameframe.bmp.usecase.BmpUseCase;
-import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
+import com.savvasdalkitsis.gameframe.grid.model.Grid;
 import com.savvasdalkitsis.gameframe.saves.model.SavedDrawingAlreadyExistsException;
 
 import org.apache.commons.io.FileUtils;
@@ -26,7 +26,7 @@ public class SavedDrawingUseCase {
         this.application = application;
     }
 
-    public Observable<File> saveDrawing(String name, ColorGrid colorGrid) {
+    public Observable<File> saveDrawing(String name, Grid colorGrid) {
         return file(name)
                 .flatMap(dir -> {
                     if (dir.exists()) {

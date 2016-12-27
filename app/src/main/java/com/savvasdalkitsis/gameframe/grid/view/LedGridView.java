@@ -12,10 +12,11 @@ import android.view.View;
 
 import com.savvasdalkitsis.gameframe.R;
 import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
+import com.savvasdalkitsis.gameframe.grid.model.Grid;
 
 public class LedGridView extends View {
 
-    private ColorGrid colorGrid = new ColorGrid();
+    private Grid colorGrid = new ColorGrid();
     private float tileSide;
     private Paint paint;
     private Drawable thumbBackground;
@@ -57,7 +58,7 @@ public class LedGridView extends View {
         thumbBackground = getResources().getDrawable(R.drawable.transparency_backround_tiled);
     }
 
-    public void display(@NonNull ColorGrid colorGrid) {
+    public void display(@NonNull Grid colorGrid) {
         this.colorGrid = colorGrid;
         invalidate();
     }
@@ -90,7 +91,7 @@ public class LedGridView extends View {
         this.gridTouchedListener = gridTouchedListener;
     }
 
-    public ColorGrid getColorGrid() {
+    public Grid getColorGrid() {
         return colorGrid;
     }
 

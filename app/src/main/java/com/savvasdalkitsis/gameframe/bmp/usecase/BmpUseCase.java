@@ -1,6 +1,7 @@
 package com.savvasdalkitsis.gameframe.bmp.usecase;
 
 import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
+import com.savvasdalkitsis.gameframe.grid.model.Grid;
 
 import java.nio.ByteBuffer;
 
@@ -11,7 +12,7 @@ public class BmpUseCase {
 
     private static final int DATA_OFFSET = 0x36;
 
-    public Observable<byte[]> rasterizeToBmp(ColorGrid colorGrid) {
+    public Observable<byte[]> rasterizeToBmp(Grid colorGrid) {
         return Observable.fromEmitter(emitter -> {
             int rasterByteSize = ColorGrid.SIDE * ColorGrid.SIDE * 3;
             int fileSize = rasterByteSize + DATA_OFFSET;
@@ -73,7 +74,7 @@ public class BmpUseCase {
         write(b, buffer);
     }
 
-    private void writeData(ByteBuffer buffer, ColorGrid colorGrid) {
+    private void writeData(ByteBuffer buffer, Grid colorGrid) {
         for (int row = ColorGrid.SIDE; row > 0; row--) {
             for (int col = 1; col <= ColorGrid.SIDE; col++) {
                 buffer.put(toRgb(colorGrid.getColor(col, row)));

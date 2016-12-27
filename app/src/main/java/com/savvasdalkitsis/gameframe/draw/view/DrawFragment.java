@@ -23,7 +23,7 @@ import com.savvasdalkitsis.gameframe.composition.usecase.BlendUseCase;
 import com.savvasdalkitsis.gameframe.draw.model.DrawingTool;
 import com.savvasdalkitsis.gameframe.draw.model.Layer;
 import com.savvasdalkitsis.gameframe.draw.presenter.DrawPresenter;
-import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
+import com.savvasdalkitsis.gameframe.grid.model.Grid;
 import com.savvasdalkitsis.gameframe.grid.view.GridTouchedListener;
 import com.savvasdalkitsis.gameframe.grid.view.LedGridView;
 import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener;
@@ -109,7 +109,8 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
                 R.id.view_draw_fill,
                 R.id.view_draw_clear,
                 R.id.view_draw_erase,
-                R.id.view_draw_move
+                R.id.view_draw_move,
+                R.id.view_draw_rectangle
         );
         withAllTools(tool -> tool.setToolSelectedListener(this));
 
@@ -187,7 +188,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     }
 
     @Override
-    public void drawingAlreadyExists(String name, ColorGrid colorGrid, Throwable e) {
+    public void drawingAlreadyExists(String name, Grid colorGrid, Throwable e) {
         Log.e(DrawPresenter.class.getName(), "Drawing already exists", e);
         Snackbars.actionError(coordinator(), R.string.already_exists, R.string.replace,
                 view -> presenter.replaceDrawing(name, colorGrid)).show();
