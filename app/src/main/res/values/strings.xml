@@ -27,4 +27,5 @@
     <string name="replace">Replace</string>
     <string name="already_exists">Drawing already exists.</string>
     <string name="change_color">Change color</string>
+    <string name="layers">Layers</string>
 </resources>

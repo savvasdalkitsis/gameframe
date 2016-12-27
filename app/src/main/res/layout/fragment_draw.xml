@@ -68,14 +68,28 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/view_draw_layers"
+    <LinearLayout
+        android:orientation="vertical"
         android:background="@android:color/white"
-        android:scrollbars="vertical"
-        android:scrollbarStyle="insideOverlay"
         android:layout_gravity="right"
         android:layout_width="240dp"
         android:layout_height="match_parent"
-        tools:ignore="RtlHardcoded" />
+        tools:ignore="RtlHardcoded">
+
+        <TextView
+            android:text="@string/layers"
+            android:layout_margin="8dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/view_draw_layers"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="insideOverlay"
+            android:layout_width="240dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
