@@ -3,7 +3,6 @@ package com.savvasdalkitsis.gameframe.draw.view;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
@@ -104,14 +104,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
                 .colors(getResources().getIntArray(R.array.palette))
                 .build());
         paletteView.setOnSwatchSelectedListener(this);
-        addTools(view,
-                R.id.view_draw_pencil,
-                R.id.view_draw_fill,
-                R.id.view_draw_clear,
-                R.id.view_draw_erase,
-                R.id.view_draw_move,
-                R.id.view_draw_rectangle
-        );
+        addTools(view);
         withAllTools(tool -> tool.setToolSelectedListener(this));
 
         toolsViews.get(0).performClick();
@@ -236,9 +229,10 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         Observable.from(toolsViews).subscribe(action);
     }
 
-    private void addTools(View view, @IdRes int... viewResIds) {
-        for (int viewResId : viewResIds) {
-            toolsViews.add((ToolView) view.findViewById(viewResId));
+    private void addTools(View view) {
+        ViewGroup tools = (ViewGroup) view.findViewById(R.id.view_draw_tools);
+        for (int i = 0; i < tools.getChildCount(); i++) {
+            toolsViews.add((ToolView) tools.getChildAt(i));
         }
     }
 }

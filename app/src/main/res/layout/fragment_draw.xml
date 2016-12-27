@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/view_draw_drawer"
     android:layout_width="match_parent"
@@ -12,105 +11,112 @@
 
         <com.savvasdalkitsis.gameframe.grid.view.LedGridView
             android:id="@+id/view_draw_led_grid_view"
-            android:layout_margin="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp" />
 
         <include
             android:id="@+id/view_draw_palette"
             layout="@layout/view_palette"
-            android:layout_below="@id/view_draw_led_grid_view"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="0dp"
-            android:layout_marginRight="72dp"
-            android:layout_marginBottom="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/view_draw_led_grid_view"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="72dp"
+            android:layout_marginTop="0dp"
             tools:ignore="RtlHardcoded" />
 
         <ImageView
             android:id="@+id/view_draw_open_layers"
-            android:src="@drawable/ic_toc_black_48px"
             style="?attr/actionButtonStyle"
-            android:layout_alignRight="@id/view_draw_led_grid_view"
-            android:layout_below="@id/view_draw_led_grid_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignRight="@id/view_draw_led_grid_view"
+            android:layout_below="@id/view_draw_led_grid_view"
+            android:src="@drawable/ic_toc_black_48px"
             tools:ignore="ContentDescription,RtlHardcoded" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/view_draw_palette"
+        <HorizontalScrollView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_draw_palette"
+            android:layout_marginRight="100dp"
+            tools:ignore="RtlHardcoded">
 
-            <com.savvasdalkitsis.gameframe.draw.view.PencilToolView
-                android:id="@+id/view_draw_pencil"
-                style="?attr/actionButtonStyle"
+            <LinearLayout
+                android:id="@+id/view_draw_tools"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:ignore="ContentDescription,RtlHardcoded" />
+                android:orientation="horizontal">
 
-            <com.savvasdalkitsis.gameframe.draw.view.FillToolView
-                android:id="@+id/view_draw_fill"
-                style="?attr/actionButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="ContentDescription,RtlHardcoded" />
+                <com.savvasdalkitsis.gameframe.draw.view.PencilToolView
+                    style="?attr/actionButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
 
-            <com.savvasdalkitsis.gameframe.draw.view.ClearToolView
-                android:id="@+id/view_draw_clear"
-                style="?attr/actionButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="ContentDescription,RtlHardcoded" />
+                <com.savvasdalkitsis.gameframe.draw.view.FillToolView
+                    style="?attr/actionButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
 
-            <com.savvasdalkitsis.gameframe.draw.view.EraseToolView
-                android:id="@+id/view_draw_erase"
-                style="?attr/actionButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="ContentDescription,RtlHardcoded" />
+                <com.savvasdalkitsis.gameframe.draw.view.ClearToolView
+                    style="?attr/actionButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
 
-            <com.savvasdalkitsis.gameframe.draw.view.MoveToolView
-                android:id="@+id/view_draw_move"
-                style="?attr/actionButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="ContentDescription,RtlHardcoded" />
+                <com.savvasdalkitsis.gameframe.draw.view.EraseToolView
+                    style="?attr/actionButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
 
-            <com.savvasdalkitsis.gameframe.draw.view.RectangleToolView
-                android:id="@+id/view_draw_rectangle"
-                style="?attr/actionButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="ContentDescription,RtlHardcoded" />
-        </LinearLayout>
+                <com.savvasdalkitsis.gameframe.draw.view.MoveToolView
+                    style="?attr/actionButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
+
+                <com.savvasdalkitsis.gameframe.draw.view.RectangleToolView
+                    style="?attr/actionButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
+
+                <com.savvasdalkitsis.gameframe.draw.view.FillRectangleToolView
+                    style="?attr/actionButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="ContentDescription,RtlHardcoded" />
+            </LinearLayout>
+        </HorizontalScrollView>
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:background="@android:color/white"
-        android:layout_gravity="right"
         android:layout_width="240dp"
         android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:background="@android:color/white"
+        android:orientation="vertical"
         tools:ignore="RtlHardcoded">
 
         <TextView
-            android:text="@string/layers"
-            android:layout_margin="8dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"
+            android:gravity="center_horizontal"
+            android:text="@string/layers" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/view_draw_layers"
-            android:scrollbars="vertical"
-            android:scrollbarStyle="insideOverlay"
             android:layout_width="240dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="vertical" />
     </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
