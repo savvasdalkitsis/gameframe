@@ -19,6 +19,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
+import com.savvasdalkitsis.gameframe.composition.usecase.BlendUseCase;
 import com.savvasdalkitsis.gameframe.draw.model.DrawingTool;
 import com.savvasdalkitsis.gameframe.draw.model.Layer;
 import com.savvasdalkitsis.gameframe.draw.presenter.DrawPresenter;
@@ -39,6 +40,7 @@ import rx.functions.Action1;
 
 import static com.savvasdalkitsis.gameframe.draw.model.Palette.Builder.palette;
 import static com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.drawPresenter;
+import static com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.blendUseCase;
 
 @BindLayout(R.layout.fragment_draw)
 public class DrawFragment extends AspectSupportFragment implements FragmentSelectedListener,
@@ -56,6 +58,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     public DrawerLayout drawer;
     private View fabProgress;
     private final DrawPresenter presenter = drawPresenter();
+    private final BlendUseCase blendUseCase = blendUseCase();
     @Nullable
     private SwatchView swatchToModify;
     private DrawingTool drawingTool;
@@ -216,7 +219,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
 
     private void renderLayers(List<Layer> layers) {
         Observable.from(layers)
-                .subscribe(layer -> layer.renderOn(ledGridView));
+                .subscribe(layer -> blendUseCase.renderOn(layer, ledGridView));
         ledGridView.invalidate();
     }
 

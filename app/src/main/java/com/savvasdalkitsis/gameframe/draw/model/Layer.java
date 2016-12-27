@@ -5,7 +5,6 @@ import com.savvasdalkitsis.gameframe.composition.model.AvailablePorterDuffOperat
 import com.savvasdalkitsis.gameframe.composition.model.BlendMode;
 import com.savvasdalkitsis.gameframe.composition.model.PorterDuffOperator;
 import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
-import com.savvasdalkitsis.gameframe.grid.view.LedGridView;
 
 import lombok.Getter;
 import lombok.experimental.Builder;
@@ -21,18 +20,6 @@ public class Layer {
     private boolean isBackground;
     private boolean isVisible;
     private String title;
-
-    public void renderOn(LedGridView ledGridView) {
-        if (!isVisible) {
-            return;
-        }
-        if (isBackground) {
-            ledGridView.display(colorGrid);
-        } else {
-            ColorGrid composite = colorGrid.compose(ledGridView.getColorGrid(), colorGrid, blendMode, porterDuffOperator, alpha);
-            ledGridView.display(composite);
-        }
-    }
 
     public static Layer.LayerBuilder create() {
         return builder()
