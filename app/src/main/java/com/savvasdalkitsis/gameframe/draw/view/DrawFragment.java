@@ -125,7 +125,6 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     public void onSwatchLongPressed(SwatchView swatch) {
         swatchToModify = swatch;
         new ColorChooserDialog.Builder((AppCompatActivity & ColorChooserDialog.ColorCallback) getContext(), R.string.change_color)
-                .allowUserColorInputAlpha(false)
                 .show();
     }
 
