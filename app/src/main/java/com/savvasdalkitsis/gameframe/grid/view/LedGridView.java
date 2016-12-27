@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -17,6 +18,7 @@ public class LedGridView extends View {
     private ColorGrid colorGrid = new ColorGrid();
     private float side;
     private Paint paint;
+    private Drawable tile;
     private GridTouchedListener gridTouchedListener = GridTouchedListener.NO_OP;
 
     public LedGridView(Context context) {
@@ -36,8 +38,9 @@ public class LedGridView extends View {
         super.onFinishInflate();
         paint = new Paint();
         paint.setStrokeWidth(getResources().getDimensionPixelSize(R.dimen.grid_line_width));
+        //noinspection deprecation
+        tile = getResources().getDrawable(R.drawable.transparency_background);
         setOnTouchListener(touched());
-        colorGrid.fill(Color.GRAY);
     }
 
     @Override
@@ -45,6 +48,11 @@ public class LedGridView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         side = getMeasuredWidth() / 16.0f;
         setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth());
+    }
+
+    public void setThumbnailMode() {
+        paint.setStrokeWidth(getResources().getDimensionPixelSize(R.dimen.grid_line_width_thumbnail));
+        setEnabled(false);
     }
 
     public void display(@NonNull ColorGrid colorGrid) {
@@ -56,12 +64,13 @@ public class LedGridView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         int width = getMeasuredWidth();
-        canvas.drawARGB(255, 0, 0, 0);
         for (int column = 1; column <= 16; column++) {
             for (int row = 1; row <= 16; row++) {
                 float left = (column - 1) * side;
                 float top = (row - 1) * side;
                 paint.setColor(colorGrid.getColor(column, row));
+                tile.setBounds((int) left, (int) top, (int) (left + side), (int) (top + side));
+                tile.draw(canvas);
                 canvas.drawRect(left, top, left + side, top + side, paint);
             }
         }
@@ -84,6 +93,9 @@ public class LedGridView extends View {
     @NonNull
     private OnTouchListener touched() {
         return (view, motionEvent) -> {
+            if (!isEnabled()) {
+                return false;
+            }
             int block = getWidth() / 16;
             switch (motionEvent.getActionMasked()) {
                 case MotionEvent.ACTION_MOVE:

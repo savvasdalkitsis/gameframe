@@ -1,6 +1,7 @@
 package com.savvasdalkitsis.gameframe.injector.usecase;
 
 import com.savvasdalkitsis.gameframe.bmp.usecase.BmpUseCase;
+import com.savvasdalkitsis.gameframe.composition.usecase.BlendUseCase;
 import com.savvasdalkitsis.gameframe.ip.usecase.IpDiscoveryUseCase;
 import com.savvasdalkitsis.gameframe.gameframe.usecase.GameFrameUseCase;
 import com.savvasdalkitsis.gameframe.saves.usecase.SavedDrawingUseCase;
@@ -28,5 +29,9 @@ public class UseCaseInjector {
 
     public static SavedDrawingUseCase savedDrawingUseCase() {
         return new SavedDrawingUseCase(bmpUseCase(), application());
+    }
+
+    public static BlendUseCase blendUseCase() {
+        return new BlendUseCase();
     }
 }
