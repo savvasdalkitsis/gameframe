@@ -65,7 +65,7 @@ public class SwatchView extends CircleView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth());
         circlePath.reset();
-        circleRect.set(0, 0, getMeasuredWidth(), getMeasuredWidth());
+        circleRect.set(2, 2, getMeasuredWidth() - 2, getMeasuredWidth() - 2);
         circlePath.addOval(circleRect, Path.Direction.CW);
     }
 
