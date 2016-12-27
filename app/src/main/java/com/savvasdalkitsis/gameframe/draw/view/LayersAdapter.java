@@ -34,16 +34,12 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
     @Override
     public void onBindViewHolder(LayerViewHolder holder, int position) {
         Layer layer = layers.get(position);
-        holder.setOnBlendModeSelected(blendMode -> {
-            layers.set(position, Layer.from(layer).blendMode(blendMode).build());
-            notifyItemChanged(position);
-            notifyObservers();
-        });
-        holder.setOnPorterDuffOperatorSelected(porterDuffOperator -> {
-            layers.set(position, Layer.from(layer).porterDuffOperator(porterDuffOperator).build());
-            notifyItemChanged(position);
-            notifyObservers();
-        });
+        holder.setOnLayerBlendModeSelectedListener(blendMode ->
+                modifyLayer(position, Layer.from(layer).blendMode(blendMode).build()));
+        holder.setOnLayerPorterDuffOperatorSelectedListener(porterDuffOperator ->
+                modifyLayer(position, Layer.from(layer).porterDuffOperator(porterDuffOperator).build()));
+        holder.setOnLayerVisibilityChangedListener(visible ->
+                modifyLayer(position, Layer.from(layer).isVisible(visible).build()));
         holder.bind(layer);
         holder.setSelected(selectedPosition == position);
     }
@@ -55,6 +51,12 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
 
     List<Layer> getLayers() {
         return layers;
+    }
+
+    private void modifyLayer(int position, Layer layer) {
+        layers.set(position, layer);
+        notifyItemChanged(position);
+        notifyObservers();
     }
 
     private void select(int position) {

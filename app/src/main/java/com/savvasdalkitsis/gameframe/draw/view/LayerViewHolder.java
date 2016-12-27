@@ -20,9 +20,13 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
     private final LedGridView ledGridView;
     private final Spinner blendMode;
     private final Spinner porterDuffMode;
+    private final View visibilityVisible;
+    private final View visibilityInvisible;
 
     LayerViewHolder(ViewGroup parent) {
         super(LayoutInflater.from(parent.getContext()).inflate(R.layout.view_layer_view, parent, false));
+        visibilityVisible = itemView.findViewById(R.id.view_layer_visibility_visible);
+        visibilityInvisible = itemView.findViewById(R.id.view_layer_visibility_invisible);
         ledGridView = (LedGridView) itemView.findViewById(R.id.view_layer_thumbnail);
         ledGridView.setThumbnailMode();
         blendMode = (Spinner) itemView.findViewById(R.id.view_layer_blend_mode);
@@ -42,6 +46,8 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
         ledGridView.display(layer.getColorGrid());
         blendMode.setSelection(AvailableBlendMode.indexOf(layer.getBlendMode()));
         porterDuffMode.setSelection(AvailablePorterDuffOperator.indexOf(layer.getPorterDuffOperator()));
+        visibilityVisible.setVisibility(layer.isVisible() ? View.VISIBLE : View.GONE);
+        visibilityInvisible.setVisibility(layer.isVisible() ? View.GONE : View.VISIBLE);
     }
 
     void setSelected(boolean selected) {
@@ -52,11 +58,16 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(onClickListener);
     }
 
-    void setOnBlendModeSelected(OnBlendModeSelected onBlendModeSelected) {
+    void setOnLayerVisibilityChangedListener(OnLayerVisibilityChangedListener onLayerVisibilityChangedListener) {
+        visibilityVisible.setOnClickListener(v -> onLayerVisibilityChangedListener.onLayerVisibilityChanged(false));
+        visibilityInvisible.setOnClickListener(v -> onLayerVisibilityChangedListener.onLayerVisibilityChanged(true));
+    }
+
+    void setOnLayerBlendModeSelectedListener(OnLayerBlendModeSelectedListener onLayerBlendModeSelectedListener) {
         blendMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                onBlendModeSelected.onBlendModeSelected(AvailableBlendMode.values()[position]);
+                onLayerBlendModeSelectedListener.onLayerBlendModeSelected(AvailableBlendMode.values()[position]);
             }
 
             @Override
@@ -64,11 +75,11 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    void setOnPorterDuffOperatorSelected(OnPorterDuffOperatorSelected onPorterDuffOperatorSelected) {
+    void setOnLayerPorterDuffOperatorSelectedListener(OnLayerPorterDuffOperatorSelectedListener onLayerPorterDuffOperatorSelectedListener) {
         porterDuffMode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
-                onPorterDuffOperatorSelected.onPorterDuffOperatorSelected(AvailablePorterDuffOperator.values()[position]);
+                onLayerPorterDuffOperatorSelectedListener.onLayerPorterDuffOperatorSelected(AvailablePorterDuffOperator.values()[position]);
             }
 
             @Override

@@ -19,8 +19,12 @@ public class Layer {
     private PorterDuffOperator porterDuffOperator;
     private ColorGrid colorGrid;
     private boolean isBackground;
+    private boolean isVisible;
 
     public void renderOn(LedGridView ledGridView) {
+        if (!isVisible) {
+            return;
+        }
         if (isBackground) {
             ledGridView.display(colorGrid);
         } else {
@@ -35,6 +39,7 @@ public class Layer {
                 .porterDuffOperator(AvailablePorterDuffOperator.defaultOperator())
                 .alpha(1)
                 .isBackground(false)
+                .isVisible(true)
                 .colorGrid(new ColorGrid());
     }
 
@@ -44,6 +49,7 @@ public class Layer {
                 .alpha(layer.alpha)
                 .colorGrid(layer.colorGrid)
                 .porterDuffOperator(layer.porterDuffOperator)
+                .isVisible(layer.isVisible)
                 .blendMode(layer.blendMode);
     }
 }

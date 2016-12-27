@@ -44,4 +44,24 @@
 
     </android.support.v7.widget.CardView>
 
+    <ImageView
+        android:id="@+id/view_layer_visibility_visible"
+        style="?attr/actionButtonStyle"
+        android:src="@drawable/ic_visibility_black_48px"
+        android:layout_alignTop="@id/view_layer_thumbnail_container"
+        android:layout_toRightOf="@id/view_layer_thumbnail_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="ContentDescription,RtlHardcoded" />
+
+    <ImageView
+        android:id="@+id/view_layer_visibility_invisible"
+        style="?attr/actionButtonStyle"
+        android:src="@drawable/ic_visibility_off_black_48px"
+        android:layout_alignTop="@id/view_layer_thumbnail_container"
+        android:layout_toRightOf="@id/view_layer_thumbnail_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="ContentDescription,RtlHardcoded" />
+
 </RelativeLayout>
