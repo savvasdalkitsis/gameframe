@@ -5,8 +5,8 @@ import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
 public class FillTool implements DrawingTool {
 
     @Override
-    public void drawOn(ColorGrid colorGrid, int column, int row, int color) {
-        fill(colorGrid, column, row, color, colorGrid.getColor(column, row));
+    public void drawOn(Layer layer, int column, int row, int color) {
+        fill(layer.getColorGrid(), column, row, color, layer.getColorGrid().getColor(column, row));
     }
 
     private void fill(ColorGrid colorGrid, int column, int row, int newColor, int target) {

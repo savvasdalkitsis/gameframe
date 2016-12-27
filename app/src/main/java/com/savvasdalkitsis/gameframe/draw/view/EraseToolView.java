@@ -4,33 +4,33 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import com.savvasdalkitsis.gameframe.R;
-import com.savvasdalkitsis.gameframe.draw.model.ClearTool;
 import com.savvasdalkitsis.gameframe.draw.model.DrawingTool;
+import com.savvasdalkitsis.gameframe.draw.model.EraseTool;
 
-public class ClearToolView extends ToolView {
+public class EraseToolView extends ToolView {
 
-    private final ClearTool clearTool = new ClearTool();
+    private final EraseTool eraseTool = new EraseTool();
 
-    public ClearToolView(Context context) {
+    public EraseToolView(Context context) {
         super(context);
     }
 
-    public ClearToolView(Context context, AttributeSet attrs) {
+    public EraseToolView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public ClearToolView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EraseToolView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        setImageResource(R.drawable.ic_format_paint_black_48px);
+        setImageResource(R.drawable.ic_eraser_variant);
     }
 
     @Override
     protected DrawingTool getDrawingTool() {
-        return clearTool;
+        return eraseTool;
     }
 }

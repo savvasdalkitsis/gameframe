@@ -65,6 +65,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:ignore="ContentDescription,RtlHardcoded" />
+
+            <com.savvasdalkitsis.gameframe.draw.view.EraseToolView
+                android:id="@+id/view_draw_erase"
+                style="?attr/actionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="ContentDescription,RtlHardcoded" />
         </LinearLayout>
     </RelativeLayout>
 

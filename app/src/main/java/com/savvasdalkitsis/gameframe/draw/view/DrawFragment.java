@@ -104,7 +104,8 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         addTools(view,
                 R.id.view_draw_pencil,
                 R.id.view_draw_fill,
-                R.id.view_draw_clear
+                R.id.view_draw_clear,
+                R.id.view_draw_erase
         );
         withAllTools(tool -> tool.setToolSelectedListener(this));
 
@@ -137,7 +138,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
 
     @Override
     public void onGridTouchedListener(int column, int row) {
-        drawingTool.drawOn(layers.getSelectedLayer().getColorGrid(), column, row, color);
+        drawingTool.drawOn(layers.getSelectedLayer(), column, row, color);
         renderLayers(layers.getLayers());
     }
 
