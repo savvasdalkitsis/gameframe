@@ -78,6 +78,7 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
         }
         layers.remove(position);
         notifyItemRemoved(position);
+        notifyItemChanged(selectedPosition);
         notifyObservers();
     }
 
