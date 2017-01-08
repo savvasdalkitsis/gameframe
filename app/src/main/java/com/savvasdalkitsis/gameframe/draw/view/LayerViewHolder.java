@@ -25,6 +25,7 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
     private final View visibilityVisible;
     private final View visibilityInvisible;
     private final View delete;
+    private final View duplicate;
     private final SeekBar alpha;
     private final TextView title;
 
@@ -35,6 +36,7 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
         visibilityVisible = itemView.findViewById(R.id.view_layer_visibility_visible);
         visibilityInvisible = itemView.findViewById(R.id.view_layer_visibility_invisible);
         delete = itemView.findViewById(R.id.view_layer_delete);
+        duplicate = itemView.findViewById(R.id.view_layer_duplicate);
         ledGridView = (LedGridView) itemView.findViewById(R.id.view_layer_thumbnail);
         ledGridView.setThumbnailMode();
         blendMode = (Spinner) itemView.findViewById(R.id.view_layer_blend_mode);
@@ -54,6 +56,7 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
         title.setText(layer.getTitle());
         ledGridView.display(layer.getColorGrid());
         delete.setVisibility(View.VISIBLE);
+        duplicate.setVisibility(View.VISIBLE);
         alpha.setVisibility(View.VISIBLE);
         alpha.setProgress((int) (layer.getAlpha() * 100));
         blendMode.setVisibility(View.VISIBLE);
@@ -62,7 +65,8 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
         porterDuffMode.setVisibility(View.VISIBLE);
         visibilityVisible.setVisibility(layer.isVisible() ? View.VISIBLE : View.GONE);
         visibilityInvisible.setVisibility(layer.isVisible() ? View.GONE : View.VISIBLE);
-        hideControlsIfBackground(layer, alpha, delete, visibilityInvisible, visibilityVisible, blendMode, porterDuffMode);
+        hideControlsIfBackground(layer, alpha, delete, duplicate, visibilityInvisible,
+                visibilityVisible, blendMode, porterDuffMode);
     }
 
     private void hideControlsIfBackground(Layer layer, View... views) {
@@ -81,6 +85,7 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
         setOnClickListener(null);
         setOnLayerAlphaChangedListener(OnLayerAlphaChangedListener.NO_OP);
         setOnLayerDeletedListener(OnLayerDeletedListener.NO_OP);
+        setOnLayerDuplicatedListener(OnLayerDuplicatedListener.NO_OP);
         setOnLayerVisibilityChangedListener(OnLayerVisibilityChangedListener.NO_OP);
         setOnLayerBlendModeSelectedListener(OnLayerBlendModeSelectedListener.NO_OP);
         setOnLayerPorterDuffOperatorSelectedListener(OnLayerPorterDuffOperatorSelectedListener.NO_OP);
@@ -107,6 +112,10 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
 
     void setOnLayerDeletedListener(OnLayerDeletedListener onLayerDeletedListener) {
         delete.setOnClickListener(v -> onLayerDeletedListener.onLayerDeleted());
+    }
+
+    void setOnLayerDuplicatedListener(OnLayerDuplicatedListener onLayerDuplicatedListener) {
+        duplicate.setOnClickListener(v -> onLayerDuplicatedListener.onLayerDuplicated());
     }
 
     void setOnLayerVisibilityChangedListener(OnLayerVisibilityChangedListener onLayerVisibilityChangedListener) {

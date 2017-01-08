@@ -10,4 +10,6 @@ public interface Grid {
 
     @ColorInt
     int getColor(int column, int row);
+
+    Grid copy();
 }

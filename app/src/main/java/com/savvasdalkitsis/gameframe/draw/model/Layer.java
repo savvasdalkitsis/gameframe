@@ -37,7 +37,7 @@ public class Layer {
                 .title(layer.title)
                 .isBackground(layer.isBackground)
                 .alpha(layer.alpha)
-                .colorGrid(layer.colorGrid)
+                .colorGrid(layer.colorGrid.copy())
                 .porterDuffOperator(layer.porterDuffOperator)
                 .isVisible(layer.isVisible)
                 .blendMode(layer.blendMode);

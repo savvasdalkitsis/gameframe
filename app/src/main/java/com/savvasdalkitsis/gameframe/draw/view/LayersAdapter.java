@@ -45,6 +45,7 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
         holder.setOnLayerAlphaChangedListener(alpha ->
                 modifyLayer(holder, layer -> layer.alpha(alpha)));
         holder.setOnLayerDeletedListener(() -> removeLayer(holder));
+        holder.setOnLayerDuplicatedListener(() -> duplicateLayer(holder));
     }
 
     @Override
@@ -80,13 +81,22 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
         notifyObservers();
     }
 
+    private void duplicateLayer(LayerViewHolder holder) {
+        int position = holder.getAdapterPosition();
+        Layer layer = layers.get(position);
+        addNewLayer(Layer.from(layer).title(layer.getTitle() + " copy").build(), position + 1);
+    }
+
     Layer getSelectedLayer() {
         return layers.get(selectedPosition);
     }
 
     void addNewLayer() {
-        layers.add(Layer.create().title("Layer " + layers.size()).build());
-        int position = layers.size() - 1;
+        addNewLayer(Layer.create().title("Layer " + layers.size()).build(), layers.size());
+    }
+
+    private void addNewLayer(Layer layer, int position) {
+        layers.add(position, layer);
         notifyItemInserted(position);
         select(position);
         notifyObservers();

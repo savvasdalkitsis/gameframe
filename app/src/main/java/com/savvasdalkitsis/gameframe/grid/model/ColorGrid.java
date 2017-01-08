@@ -61,6 +61,15 @@ public class ColorGrid implements Grid {
         }
     }
 
+    @Override
+    public ColorGrid copy() {
+        ColorGrid colorGrid = new ColorGrid();
+        colorGrid.copyColorsFrom(this);
+        colorGrid.translateCol = translateCol;
+        colorGrid.translateRow = translateRow;
+        return colorGrid;
+    }
+
     private void checkValue(int value, final String valueName) {
         if (value < 1 || value > SIDE) {
             throw new IllegalArgumentException(valueName + " value should be between 1 and 16 but was " + value);
@@ -101,11 +110,11 @@ public class ColorGrid implements Grid {
             ColorGrid scratch = this.scratch;
             this.scratch = null;
             Grid grid = blendUseCase.compose(this, scratch, AvailableBlendMode.NORMAL, AvailablePorterDuffOperator.SOURCE_OVER, 1);
-            copyFrom(grid);
+            copyColorsFrom(grid);
         }
     }
 
-    private void copyFrom(Grid grid) {
+    private void copyColorsFrom(Grid grid) {
         for (int i = 1; i <= SIDE; i++) {
             for (int j = 1; j <= SIDE; j++) {
                 setColor(grid.getColor(i, j), i, j);
