@@ -47,7 +47,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp">
+        android:layout_marginRight="12dp"
+        tools:ignore="RtlHardcoded">
 
         <com.savvasdalkitsis.gameframe.grid.view.LedGridView
             android:id="@+id/view_layer_thumbnail"
