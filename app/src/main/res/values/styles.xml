@@ -11,8 +11,16 @@
         <item name="android:textSize">12sp</item>
     </style>
 
+    <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:buttonStyle">@style/AppTheme.Dialog.ButtonStyle</item>
+    </style>
+
     <style name="AppTheme.ButtonStyle" parent="Widget.AppCompat.Button">>
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.Dialog.ButtonStyle" parent="Widget.AppCompat.Button">>
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
 </resources>

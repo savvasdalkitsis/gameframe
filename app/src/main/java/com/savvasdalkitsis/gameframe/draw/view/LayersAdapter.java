@@ -1,10 +1,12 @@
 package com.savvasdalkitsis.gameframe.draw.view;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.savvasdalkitsis.gameframe.draw.model.Layer;
+import com.savvasdalkitsis.gameframe.draw.model.LayerSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
     private int selectedPosition = 0;
 
     LayersAdapter() {
-        Layer layer = Layer.create().title("Background").isBackground(true).build();
+        Layer layer = Layer.create(LayerSettings.create().title("Background")).isBackground(true).build();
         layer.getColorGrid().fill(Color.GRAY);
         layers.add(layer);
     }
@@ -36,16 +38,11 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
         holder.bind(layers.get(position));
         holder.setSelected(selectedPosition == position);
         holder.setOnClickListener(v -> select(holder.getAdapterPosition()));
-        holder.setOnLayerBlendModeSelectedListener(blendMode ->
-                modifyLayer(holder, layer -> layer.blendMode(blendMode)));
-        holder.setOnLayerPorterDuffOperatorSelectedListener(porterDuffOperator ->
-                modifyLayer(holder, layer -> layer.porterDuffOperator(porterDuffOperator)));
         holder.setOnLayerVisibilityChangedListener(visible ->
                 modifyLayer(holder, layer -> layer.isVisible(visible)));
-        holder.setOnLayerAlphaChangedListener(alpha ->
-                modifyLayer(holder, layer -> layer.alpha(alpha)));
         holder.setOnLayerDeletedListener(() -> removeLayer(holder));
         holder.setOnLayerDuplicatedListener(() -> duplicateLayer(holder));
+        holder.setOnLayerSettingsClickedListener(() -> layerSettings(holder));
     }
 
     @Override
@@ -85,7 +82,18 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
     private void duplicateLayer(LayerViewHolder holder) {
         int position = holder.getAdapterPosition();
         Layer layer = layers.get(position);
-        addNewLayer(Layer.from(layer).title(layer.getTitle() + " copy").build(), position + 1);
+        Layer newLayer = Layer.from(layer)
+                .layerSettings(LayerSettings.from(layer.getLayerSettings())
+                        .title(layer.getLayerSettings().getTitle() + " copy")
+                        .build())
+                .build();
+        addNewLayer(newLayer, position + 1);
+    }
+
+    private void layerSettings(LayerViewHolder holder) {
+        Context context = holder.itemView.getContext();
+        LayerSettingsView.show(context, layers.get(holder.getAdapterPosition()), (ViewGroup) holder.itemView,
+                layerSettings -> modifyLayer(holder, layer -> layer.layerSettings(layerSettings)));
     }
 
     Layer getSelectedLayer() {
@@ -93,7 +101,7 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
     }
 
     void addNewLayer() {
-        addNewLayer(Layer.create().title("Layer " + layers.size()).build(), layers.size());
+        addNewLayer(Layer.create(LayerSettings.create().title("Layer " + layers.size())).build(), layers.size());
     }
 
     private void addNewLayer(Layer layer, int position) {

@@ -17,7 +17,7 @@ public class BlendUseCase {
         if (layer.isBackground()) {
             ledGridView.display(layer.getColorGrid());
         } else {
-            Grid composite = compose(ledGridView.getColorGrid(), layer.getColorGrid(), layer.getBlendMode(), layer.getPorterDuffOperator(), layer.getAlpha());
+            Grid composite = compose(ledGridView.getColorGrid(), layer.getColorGrid(), layer.getLayerSettings().getBlendMode(), layer.getLayerSettings().getPorterDuffOperator(), layer.getLayerSettings().getAlpha());
             ledGridView.display(composite);
         }
     }

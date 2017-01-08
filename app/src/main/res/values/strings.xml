@@ -28,4 +28,9 @@
     <string name="already_exists">Drawing already exists.</string>
     <string name="change_color">Change color</string>
     <string name="layers">Layers</string>
+    <string name="transparency">Transparency</string>
+    <string name="name">Name</string>
+    <string name="blend_mode">Blend Mode</string>
+    <string name="composition_operator">Composition Operator</string>
+    <string name="layer_settings">Layer settings</string>
 </resources>
