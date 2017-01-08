@@ -105,6 +105,9 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
     }
 
     private void addNewLayer(Layer layer, int position) {
+        if (selectedPosition >= position) {
+            selectedPosition++;
+        }
         layers.add(position, layer);
         notifyItemInserted(position);
         select(position);
