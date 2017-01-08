@@ -36,9 +36,8 @@ public class BlendUseCase {
 
     public ARGB mix(int source, int dest, BlendMode blendMode, PorterDuffOperator porterDuffOperator, float alpha) {
         ARGB argb = new ARGB(source);
-        ARGB alphaSource = argb.multiplyAlpha(alpha);
         ARGB destination = new ARGB(dest);
-        ARGB blend = blend(alphaSource, destination, blendMode).withAlphaValue(argb.a);
+        ARGB blend = blend(argb, destination, blendMode).withAlphaValue(argb.a).multiplyAlpha(alpha);
         return compose(blend, destination, porterDuffOperator);
     }
 
