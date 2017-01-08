@@ -41,4 +41,8 @@ public class ARGB {
     public ARGB multiplyAlpha(float alpha) {
         return new ARGB((int) (a * alpha), r, g, b);
     }
+
+    public ARGB withAlphaValue(int alpha) {
+        return new ARGB(alpha, r, g, b);
+    }
 }
