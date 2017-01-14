@@ -9,6 +9,7 @@ import com.savvasdalkitsis.gameframe.draw.model.Layer;
 import com.savvasdalkitsis.gameframe.draw.model.LayerSettings;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
@@ -88,6 +89,19 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
                         .build())
                 .build();
         addNewLayer(newLayer, position + 1);
+    }
+
+    void swapLayers(RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+        int itemPosition = viewHolder.getAdapterPosition();
+        int targetPosition = target.getAdapterPosition();
+        Collections.swap(layers, itemPosition, targetPosition);
+        notifyItemMoved(itemPosition, targetPosition);
+        if (selectedPosition == itemPosition) {
+            selectedPosition = targetPosition;
+        } else if (selectedPosition == targetPosition) {
+            selectedPosition = itemPosition;
+        }
+        notifyObservers();
     }
 
     private void layerSettings(LayerViewHolder holder) {

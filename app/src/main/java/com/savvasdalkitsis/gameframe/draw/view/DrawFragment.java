@@ -8,8 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -52,7 +50,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     @Bind(R.id.view_draw_palette)
     public PaletteView paletteView;
     @Bind(R.id.view_draw_layers)
-    public RecyclerView layersList;
+    public LayersView layersList;
     FloatingActionButton fab;
     @Bind(R.id.view_draw_drawer)
     public DrawerLayout drawer;
@@ -64,7 +62,6 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     private DrawingTool drawingTool;
     private int color;
     private final List<ToolView> toolsViews = new ArrayList<>();
-    private LayersAdapter layers;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,12 +74,8 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         super.onActivityCreated(savedInstanceState);
         fab = (FloatingActionButton) getActivity().findViewById(R.id.view_fab);
         fabProgress = getActivity().findViewById(R.id.view_fab_progress);
-        layersList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true));
-        layersList.setHasFixedSize(true);
-        layers = new LayersAdapter();
-        layers.onChange().subscribe(this::renderLayers);
-        layersList.setAdapter(layers);
-        renderLayers(layers.getLayers());
+        layersList.onChange().subscribe(this::renderLayers);
+        renderLayers(layersList.getLayers());
         drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -136,13 +129,13 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
 
     @Override
     public void onGridTouchedListener(int startColumn, int startRow, int column, int row) {
-        drawingTool.drawOn(layers.getSelectedLayer(), startColumn, startRow, column, row, color);
-        renderLayers(layers.getLayers());
+        drawingTool.drawOn(layersList.getSelectedLayer(), startColumn, startRow, column, row, color);
+        renderLayers(layersList.getLayers());
     }
 
     @Override
     public void onGridTouchFinished() {
-        drawingTool.finishStroke(layers.getSelectedLayer());
+        drawingTool.finishStroke(layersList.getSelectedLayer());
     }
 
     @Override
@@ -203,7 +196,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     @SuppressLint("RtlHardcoded")
     private void setFabState() {
         if (drawer.isDrawerOpen(Gravity.RIGHT)) {
-            fab.setOnClickListener(v -> layers.addNewLayer());
+            fab.setOnClickListener(v -> layersList.addNewLayer());
             fab.setImageResource(R.drawable.ic_add_white_48px);
         } else {
             fab.setOnClickListener(v -> presenter.upload(ledGridView.getColorGrid()));
