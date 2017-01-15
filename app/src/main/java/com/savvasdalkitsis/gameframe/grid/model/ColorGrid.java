@@ -72,9 +72,17 @@ public class ColorGrid implements Grid {
 
     @Override
     public boolean isIdenticalTo(Grid moment) {
-        for (int i = 1; i <= SIDE; i++) {
-            for (int j = 1; j <= SIDE; j++) {
-                if (getColor(i, j) != moment.getColor(i, j)) {
+        if (!(moment instanceof ColorGrid)) {
+            return false;
+        }
+        ColorGrid colorGrid = (ColorGrid) moment;
+        if (translateCol != colorGrid.translateCol
+                || translateRow != colorGrid.translateRow) {
+            return false;
+        }
+        for (int i = 0; i < SIDE; i++) {
+            for (int j = 0; j < SIDE; j++) {
+                if (colors[i][j] != colorGrid.colors[i][j]) {
                     return false;
                 }
             }
@@ -121,16 +129,14 @@ public class ColorGrid implements Grid {
         if (scratch != null) {
             ColorGrid scratch = this.scratch;
             this.scratch = null;
-            Grid grid = blendUseCase.compose(this, scratch, AvailableBlendMode.NORMAL, AvailablePorterDuffOperator.SOURCE_OVER, 1);
+            ColorGrid grid = blendUseCase.compose(this, scratch, AvailableBlendMode.NORMAL, AvailablePorterDuffOperator.SOURCE_OVER, 1);
             copyColorsFrom(grid);
         }
     }
 
-    private void copyColorsFrom(Grid grid) {
-        for (int i = 1; i <= SIDE; i++) {
-            for (int j = 1; j <= SIDE; j++) {
-                setColor(grid.getColor(i, j), i, j);
-            }
+    private void copyColorsFrom(ColorGrid grid) {
+        for (int i = 0; i < SIDE; i++) {
+            System.arraycopy(grid.colors[i], 0, colors[i], 0, SIDE);
         }
     }
 

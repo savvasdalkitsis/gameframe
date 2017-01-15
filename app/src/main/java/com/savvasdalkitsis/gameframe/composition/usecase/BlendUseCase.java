@@ -17,13 +17,13 @@ public class BlendUseCase {
         if (layer.isBackground()) {
             ledGridView.display(layer.getColorGrid());
         } else {
-            Grid composite = compose(ledGridView.getColorGrid(), layer.getColorGrid(), layer.getLayerSettings().getBlendMode(), layer.getLayerSettings().getPorterDuffOperator(), layer.getLayerSettings().getAlpha());
+            ColorGrid composite = compose(ledGridView.getColorGrid(), layer.getColorGrid(), layer.getLayerSettings().getBlendMode(), layer.getLayerSettings().getPorterDuffOperator(), layer.getLayerSettings().getAlpha());
             ledGridView.display(composite);
         }
     }
 
-    public Grid compose(Grid dest, Grid source, BlendMode blendMode, PorterDuffOperator porterDuffOperator, float alpha) {
-        Grid colorGrid = new ColorGrid();
+    public ColorGrid compose(Grid dest, Grid source, BlendMode blendMode, PorterDuffOperator porterDuffOperator, float alpha) {
+        ColorGrid colorGrid = new ColorGrid();
         for (int col = 1; col <= ColorGrid.SIDE; col++) {
             for (int row = 1; row <= ColorGrid.SIDE; row++) {
                 ARGB blend = mix(source.getColor(col, row), dest.getColor(col, row),
