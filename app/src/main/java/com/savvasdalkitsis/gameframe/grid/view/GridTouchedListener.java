@@ -4,15 +4,18 @@ public interface GridTouchedListener {
 
     GridTouchedListener NO_OP = new GridTouchedListener() {
         @Override
-        public void onGridTouchedListener(int startColumn, int startRow, int column, int row) {
-        }
+        public void onGridTouchStarted() {}
 
         @Override
-        public void onGridTouchFinished() {
-        }
+        public void onGridTouch(int startColumn, int startRow, int column, int row) {}
+
+        @Override
+        public void onGridTouchFinished() {}
     };
 
-    void onGridTouchedListener(int startColumn, int startRow, int column, int row);
+    void onGridTouchStarted();
+
+    void onGridTouch(int startColumn, int startRow, int column, int row);
 
     void onGridTouchFinished();
 }

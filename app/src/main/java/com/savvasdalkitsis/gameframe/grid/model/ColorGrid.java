@@ -62,12 +62,24 @@ public class ColorGrid implements Grid {
     }
 
     @Override
-    public ColorGrid copy() {
+    public ColorGrid replicateMoment() {
         ColorGrid colorGrid = new ColorGrid();
         colorGrid.copyColorsFrom(this);
         colorGrid.translateCol = translateCol;
         colorGrid.translateRow = translateRow;
         return colorGrid;
+    }
+
+    @Override
+    public boolean isIdenticalTo(Grid moment) {
+        for (int i = 1; i <= SIDE; i++) {
+            for (int j = 1; j <= SIDE; j++) {
+                if (getColor(i, j) != moment.getColor(i, j)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     private void checkValue(int value, final String valueName) {

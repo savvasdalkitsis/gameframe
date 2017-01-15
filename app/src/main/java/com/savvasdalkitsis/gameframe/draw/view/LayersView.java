@@ -7,11 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
 
-import com.savvasdalkitsis.gameframe.draw.model.Layer;
-
-import java.util.List;
-
-import rx.Observable;
+import com.savvasdalkitsis.gameframe.draw.model.Historical;
+import com.savvasdalkitsis.gameframe.draw.model.Model;
 
 public class LayersView extends RecyclerView {
 
@@ -40,26 +37,19 @@ public class LayersView extends RecyclerView {
         setAdapter(layers);
     }
 
-    Observable<List<Layer>> onChange() {
-        return layers.onChange();
-    }
-
-    public List<Layer> getLayers() {
-        return layers.getLayers();
-    }
-
-    public Layer getSelectedLayer() {
-        return layers.getSelectedLayer();
-    }
-
     public void addNewLayer() {
         layers.addNewLayer();
+    }
+
+    public void bind(Historical<Model> modelHistory) {
+        layers.bind(modelHistory);
     }
 
     private class MoveLayersItemHelper extends ItemTouchHelper.SimpleCallback {
 
         private final int ALLOW_DRAG = makeFlag(ItemTouchHelper.ACTION_STATE_DRAG,
                 ItemTouchHelper.DOWN | ItemTouchHelper.UP | ItemTouchHelper.START | ItemTouchHelper.END);
+        private boolean newMove = true;
 
         MoveLayersItemHelper() {
             super(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0);
@@ -67,11 +57,16 @@ public class LayersView extends RecyclerView {
 
         @Override
         public void onMoved(RecyclerView recyclerView, ViewHolder viewHolder, int fromPos, ViewHolder target, int toPos, int x, int y) {
+            super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y);
             layers.swapLayers(viewHolder, target);
         }
 
         @Override
         public boolean onMove(RecyclerView recyclerView, ViewHolder viewHolder, ViewHolder target) {
+            if (newMove) {
+                newMove = false;
+                layers.swapStarted();
+            }
             return target.getAdapterPosition() > 0;
         }
 
@@ -82,6 +77,17 @@ public class LayersView extends RecyclerView {
         @Override
         public int getMovementFlags(RecyclerView recyclerView, ViewHolder viewHolder) {
             return viewHolder.getAdapterPosition() > 0 ? ALLOW_DRAG : 0;
+        }
+
+        @Override
+        public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+            super.clearView(recyclerView, viewHolder);
+            motionFinished();
+        }
+
+        private void motionFinished() {
+            newMove = true;
+            layers.swapLayersFinished();
         }
     }
 }

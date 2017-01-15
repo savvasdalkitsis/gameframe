@@ -110,7 +110,8 @@ public class LedGridView extends View {
                     startY = motionEvent.getY();
                     x = motionEvent.getX();
                     y = motionEvent.getY();
-                    gridTouchedListener.onGridTouchedListener(
+                    gridTouchedListener.onGridTouchStarted();
+                    gridTouchedListener.onGridTouch(
                             blockCoordinate(block, startX),
                             blockCoordinate(block, startY),
                             blockCoordinate(block, x),
@@ -120,7 +121,7 @@ public class LedGridView extends View {
                 case MotionEvent.ACTION_MOVE:
                     x = motionEvent.getX();
                     y = motionEvent.getY();
-                    gridTouchedListener.onGridTouchedListener(
+                    gridTouchedListener.onGridTouch(
                             blockCoordinate(block, startX),
                             blockCoordinate(block, startY),
                             blockCoordinate(block, x),

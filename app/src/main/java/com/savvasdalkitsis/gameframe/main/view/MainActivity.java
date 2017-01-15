@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity implements MainView, ColorChooser
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.control_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_control, menu);
         return true;
     }
 
@@ -73,6 +73,7 @@ public class MainActivity extends BaseActivity implements MainView, ColorChooser
                 return true;
             case R.id.action_manage:
                 fragmentSwitcher.setDisplayedChild(0);
+                notifyAllFragmentsUnselected();
                 notifyFragmentSelected(R.id.fragment_manage);
                 return true;
             case R.id.action_draw:
@@ -81,6 +82,12 @@ public class MainActivity extends BaseActivity implements MainView, ColorChooser
                 return true;
         }
         return false;
+    }
+
+    private void notifyAllFragmentsUnselected() {
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            ((FragmentSelectedListener) fragment).onFragmentUnselected();
+        }
     }
 
     private void notifyFragmentSelected(int fragmentId) {

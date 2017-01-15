@@ -6,11 +6,13 @@ import com.savvasdalkitsis.gameframe.composition.model.BlendMode;
 import com.savvasdalkitsis.gameframe.composition.model.PorterDuffOperator;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Builder;
 
 @Getter
+@Setter
 @Builder
-public class LayerSettings {
+public class LayerSettings implements Moment<LayerSettings> {
 
     private float alpha;
     private BlendMode blendMode;
@@ -25,11 +27,21 @@ public class LayerSettings {
                 .alpha(1);
     }
 
-    public static LayerSettings.LayerSettingsBuilder from(LayerSettings layerSettings) {
+    @Override
+    public LayerSettings replicateMoment() {
         return builder()
-                .alpha(layerSettings.getAlpha())
-                .blendMode(layerSettings.getBlendMode())
-                .porterDuffOperator(layerSettings.getPorterDuffOperator())
-                .title(layerSettings.getTitle());
+                .alpha(getAlpha())
+                .blendMode(getBlendMode())
+                .porterDuffOperator(getPorterDuffOperator())
+                .title(getTitle())
+                .build();
+    }
+
+    @Override
+    public boolean isIdenticalTo(LayerSettings moment) {
+        return alpha == moment.alpha
+                && blendMode == moment.blendMode
+                && porterDuffOperator == moment.porterDuffOperator
+                && title.equals(moment.title);
     }
 }

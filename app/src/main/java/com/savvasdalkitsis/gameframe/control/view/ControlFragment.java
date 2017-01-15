@@ -85,6 +85,10 @@ public class ControlFragment extends AspectSupportFragment implements ControlVie
         fab.setOnClickListener(v -> presenter.togglePower());
     }
 
+    @Override
+    public void onFragmentUnselected() {
+    }
+
     @OnClick(R.id.view_menu)
     public void menu() {
         presenter.menu();

@@ -2,7 +2,9 @@ package com.savvasdalkitsis.gameframe.grid.model;
 
 import android.support.annotation.ColorInt;
 
-public interface Grid {
+import com.savvasdalkitsis.gameframe.draw.model.Moment;
+
+public interface Grid extends Moment<Grid> {
 
     void setColor(@ColorInt int color, int column, int row);
 
@@ -10,6 +12,4 @@ public interface Grid {
 
     @ColorInt
     int getColor(int column, int row);
-
-    Grid copy();
 }

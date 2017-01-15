@@ -10,6 +10,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -19,7 +22,9 @@ import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
 import com.savvasdalkitsis.gameframe.composition.usecase.BlendUseCase;
 import com.savvasdalkitsis.gameframe.draw.model.DrawingTool;
+import com.savvasdalkitsis.gameframe.draw.model.Historical;
 import com.savvasdalkitsis.gameframe.draw.model.Layer;
+import com.savvasdalkitsis.gameframe.draw.model.Model;
 import com.savvasdalkitsis.gameframe.draw.presenter.DrawPresenter;
 import com.savvasdalkitsis.gameframe.grid.model.Grid;
 import com.savvasdalkitsis.gameframe.grid.view.GridTouchedListener;
@@ -62,11 +67,14 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     private DrawingTool drawingTool;
     private int color;
     private final List<ToolView> toolsViews = new ArrayList<>();
+    private Historical<Model> modelHistory = new Historical<>(new Model());
+    private boolean selected;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter.bindView(this);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -74,8 +82,9 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         super.onActivityCreated(savedInstanceState);
         fab = (FloatingActionButton) getActivity().findViewById(R.id.view_fab);
         fabProgress = getActivity().findViewById(R.id.view_fab_progress);
-        layersList.onChange().subscribe(this::renderLayers);
-        renderLayers(layersList.getLayers());
+        layersList.bind(modelHistory);
+        modelHistory.observe().subscribe(render());
+
         drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -104,8 +113,42 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        if (selected) {
+            inflater.inflate(R.menu.menu_draw, menu);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_undo:
+                modelHistory.stepBackInTime();
+                return true;
+            case R.id.menu_redo:
+                modelHistory.stepForwardInTime();
+                return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        showMenuItemEnabled(menu, R.id.menu_undo, modelHistory.hasPast());
+        showMenuItemEnabled(menu, R.id.menu_redo, modelHistory.hasFuture());
+    }
+
+    @Override
     public void onFragmentSelected() {
+        selected = true;
         setFabState();
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public void onFragmentUnselected() {
+        selected = false;
+        invalidateOptionsMenu();
     }
 
     @Override
@@ -128,14 +171,20 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     }
 
     @Override
-    public void onGridTouchedListener(int startColumn, int startRow, int column, int row) {
-        drawingTool.drawOn(layersList.getSelectedLayer(), startColumn, startRow, column, row, color);
-        renderLayers(layersList.getLayers());
+    public void onGridTouchStarted() {
+        modelHistory.progressTime();
+    }
+
+    @Override
+    public void onGridTouch(int startColumn, int startRow, int column, int row) {
+        drawingTool.drawOn(modelHistory.present().getSelectedLayer(), startColumn, startRow, column, row, color);
+        modelHistory.announcePresent();
     }
 
     @Override
     public void onGridTouchFinished() {
-        drawingTool.finishStroke(layersList.getSelectedLayer());
+        drawingTool.finishStroke(modelHistory.present().getSelectedLayer());
+        modelHistory.collapsePresentWithPastIfTheSame();
     }
 
     @Override
@@ -204,12 +253,6 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         }
     }
 
-    private void renderLayers(List<Layer> layers) {
-        Observable.from(layers)
-                .subscribe(layer -> blendUseCase.renderOn(layer, ledGridView));
-        ledGridView.invalidate();
-    }
-
     private void scaleProgress(int value) {
         fabProgress.animate().scaleX(value).scaleY(value).start();
     }
@@ -226,6 +269,27 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         ViewGroup tools = (ViewGroup) view.findViewById(R.id.view_draw_tools);
         for (int i = 0; i < tools.getChildCount(); i++) {
             toolsViews.add((ToolView) tools.getChildAt(i));
+        }
+    }
+
+    private Action1<? super Model> render() {
+        return model -> {
+            for (Layer layer : model.getLayers()) {
+                blendUseCase.renderOn(layer, ledGridView);
+            }
+            ledGridView.invalidate();
+            invalidateOptionsMenu();
+        };
+    }
+
+    private void invalidateOptionsMenu() {
+        getActivity().invalidateOptionsMenu();
+    }
+
+    private void showMenuItemEnabled(Menu menu, int menuId, boolean enabled) {
+        MenuItem item = menu.findItem(menuId);
+        if (item != null) {
+            item.getIcon().setAlpha(enabled ? 255 : 125);
         }
     }
 }

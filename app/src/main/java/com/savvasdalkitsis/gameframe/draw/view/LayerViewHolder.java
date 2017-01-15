@@ -33,6 +33,7 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Layer layer) {
+        itemView.setSelected(layer.isSelected());
         title.setText(layer.getLayerSettings().getTitle());
         ledGridView.display(layer.getColorGrid());
         delete.setVisibility(View.VISIBLE);
@@ -49,10 +50,6 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
                 view.setVisibility(View.GONE);
             }
         }
-    }
-
-    void setSelected(boolean selected) {
-        itemView.setSelected(selected);
     }
 
     void clearListeners() {

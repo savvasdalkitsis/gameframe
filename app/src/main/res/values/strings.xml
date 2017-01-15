@@ -33,4 +33,6 @@
     <string name="blend_mode">Blend Mode</string>
     <string name="composition_operator">Composition Operator</string>
     <string name="layer_settings">Layer settings</string>
+    <string name="undo">Undo</string>
+    <string name="redo">Redo</string>
 </resources>
