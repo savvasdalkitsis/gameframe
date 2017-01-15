@@ -36,6 +36,9 @@ public class Model implements Moment<Model> {
 
     @Override
     public boolean isIdenticalTo(Model moment) {
+        if (layers.size() != moment.layers.size()) {
+            return false;
+        }
         return Observable.zip(Observable.from(layers), Observable.from(moment.layers), Pair::create)
                 .filter(pair -> !pair.first.isIdenticalTo(pair.second)).isEmpty()
                 .toBlocking()
