@@ -40,13 +40,11 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
         return layers().size();
     }
 
-    private void modifyLayer(LayerViewHolder holder, Action1<Layer> layerBuilder) {
+    private void modifyLayer(LayerViewHolder holder, Action1<Layer> layerModifier) {
         int position = holder.getAdapterPosition();
         progressTime();
         Layer layer = layers().get(position);
-        Layer newLayer = layer.replicateMoment();
-        layerBuilder.call(newLayer);
-        layers().set(position, newLayer);
+        layerModifier.call(layer);
         notifyItemChanged(position);
         notifyObservers();
     }
