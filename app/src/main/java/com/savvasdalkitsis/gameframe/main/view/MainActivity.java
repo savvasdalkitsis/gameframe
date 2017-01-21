@@ -86,13 +86,17 @@ public class MainActivity extends BaseActivity implements MainView, ColorChooser
 
     private void notifyAllFragmentsUnselected() {
         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-            ((FragmentSelectedListener) fragment).onFragmentUnselected();
+            if (fragment != null) {
+                ((FragmentSelectedListener) fragment).onFragmentUnselected();
+            }
         }
     }
 
     private void notifyFragmentSelected(int fragmentId) {
         Fragment fragment = getSupportFragmentManager().findFragmentById(fragmentId);
-        ((FragmentSelectedListener) fragment).onFragmentSelected();
+        if (fragment != null) {
+            ((FragmentSelectedListener) fragment).onFragmentSelected();
+        }
     }
 
     @Override
