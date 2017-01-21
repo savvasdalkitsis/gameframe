@@ -41,7 +41,6 @@ import butterknife.OnClick;
 import rx.Observable;
 import rx.functions.Action1;
 
-import static com.savvasdalkitsis.gameframe.draw.model.Palette.Builder.palette;
 import static com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.drawPresenter;
 import static com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.blendUseCase;
 
@@ -65,10 +64,10 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     @Nullable
     private SwatchView swatchToModify;
     private DrawingTool drawingTool;
-    private int color;
     private final List<ToolView> toolsViews = new ArrayList<>();
     private Historical<Model> modelHistory = new Historical<>(new Model());
     private boolean selected;
+    private SwatchView activeSwatch;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,9 +101,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ledGridView.setOnGridTouchedListener(this);
-        paletteView.bind(palette()
-                .colors(getResources().getIntArray(R.array.palette))
-                .build());
+        modelHistory.observe().subscribe(model -> paletteView.bind(model.getPalette()));
         paletteView.setOnSwatchSelectedListener(this);
         addTools(view);
         withAllTools(tool -> tool.setToolSelectedListener(this));
@@ -152,8 +149,8 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     }
 
     @Override
-    public void onSwatchSelected(int color) {
-        this.color = color;
+    public void onSwatchSelected(SwatchView swatchView) {
+        this.activeSwatch = swatchView;
     }
 
     @Override
@@ -165,8 +162,11 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
 
     @Override
     public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
-        if (swatchToModify != null) {
-            swatchToModify.bind(selectedColor);
+        if (swatchToModify != null && swatchToModify.getColor() != selectedColor) {
+            modelHistory.progressTimeWithoutAnnouncing();
+            modelHistory.present().getPalette().changeColor(swatchToModify.getIndex(), selectedColor);
+            modelHistory.collapsePresentWithPastIfTheSame();
+            modelHistory.announcePresent();
         }
     }
 
@@ -177,7 +177,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
 
     @Override
     public void onGridTouch(int startColumn, int startRow, int column, int row) {
-        drawingTool.drawOn(modelHistory.present().getSelectedLayer(), startColumn, startRow, column, row, color);
+        drawingTool.drawOn(modelHistory.present().getSelectedLayer(), startColumn, startRow, column, row, activeSwatch.getColor());
         modelHistory.announcePresent();
     }
 

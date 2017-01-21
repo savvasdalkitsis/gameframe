@@ -2,13 +2,13 @@ package com.savvasdalkitsis.gameframe.draw.view;
 
 interface SwatchSelectedListener {
 
-    void onSwatchSelected(int color);
+    void onSwatchSelected(SwatchView swatchView);
 
     void onSwatchLongPressed(SwatchView swatch);
 
     SwatchSelectedListener NO_OP = new SwatchSelectedListener() {
         @Override
-        public void onSwatchSelected(int color) {
+        public void onSwatchSelected(SwatchView swatchView) {
         }
 
         @Override

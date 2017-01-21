@@ -2,27 +2,46 @@ package com.savvasdalkitsis.gameframe.draw.model;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
+
+import com.savvasdalkitsis.gameframe.R;
+import com.savvasdalkitsis.gameframe.injector.ApplicationInjector;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
 
+import static com.savvasdalkitsis.gameframe.draw.model.Palette.Builder.palette;
+
 public class Model implements Moment<Model> {
 
     private final List<Layer> layers;
+    private final Palette palette;
 
     public Model() {
-        this(newLayers());
+        this(newLayers(), newPalette());
     }
 
-    private Model(List<Layer> layers) {
+    private Model(List<Layer> layers, Palette palette) {
         this.layers = layers;
+        this.palette = palette;
     }
 
     public List<Layer> getLayers() {
         return layers;
+    }
+
+    public Palette getPalette() {
+        return palette;
+    }
+
+    public Layer getSelectedLayer() {
+        return Observable.from(layers)
+                .first(Layer::isSelected)
+                .toBlocking()
+                .first();
     }
 
     @Override
@@ -31,12 +50,15 @@ public class Model implements Moment<Model> {
                 .map(Layer::replicateMoment)
                 .toList()
                 .toBlocking()
-                .first()));
+                .first()), palette.replicateMoment());
     }
 
     @Override
     public boolean isIdenticalTo(Model moment) {
         if (layers.size() != moment.layers.size()) {
+            return false;
+        }
+        if (!palette.isIdenticalTo(moment.getPalette())) {
             return false;
         }
         return Observable.zip(Observable.from(layers), Observable.from(moment.layers), Pair::create)
@@ -57,10 +79,10 @@ public class Model implements Moment<Model> {
         return layers;
     }
 
-    public Layer getSelectedLayer() {
-        return Observable.from(layers)
-                .first(Layer::isSelected)
-                .toBlocking()
-                .first();
+    @Nullable
+    private static Palette newPalette() {
+        return palette()
+                .colors(ApplicationInjector.application().getResources().getIntArray(R.array.palette))
+                .build();
     }
 }

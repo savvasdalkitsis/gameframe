@@ -37,10 +37,16 @@ public class PaletteView extends GridLayout {
         }
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        post(this::selectFirstSwatch);
+    }
+
     public void bind(Palette palette) {
         int[] colors = palette.getColors();
         for (int i = 0; i < SWATCH_COUNT; i++) {
-            swatches[i].bind(colors[i]);
+            swatches[i].bind(colors[i], i);
         }
     }
 
@@ -55,10 +61,14 @@ public class PaletteView extends GridLayout {
     }
 
     public void notifyListenerOfSwatchSelected(SwatchView swatchView) {
-        swatchSelectedListener.onSwatchSelected(swatchView.getColor());
+        swatchSelectedListener.onSwatchSelected(swatchView);
     }
 
     public void notifyListenerOfSwatchLongClicked(SwatchView swatchView) {
         swatchSelectedListener.onSwatchLongPressed(swatchView);
+    }
+
+    private void selectFirstSwatch() {
+        swatches[0].performClick();
     }
 }

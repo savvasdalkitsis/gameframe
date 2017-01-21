@@ -13,6 +13,7 @@ import com.savvasdalkitsis.gameframe.R;
 public class SwatchView extends CircleView {
 
     private int color;
+    private int index;
     private PaletteView paletteView;
     private Path circlePath;
     private RectF circleRect;
@@ -79,12 +80,17 @@ public class SwatchView extends CircleView {
         super.onDraw(canvas);
     }
 
-    public void bind(int color) {
+    public void bind(int color, int index) {
         this.color = color;
+        this.index = index;
         setBackgroundColor(color);
     }
 
     public int getColor() {
         return color;
+    }
+
+    public int getIndex() {
+        return index;
     }
 }

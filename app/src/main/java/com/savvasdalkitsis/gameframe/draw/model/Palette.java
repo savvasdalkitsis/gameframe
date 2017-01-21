@@ -1,6 +1,10 @@
 package com.savvasdalkitsis.gameframe.draw.model;
 
-public class Palette {
+import java.util.Arrays;
+
+import static com.savvasdalkitsis.gameframe.draw.model.Palette.Builder.palette;
+
+public class Palette implements Moment<Palette> {
 
     private int[] colors;
 
@@ -12,17 +16,35 @@ public class Palette {
         return colors;
     }
 
+    @Override
+    public Palette replicateMoment() {
+        int[] colorsCopy = new int[colors.length];
+        System.arraycopy(colors, 0, colorsCopy, 0,  colors.length);
+        return palette()
+                .colors(colorsCopy)
+                .build();
+    }
+
+    @Override
+    public boolean isIdenticalTo(Palette moment) {
+        return Arrays.equals(colors, moment.colors);
+    }
+
+    public void changeColor(int index, int color) {
+        colors[index] = color;
+    }
+
     public static final class Builder {
         private int[] colors;
 
         private Builder() {
         }
 
-        public static Builder palette() {
+        static Builder palette() {
             return new Builder();
         }
 
-        public Builder colors(int[] val) {
+        Builder colors(int[] val) {
             colors = val;
             return this;
         }
