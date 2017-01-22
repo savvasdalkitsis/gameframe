@@ -35,4 +35,6 @@
     <string name="layer_settings">Layer settings</string>
     <string name="undo">Undo</string>
     <string name="redo">Redo</string>
+    <string name="palettes">Palettes</string>
+    <string name="add_new_palette">Add New Palette</string>
 </resources>

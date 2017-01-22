@@ -1,6 +1,7 @@
 package com.savvasdalkitsis.gameframe.draw.model;
 
 import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
+import com.savvasdalkitsis.gameframe.model.Moment;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -3,38 +3,42 @@ package com.savvasdalkitsis.gameframe.draw.model;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
 
-import com.savvasdalkitsis.gameframe.R;
-import com.savvasdalkitsis.gameframe.injector.ApplicationInjector;
+import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
+import com.savvasdalkitsis.gameframe.model.Moment;
+import com.savvasdalkitsis.gameframe.model.MomentList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
 
-import static com.savvasdalkitsis.gameframe.draw.model.Palette.Builder.palette;
-
 public class Model implements Moment<Model> {
 
-    private final List<Layer> layers;
-    private final Palette palette;
+    private final MomentList<Layer> layers;
+    private final MomentList<Palette> palettes;
 
     public Model() {
-        this(newLayers(), newPalette());
+        this(newLayers(), newPalettes());
     }
 
-    private Model(List<Layer> layers, Palette palette) {
+    private Model(MomentList<Layer> layers, MomentList<Palette> palettes) {
         this.layers = layers;
-        this.palette = palette;
+        this.palettes = palettes;
     }
 
     public List<Layer> getLayers() {
         return layers;
     }
 
-    public Palette getPalette() {
-        return palette;
+    public List<Palette> getPalettes() {
+        return palettes;
+    }
+
+    public Palette getSelectedPalette() {
+        return Observable.from(palettes)
+                .first(Palette::isSelected)
+                .toBlocking()
+                .first();
     }
 
     public Layer getSelectedLayer() {
@@ -46,43 +50,28 @@ public class Model implements Moment<Model> {
 
     @Override
     public Model replicateMoment() {
-        return new Model(new ArrayList<>(Observable.from(layers)
-                .map(Layer::replicateMoment)
-                .toList()
-                .toBlocking()
-                .first()), palette.replicateMoment());
+        return new Model(layers.replicateMoment(), palettes.replicateMoment());
     }
 
     @Override
     public boolean isIdenticalTo(Model moment) {
-        if (layers.size() != moment.layers.size()) {
-            return false;
-        }
-        if (!palette.isIdenticalTo(moment.getPalette())) {
-            return false;
-        }
-        return Observable.zip(Observable.from(layers), Observable.from(moment.layers), Pair::create)
-                .filter(pair -> !pair.first.isIdenticalTo(pair.second)).isEmpty()
-                .toBlocking()
-                .first();
+        return layers.isIdenticalTo(moment.layers) && palettes.isIdenticalTo(moment.palettes);
     }
 
     @NonNull
-    private static ArrayList<Layer> newLayers() {
-        ArrayList<Layer> layers = new ArrayList<>();
-        Layer layer = Layer.create(LayerSettings.create().title("Background"))
+    private static MomentList<Layer> newLayers() {
+        return new MomentList<>(Layer.create(LayerSettings.create().title("Background"))
                 .isBackground(true)
                 .isSelected(true)
-                .build();
-        layer.getColorGrid().fill(Color.GRAY);
-        layers.add(layer);
-        return layers;
+                .colorGrid(new ColorGrid().fill(Color.GRAY))
+                .build());
     }
 
     @Nullable
-    private static Palette newPalette() {
-        return palette()
-                .colors(ApplicationInjector.application().getResources().getIntArray(R.array.palette))
-                .build();
+    private static MomentList<Palette> newPalettes() {
+        return new MomentList<>(Palettes.defaultPalette()
+                .isSelected(true)
+                .build());
     }
+
 }

@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.draw.model;
+package com.savvasdalkitsis.gameframe.model;
 
 import java.util.Deque;
 import java.util.LinkedList;

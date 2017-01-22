@@ -1,56 +1,55 @@
 package com.savvasdalkitsis.gameframe.draw.model;
 
+import com.savvasdalkitsis.gameframe.model.Moment;
+
 import java.util.Arrays;
 
-import static com.savvasdalkitsis.gameframe.draw.model.Palette.Builder.palette;
+import lombok.Getter;
+import lombok.experimental.Builder;
 
+@Builder
+@Getter
 public class Palette implements Moment<Palette> {
 
+    private String title;
+    private boolean isSelected;
     private int[] colors;
-
-    private Palette(Builder builder) {
-        colors = builder.colors;
-    }
-
-    public int[] getColors() {
-        return colors;
-    }
-
-    @Override
-    public Palette replicateMoment() {
-        int[] colorsCopy = new int[colors.length];
-        System.arraycopy(colors, 0, colorsCopy, 0,  colors.length);
-        return palette()
-                .colors(colorsCopy)
-                .build();
-    }
-
-    @Override
-    public boolean isIdenticalTo(Palette moment) {
-        return Arrays.equals(colors, moment.colors);
-    }
 
     public void changeColor(int index, int color) {
         colors[index] = color;
     }
 
-    public static final class Builder {
-        private int[] colors;
+    public void setSelected(boolean selected) {
+        this.isSelected = selected;
+    }
 
-        private Builder() {
-        }
+    @Override
+    public Palette replicateMoment() {
+        int[] colorsCopy = copy(colors);
+        return builder()
+                .colors(colorsCopy)
+                .isSelected(isSelected)
+                .title(title)
+                .build();
+    }
 
-        static Builder palette() {
-            return new Builder();
-        }
+    @Override
+    public boolean isIdenticalTo(Palette moment) {
+        return isSelected == moment.isSelected
+                && title.equals(moment.title)
+                && Arrays.equals(colors, moment.colors);
+    }
 
-        Builder colors(int[] val) {
-            colors = val;
-            return this;
-        }
+    public static PaletteBuilder from(Palette palette) {
+        return builder()
+                .title(palette.title)
+                .isSelected(palette.isSelected)
+                .colors(copy(palette.colors));
+    }
 
-        public Palette build() {
-            return new Palette(this);
-        }
+    private static int[] copy(int[] colors) {
+        int[] colorsCopy = new int[colors.length];
+        System.arraycopy(colors, 0, colorsCopy, 0,  colors.length);
+        return colorsCopy;
     }
 }

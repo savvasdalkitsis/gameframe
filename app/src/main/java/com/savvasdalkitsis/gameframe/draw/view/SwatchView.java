@@ -18,6 +18,7 @@ public class SwatchView extends CircleView {
     private Path circlePath;
     private RectF circleRect;
     private Drawable tile;
+    private boolean binding;
 
     public SwatchView(Context context) {
         super(context);
@@ -83,7 +84,16 @@ public class SwatchView extends CircleView {
     public void bind(int color, int index) {
         this.color = color;
         this.index = index;
+        binding = true;
         setBackgroundColor(color);
+        binding = false;
+    }
+
+    @Override
+    public void requestLayout() {
+        if (!binding) {
+            super.requestLayout();
+        }
     }
 
     public int getColor() {

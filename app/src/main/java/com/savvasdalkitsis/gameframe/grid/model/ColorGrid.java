@@ -35,12 +35,13 @@ public class ColorGrid implements Grid {
     }
 
     @Override
-    public void fill(int color) {
+    public ColorGrid fill(int color) {
         for (int i = 1; i <= SIDE; i++) {
             for (int j = 1; j <= SIDE; j++) {
                 setColor(color, i, j);
             }
         }
+        return this;
     }
 
     @Override

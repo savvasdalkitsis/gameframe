@@ -8,9 +8,10 @@ import com.savvasdalkitsis.gameframe.draw.model.Palette;
 
 public class PaletteView extends GridLayout {
 
-    private static final int SWATCH_COUNT = 20;
+    private static final int SWATCH_COUNT = 16;
     private SwatchView[] swatches;
     private SwatchSelectedListener swatchSelectedListener = SwatchSelectedListener.NO_OP;
+    private boolean thumbnailMode;
 
     public PaletteView(Context context) {
         super(context);
@@ -40,7 +41,19 @@ public class PaletteView extends GridLayout {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        post(this::selectFirstSwatch);
+        if (!thumbnailMode) {
+            post(this::selectFirstSwatch);
+        }
+    }
+
+    public void setThumbnailMode() {
+        thumbnailMode = true;
+        for (SwatchView swatch : swatches) {
+            swatch.setOnClickListener(null);
+            swatch.setOnLongClickListener(null);
+            swatch.setClickable(false);
+            swatch.setLongClickable(false);
+        }
     }
 
     public void bind(Palette palette) {

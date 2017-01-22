@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
-import com.savvasdalkitsis.gameframe.draw.model.Historical;
+import com.savvasdalkitsis.gameframe.model.Historical;
 import com.savvasdalkitsis.gameframe.draw.model.Layer;
 import com.savvasdalkitsis.gameframe.draw.model.LayerSettings;
 import com.savvasdalkitsis.gameframe.draw.model.Model;

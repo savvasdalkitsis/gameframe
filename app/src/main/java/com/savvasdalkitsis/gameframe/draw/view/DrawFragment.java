@@ -22,7 +22,6 @@ import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
 import com.savvasdalkitsis.gameframe.composition.usecase.BlendUseCase;
 import com.savvasdalkitsis.gameframe.draw.model.DrawingTool;
-import com.savvasdalkitsis.gameframe.draw.model.Historical;
 import com.savvasdalkitsis.gameframe.draw.model.Layer;
 import com.savvasdalkitsis.gameframe.draw.model.Model;
 import com.savvasdalkitsis.gameframe.draw.presenter.DrawPresenter;
@@ -31,6 +30,7 @@ import com.savvasdalkitsis.gameframe.grid.view.GridTouchedListener;
 import com.savvasdalkitsis.gameframe.grid.view.LedGridView;
 import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener;
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars;
+import com.savvasdalkitsis.gameframe.model.Historical;
 import com.shazam.android.aspects.base.fragment.AspectSupportFragment;
 
 import java.util.ArrayList;
@@ -55,6 +55,8 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     public PaletteView paletteView;
     @Bind(R.id.view_draw_layers)
     public LayersView layersList;
+    @Bind(R.id.view_draw_palettes)
+    public PalettesView palettesList;
     FloatingActionButton fab;
     @Bind(R.id.view_draw_drawer)
     public DrawerLayout drawer;
@@ -82,7 +84,8 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         fab = (FloatingActionButton) getActivity().findViewById(R.id.view_fab);
         fabProgress = getActivity().findViewById(R.id.view_fab_progress);
         layersList.bind(modelHistory);
-        modelHistory.observe().subscribe(render());
+        palettesList.bind(modelHistory);
+        modelHistory.observe().subscribe(this::render);
 
         drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
@@ -101,7 +104,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ledGridView.setOnGridTouchedListener(this);
-        modelHistory.observe().subscribe(model -> paletteView.bind(model.getPalette()));
+        modelHistory.observe().subscribe(model -> paletteView.bind(model.getSelectedPalette()));
         paletteView.setOnSwatchSelectedListener(this);
         addTools(view);
         withAllTools(tool -> tool.setToolSelectedListener(this));
@@ -164,7 +167,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     public void onColorSelection(@NonNull ColorChooserDialog dialog, @ColorInt int selectedColor) {
         if (swatchToModify != null && swatchToModify.getColor() != selectedColor) {
             modelHistory.progressTimeWithoutAnnouncing();
-            modelHistory.present().getPalette().changeColor(swatchToModify.getIndex(), selectedColor);
+            modelHistory.present().getSelectedPalette().changeColor(swatchToModify.getIndex(), selectedColor);
             modelHistory.collapsePresentWithPastIfTheSame();
             modelHistory.announcePresent();
         }
@@ -178,7 +181,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     @Override
     public void onGridTouch(int startColumn, int startRow, int column, int row) {
         drawingTool.drawOn(modelHistory.present().getSelectedLayer(), startColumn, startRow, column, row, activeSwatch.getColor());
-        modelHistory.announcePresent();
+        render(modelHistory.present());
     }
 
     @Override
@@ -243,9 +246,18 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     }
 
     @SuppressLint("RtlHardcoded")
+    @OnClick(R.id.view_draw_open_palette)
+    public void openPalette() {
+        drawer.openDrawer(Gravity.LEFT);
+    }
+
+    @SuppressLint("RtlHardcoded")
     private void setFabState() {
         if (drawer.isDrawerOpen(Gravity.RIGHT)) {
             fab.setOnClickListener(v -> layersList.addNewLayer());
+            fab.setImageResource(R.drawable.ic_add_white_48px);
+        } else if (drawer.isDrawerOpen(Gravity.LEFT)) {
+            fab.setOnClickListener(v -> AddPaletteView.show(getContext(), drawer, palette -> palettesList.addNewPalette(palette)));
             fab.setImageResource(R.drawable.ic_add_white_48px);
         } else {
             fab.setOnClickListener(v -> presenter.upload(ledGridView.getColorGrid()));
@@ -272,14 +284,12 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         }
     }
 
-    private Action1<? super Model> render() {
-        return model -> {
-            for (Layer layer : model.getLayers()) {
-                blendUseCase.renderOn(layer, ledGridView);
-            }
-            ledGridView.invalidate();
-            invalidateOptionsMenu();
-        };
+    private void render(Model model) {
+        for (Layer layer : model.getLayers()) {
+            blendUseCase.renderOn(layer, ledGridView);
+        }
+        ledGridView.invalidate();
+        invalidateOptionsMenu();
     }
 
     private void invalidateOptionsMenu() {

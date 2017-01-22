@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.AttributeSet;
 
-import com.savvasdalkitsis.gameframe.draw.model.Historical;
+import com.savvasdalkitsis.gameframe.model.Historical;
 import com.savvasdalkitsis.gameframe.draw.model.Model;
 
 public class LayersView extends RecyclerView {

@@ -15,24 +15,35 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp" />
 
+        <ImageView
+            android:id="@+id/view_draw_open_palette"
+            style="?attr/actionButtonStyle"
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_draw_led_grid_view"
+            android:src="@drawable/ic_palette_black_48px"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
         <include
             android:id="@+id/view_draw_palette"
             layout="@layout/view_palette"
+            android:layout_toRightOf="@+id/view_draw_open_palette"
+            android:layout_toLeftOf="@+id/view_draw_open_layers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/view_draw_led_grid_view"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="72dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
             tools:ignore="RtlHardcoded" />
 
         <ImageView
             android:id="@+id/view_draw_open_layers"
             style="?attr/actionButtonStyle"
+            android:layout_marginRight="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@id/view_draw_led_grid_view"
+            android:layout_alignParentRight="true"
             android:layout_below="@id/view_draw_led_grid_view"
             android:src="@drawable/ic_toc_black_48px"
             tools:ignore="ContentDescription,RtlHardcoded" />
@@ -106,6 +117,32 @@
             </LinearLayout>
         </HorizontalScrollView>
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:background="@android:color/white"
+        android:orientation="vertical"
+        tools:ignore="RtlHardcoded">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"
+            android:gravity="center_horizontal"
+            android:text="@string/palettes" />
+
+
+        <com.savvasdalkitsis.gameframe.draw.view.PalettesView
+            android:id="@+id/view_draw_palettes"
+            android:layout_width="240dp"
+            android:layout_height="match_parent"
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="vertical" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="240dp"

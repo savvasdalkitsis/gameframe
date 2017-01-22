@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/swatch_margin"
-    grid:columnCount="10"
+    grid:columnCount="8"
     grid:rowCount="2">
 
     <com.savvasdalkitsis.gameframe.draw.view.SwatchView
@@ -123,39 +123,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
-        android:gravity="center"
-        grid:layout_columnWeight="1"
-        grid:layout_gravity="fill_horizontal" />
-
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/swatch_margin"
-        android:gravity="center"
-        grid:layout_columnWeight="1"
-        grid:layout_gravity="fill_horizontal" />
-
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/swatch_margin"
-        android:gravity="center"
-        grid:layout_columnWeight="1"
-        grid:layout_gravity="fill_horizontal" />
-
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/swatch_margin"
-        android:gravity="center"
-        grid:layout_columnWeight="1"
-        grid:layout_gravity="fill_horizontal" />
-
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/swatch_margin"
-        android:background="@android:color/holo_red_dark"
         android:gravity="center"
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
