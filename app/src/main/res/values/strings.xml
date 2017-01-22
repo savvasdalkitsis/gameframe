@@ -37,4 +37,6 @@
     <string name="redo">Redo</string>
     <string name="palettes">Palettes</string>
     <string name="add_new_palette">Add New Palette</string>
+    <string name="palette_settings">Palette settings</string>
+    <string name="title">Title</string>
 </resources>

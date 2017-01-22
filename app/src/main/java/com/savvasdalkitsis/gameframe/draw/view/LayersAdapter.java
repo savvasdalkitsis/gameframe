@@ -30,7 +30,7 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
         holder.setOnClickListener(v -> selectWithHistory(holder.getAdapterPosition()));
         holder.setOnLayerVisibilityChangedListener(visible ->
                 modifyLayer(holder, layer -> layer.setVisible(visible)));
-        holder.setOnLayerDeletedListener(() -> removeLayer(holder));
+        holder.setOnItemDeletedListener(() -> removeLayer(holder));
         holder.setOnLayerDuplicatedListener(() -> duplicateLayer(holder));
         holder.setOnLayerSettingsClickedListener(() -> layerSettings(holder));
     }

@@ -17,7 +17,7 @@ class SimplePalettesAdapter extends RecyclerView.Adapter<PaletteViewHolder> {
 
     @Override
     public PaletteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PaletteViewHolder(parent);
+        return new PaletteViewHolder(parent, false);
     }
 
     @Override

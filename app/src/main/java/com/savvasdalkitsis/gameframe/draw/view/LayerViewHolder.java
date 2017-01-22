@@ -54,7 +54,7 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
 
     void clearListeners() {
         setOnClickListener(null);
-        setOnLayerDeletedListener(OnLayerDeletedListener.NO_OP);
+        setOnItemDeletedListener(OnItemDeletedListener.NO_OP);
         setOnLayerDuplicatedListener(OnLayerDuplicatedListener.NO_OP);
         setOnLayerSettingsClickedListener(OnLayerSettingsClickedListener.NO_OP);
         setOnLayerVisibilityChangedListener(OnLayerVisibilityChangedListener.NO_OP);
@@ -64,8 +64,8 @@ class LayerViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(onClickListener);
     }
 
-    void setOnLayerDeletedListener(OnLayerDeletedListener onLayerDeletedListener) {
-        delete.setOnClickListener(v -> onLayerDeletedListener.onLayerDeleted());
+    void setOnItemDeletedListener(OnItemDeletedListener onItemDeletedListener) {
+        delete.setOnClickListener(v -> onItemDeletedListener.onItemDeleted());
     }
 
     void setOnLayerDuplicatedListener(OnLayerDuplicatedListener onLayerDuplicatedListener) {

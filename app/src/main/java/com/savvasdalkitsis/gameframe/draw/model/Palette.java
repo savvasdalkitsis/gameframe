@@ -5,9 +5,11 @@ import com.savvasdalkitsis.gameframe.model.Moment;
 import java.util.Arrays;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Builder;
 
 @Builder
+@Setter
 @Getter
 public class Palette implements Moment<Palette> {
 
@@ -17,10 +19,6 @@ public class Palette implements Moment<Palette> {
 
     public void changeColor(int index, int color) {
         colors[index] = color;
-    }
-
-    public void setSelected(boolean selected) {
-        this.isSelected = selected;
     }
 
     @Override

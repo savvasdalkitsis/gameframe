@@ -13,6 +13,7 @@
         android:layout_marginLeft="24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        tools:text="Palette Name"
         tools:ignore="RtlHardcoded" />
 
     <include
@@ -22,5 +23,31 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         layout="@layout/view_palette"/>
+
+    <LinearLayout
+        android:id="@+id/view_palette_controls"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="RtlHardcoded">
+
+        <ImageView
+            android:id="@+id/view_palette_edit"
+            style="?attr/actionButtonStyle"
+            android:src="@drawable/ic_create_black_48px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+        <ImageView
+            android:id="@+id/view_palette_delete"
+            style="?attr/actionButtonStyle"
+            android:src="@drawable/ic_delete_black_48px"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+
+    </LinearLayout>
 
 </LinearLayout>

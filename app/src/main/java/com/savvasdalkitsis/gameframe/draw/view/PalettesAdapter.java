@@ -1,5 +1,6 @@
 package com.savvasdalkitsis.gameframe.draw.view;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -9,6 +10,8 @@ import com.savvasdalkitsis.gameframe.draw.model.Palette;
 
 import java.util.List;
 
+import rx.functions.Action1;
+
 
 class PalettesAdapter extends RecyclerView.Adapter<PaletteViewHolder> {
 
@@ -16,7 +19,7 @@ class PalettesAdapter extends RecyclerView.Adapter<PaletteViewHolder> {
 
     @Override
     public PaletteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new PaletteViewHolder(parent);
+        return new PaletteViewHolder(parent, true);
     }
 
     @Override
@@ -24,6 +27,9 @@ class PalettesAdapter extends RecyclerView.Adapter<PaletteViewHolder> {
         holder.clearListeners();
         holder.bind(palettes().get(position));
         holder.setOnClickListener(v -> selectWithHistory(holder.getAdapterPosition()));
+        holder.setOnItemDeletedListener(() -> removePalette(holder));
+        holder.setOnPaletteEditClickedListener(() -> paletteEdit(holder));
+        holder.setDeletable(palettes().size() > 1);
     }
 
     @Override
@@ -45,6 +51,30 @@ class PalettesAdapter extends RecyclerView.Adapter<PaletteViewHolder> {
         notifyItemChanged(position);
     }
 
+    private void modifyPalette(PaletteViewHolder holder, Action1<Palette> paletteModifier) {
+        int position = holder.getAdapterPosition();
+        progressTime();
+        Palette palette = palettes().get(position);
+        paletteModifier.call(palette);
+        notifyItemChanged(position);
+        notifyObservers();
+    }
+
+    private void removePalette(PaletteViewHolder holder) {
+        int position = holder.getAdapterPosition();
+        progressTime();
+        if (palettes().get(position).isSelected()) {
+            palettes().get(position - 1).setSelected(true);
+            notifyItemChanged(position - 1);
+        }
+        palettes().remove(position);
+        notifyItemRemoved(position);
+        notifyObservers();
+        if (palettes().size() == 1) {
+            notifyDataSetChanged();
+        }
+    }
+
     void addNewPalette(Palette palette) {
         progressTime();
         palettes().add(Palette.from(palette)
@@ -54,6 +84,15 @@ class PalettesAdapter extends RecyclerView.Adapter<PaletteViewHolder> {
         notifyItemInserted(lastIndex);
         select(lastIndex);
         notifyObservers();
+        if (palettes().size() == 2) {
+            notifyDataSetChanged();
+        }
+    }
+
+    private void paletteEdit(PaletteViewHolder holder) {
+        Context context = holder.itemView.getContext();
+        PaletteSettingsView.show(context, palettes().get(holder.getAdapterPosition()), (ViewGroup) holder.itemView,
+                paletteSettings -> modifyPalette(holder, palette -> palette.setTitle(paletteSettings.getTitle())));
     }
 
     private List<Palette> palettes() {
