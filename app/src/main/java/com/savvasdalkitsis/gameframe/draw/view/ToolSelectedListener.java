@@ -1,10 +1,10 @@
 package com.savvasdalkitsis.gameframe.draw.view;
 
-import com.savvasdalkitsis.gameframe.draw.model.DrawingTool;
+import com.savvasdalkitsis.gameframe.draw.model.Tools;
 
 interface ToolSelectedListener {
 
-    ToolSelectedListener NO_OP = drawingTool -> {};
+    ToolSelectedListener NO_OP = tool -> {};
 
-    void onToolSelected(DrawingTool drawingTool);
+    void onToolSelected(Tools tool);
 }

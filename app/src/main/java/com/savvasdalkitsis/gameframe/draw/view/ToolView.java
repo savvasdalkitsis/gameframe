@@ -5,10 +5,11 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 import com.savvasdalkitsis.gameframe.draw.model.DrawingTool;
+import com.savvasdalkitsis.gameframe.draw.model.Tools;
 
-public abstract class ToolView extends ImageView {
+public class ToolView extends ImageView {
 
-    private ToolSelectedListener toolSelectedListener = ToolSelectedListener.NO_OP;
+    private DrawingTool drawingTool;
 
     public ToolView(Context context) {
         super(context);
@@ -22,18 +23,12 @@ public abstract class ToolView extends ImageView {
         super(context, attrs, defStyleAttr);
     }
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        setOnClickListener(v -> {
-            toolSelectedListener.onToolSelected(getDrawingTool());
-            setAlpha(1f);
-        });
+    protected DrawingTool getDrawingTool() {
+        return drawingTool;
     }
 
-    public void setToolSelectedListener(ToolSelectedListener toolSelectedListener) {
-        this.toolSelectedListener = toolSelectedListener;
+    public void bind(Tools tool) {
+        this.drawingTool = tool.getTool();
+        setImageResource(tool.getIcon());
     }
-
-    protected abstract DrawingTool getDrawingTool();
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="4dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <com.savvasdalkitsis.gameframe.draw.view.ToolView
+        android:id="@+id/view_tool_entry_icon"
+        style="?attr/actionButtonStyle"
+        tools:src="@drawable/ic_create_black_48px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="ContentDescription,RtlHardcoded" />
+
+    <TextView
+        tools:text="Tool"
+        android:textSize="10sp"
+        android:id="@+id/view_tool_entry_title"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="SmallSp" />
+
+</LinearLayout>

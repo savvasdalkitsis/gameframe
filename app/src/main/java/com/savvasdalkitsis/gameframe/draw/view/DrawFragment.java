@@ -14,16 +14,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.color.ColorChooserDialog;
 import com.savvasdalkitsis.butterknifeaspects.aspects.BindLayout;
 import com.savvasdalkitsis.gameframe.R;
 import com.savvasdalkitsis.gameframe.composition.usecase.BlendUseCase;
-import com.savvasdalkitsis.gameframe.draw.model.DrawingTool;
 import com.savvasdalkitsis.gameframe.draw.model.Layer;
 import com.savvasdalkitsis.gameframe.draw.model.Model;
+import com.savvasdalkitsis.gameframe.draw.model.Tools;
 import com.savvasdalkitsis.gameframe.draw.presenter.DrawPresenter;
 import com.savvasdalkitsis.gameframe.grid.model.Grid;
 import com.savvasdalkitsis.gameframe.grid.view.GridTouchedListener;
@@ -32,13 +31,10 @@ import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener;
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars;
 import com.savvasdalkitsis.gameframe.model.Historical;
 import com.shazam.android.aspects.base.fragment.AspectSupportFragment;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import butterknife.Bind;
 import butterknife.OnClick;
-import rx.Observable;
 import rx.functions.Action1;
 
 import static com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.drawPresenter;
@@ -60,13 +56,17 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     FloatingActionButton fab;
     @Bind(R.id.view_draw_drawer)
     public DrawerLayout drawer;
+    @Bind(R.id.view_draw_tools)
+    public ToolsView toolsView;
+    @Bind(R.id.view_draw_sliding_up_panel)
+    public SlidingUpPanelLayout slidingUpPanelLayout;
+    @Bind(R.id.view_draw_tools_current)
+    public ToolView toolCurrent;
     private View fabProgress;
     private final DrawPresenter presenter = drawPresenter();
     private final BlendUseCase blendUseCase = blendUseCase();
     @Nullable
     private SwatchView swatchToModify;
-    private DrawingTool drawingTool;
-    private final List<ToolView> toolsViews = new ArrayList<>();
     private Historical<Model> modelHistory = new Historical<>(new Model());
     private boolean selected;
     private SwatchView activeSwatch;
@@ -86,7 +86,16 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         layersList.bind(modelHistory);
         palettesList.bind(modelHistory);
         modelHistory.observe().subscribe(this::render);
+        toolsView.setOnToolSelectedListener(this);
+        toolCurrent.bind(Tools.defaultTool());
 
+        slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelLayout.SimplePanelSlideListener(){
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                int scale = newState == SlidingUpPanelLayout.PanelState.EXPANDED ? 0 : 1;
+                fab.animate().scaleY(scale).scaleX(scale).start();
+            }
+        });
         drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -106,10 +115,6 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         ledGridView.setOnGridTouchedListener(this);
         modelHistory.observe().subscribe(model -> paletteView.bind(model.getSelectedPalette()));
         paletteView.setOnSwatchSelectedListener(this);
-        addTools(view);
-        withAllTools(tool -> tool.setToolSelectedListener(this));
-
-        toolsViews.get(0).performClick();
     }
 
     @Override
@@ -180,20 +185,20 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
 
     @Override
     public void onGridTouch(int startColumn, int startRow, int column, int row) {
-        drawingTool.drawOn(modelHistory.present().getSelectedLayer(), startColumn, startRow, column, row, activeSwatch.getColor());
+        toolCurrent.getDrawingTool().drawOn(modelHistory.present().getSelectedLayer(), startColumn, startRow, column, row, activeSwatch.getColor());
         render(modelHistory.present());
     }
 
     @Override
     public void onGridTouchFinished() {
-        drawingTool.finishStroke(modelHistory.present().getSelectedLayer());
+        toolCurrent.getDrawingTool().finishStroke(modelHistory.present().getSelectedLayer());
         modelHistory.collapsePresentWithPastIfTheSame();
     }
 
     @Override
-    public void onToolSelected(DrawingTool drawingTool) {
-        this.drawingTool = drawingTool;
-        withAllTools(tool -> tool.setAlpha(0.2f));
+    public void onToolSelected(Tools tool) {
+        toolCurrent.bind(tool);
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
     }
 
     @Override
@@ -251,6 +256,11 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
         drawer.openDrawer(Gravity.LEFT);
     }
 
+    @OnClick({R.id.view_draw_tools_change, R.id.view_draw_tools_current})
+    public void changeTool() {
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+    }
+
     @SuppressLint("RtlHardcoded")
     private void setFabState() {
         if (drawer.isDrawerOpen(Gravity.RIGHT)) {
@@ -271,17 +281,6 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
 
     private View coordinator() {
         return getActivity().findViewById(R.id.view_coordinator);
-    }
-
-    private void withAllTools(Action1<ToolView> action) {
-        Observable.from(toolsViews).subscribe(action);
-    }
-
-    private void addTools(View view) {
-        ViewGroup tools = (ViewGroup) view.findViewById(R.id.view_draw_tools);
-        for (int i = 0; i < tools.getChildCount(); i++) {
-            toolsViews.add((ToolView) tools.getChildAt(i));
-        }
     }
 
     private void render(Model model) {

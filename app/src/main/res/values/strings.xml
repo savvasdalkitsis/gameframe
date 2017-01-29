@@ -39,4 +39,6 @@
     <string name="add_new_palette">Add New Palette</string>
     <string name="palette_settings">Palette settings</string>
     <string name="title">Title</string>
+    <string name="tools">Tools</string>
+    <string name="change_tool">Change tool:</string>
 </resources>
