@@ -14,7 +14,8 @@ public enum Tools {
     RECTANGLE(new RectangleTool(), "Rectangle", R.drawable.ic_crop_din_black_48px),
     FILL_RECTANGLE(new FillRectangleTool(), "Fill Rectangle", R.drawable.ic_rect_black_48px),
     OVAL(new OvalTool(), "Oval", R.drawable.ic_panorama_fish_eye_black_48px),
-    FILL_OVAL(new FillOvalTool(), "Fill Oval", R.drawable.ic_disk_black_48px);
+    FILL_OVAL(new FillOvalTool(), "Fill Oval", R.drawable.ic_disk_black_48px),
+    LINE(new LineTool(), "Line", R.drawable.ic_line_black_48px);
 
 
     private final DrawingTool tool;
