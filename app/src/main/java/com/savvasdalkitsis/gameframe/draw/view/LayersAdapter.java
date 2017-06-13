@@ -60,6 +60,7 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
         layers().get(position).setSelected(true);
         notifyItemChanged(selectedItemPosition);
         notifyItemChanged(position);
+        notifyObservers();
     }
 
     private void removeLayer(LayerViewHolder holder) {
@@ -113,7 +114,6 @@ class LayersAdapter extends RecyclerView.Adapter<LayerViewHolder> {
         layers().add(position, layer);
         notifyItemInserted(position);
         select(position);
-        notifyObservers();
     }
 
     private List<Layer> layers() {

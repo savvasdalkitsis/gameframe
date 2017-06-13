@@ -13,6 +13,7 @@ import android.view.View;
 import com.savvasdalkitsis.gameframe.R;
 import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
 import com.savvasdalkitsis.gameframe.grid.model.Grid;
+import com.savvasdalkitsis.gameframe.math.MathExtras;
 
 public class LedGridView extends View {
 
@@ -23,6 +24,8 @@ public class LedGridView extends View {
     private GridTouchedListener gridTouchedListener = GridTouchedListener.NO_OP;
     private float startX;
     private float startY;
+    private int columnTranslation;
+    private int rowTranslation;
 
     public LedGridView(Context context) {
         super(context);
@@ -47,7 +50,7 @@ public class LedGridView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        tileSide = getMeasuredWidth() / 16.0f;
+        tileSide = getMeasuredWidth() / (float) ColorGrid.SIDE;
         setMeasuredDimension(getMeasuredWidth(), getMeasuredWidth());
     }
 
@@ -63,6 +66,15 @@ public class LedGridView extends View {
         invalidate();
     }
 
+    public void displayBoundaries(int columnTranslation, int rowTranslation) {
+        this.columnTranslation = columnTranslation;
+        this.rowTranslation = rowTranslation;
+    }
+
+    public void clearBoundaries() {
+        displayBoundaries(0, 0);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -71,20 +83,43 @@ public class LedGridView extends View {
             thumbBackground.setBounds(0, 0, gridSide, gridSide);
             thumbBackground.draw(canvas);
         }
-        for (int column = 1; column <= 16; column++) {
-            for (int row = 1; row <= 16; row++) {
-                float left = (column - 1) * tileSide;
-                float top = (row - 1) * tileSide;
+        for (int column = 1; column <= ColorGrid.SIDE; column++) {
+            for (int row = 1; row <= ColorGrid.SIDE; row++) {
+                float left = toPx(column - 1);
+                float top = toPx(row - 1);
                 paint.setColor(colorGrid.getColor(column, row));
                 canvas.drawRect(left, top, left + tileSide, top + tileSide, paint);
             }
         }
         paint.setColor(Color.BLACK);
-        for (int i = 0; i <= 16; i++) {
-            canvas.drawLine(0, i * tileSide, gridSide, i * tileSide, paint);
-            //noinspection SuspiciousNameCombination
-            canvas.drawLine(i * tileSide, 0, i * tileSide, gridSide, paint);
+        for (int i = 0; i <= ColorGrid.SIDE; i++) {
+            drawRow(i, 0, canvas);
+            drawColumn(i, 0, canvas);
         }
+        if (columnTranslation != 0 || rowTranslation != 0) {
+            paint.setColor(Color.LTGRAY);
+
+            drawRow(rowTranslation, columnTranslation, canvas);
+            drawRow(ColorGrid.SIDE + rowTranslation, columnTranslation, canvas);
+            drawColumn(columnTranslation, rowTranslation, canvas);
+            drawColumn(ColorGrid.SIDE + columnTranslation, rowTranslation, canvas);
+        }
+    }
+
+    private void drawColumn(int column, int verticalOffset, Canvas canvas) {
+        if (column >= 0 && column <= ColorGrid.SIDE) {
+            canvas.drawLine(toPx(column), toPx(verticalOffset), toPx(column), getMeasuredWidth() + toPx(verticalOffset) , paint);
+        }
+    }
+
+    private void drawRow(int row, int horizontalOffset, Canvas canvas) {
+        if (row >= 0 && row <= ColorGrid.SIDE) {
+            canvas.drawLine(toPx(horizontalOffset), toPx(row), getMeasuredWidth() + toPx(horizontalOffset), toPx(row), paint);
+        }
+    }
+
+    private float toPx(int tile) {
+        return tile * tileSide;
     }
 
     public void setOnGridTouchedListener(GridTouchedListener gridTouchedListener) {
@@ -101,7 +136,7 @@ public class LedGridView extends View {
             if (!isEnabled()) {
                 return false;
             }
-            int block = getWidth() / 16;
+            int block = getWidth() / ColorGrid.SIDE;
             float x;
             float y;
             switch (motionEvent.getActionMasked()) {
@@ -138,6 +173,6 @@ public class LedGridView extends View {
 
     private int blockCoordinate(int block, float coordinate) {
         int c = (int) (coordinate / block) + 1;
-        return Math.max(1, Math.min(c, 16));
+        return MathExtras.clip(1, c, ColorGrid.SIDE);
     }
 }

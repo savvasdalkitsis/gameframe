@@ -8,6 +8,8 @@ import com.savvasdalkitsis.gameframe.composition.model.AvailablePorterDuffOperat
 import com.savvasdalkitsis.gameframe.composition.usecase.BlendUseCase;
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector;
 
+import static com.savvasdalkitsis.gameframe.math.MathExtras.clip;
+
 public class ColorGrid implements Grid {
 
     public static final int SIDE = 16;
@@ -27,8 +29,8 @@ public class ColorGrid implements Grid {
     public void setColor(@ColorInt int color, int column, int row) {
         checkValue(column, "Column");
         checkValue(row, "Row");
-        int c = column - translateCol();
-        int r = row - translateRow();
+        int c = column - getColumnTranslation();
+        int r = row - getRowTranslation();
         if (!isOutOfBounds(c, r)) {
             colors[c - 1][r - 1] = color;
         }
@@ -49,8 +51,8 @@ public class ColorGrid implements Grid {
     public int getColor(int column, int row) {
         checkValue(column, "Column");
         checkValue(row, "Row");
-        int c = column - translateCol();
-        int r = row - translateRow();
+        int c = column - getColumnTranslation();
+        int r = row - getRowTranslation();
         if (isOutOfBounds(c, r)) {
             return Color.TRANSPARENT;
         }
@@ -93,7 +95,7 @@ public class ColorGrid implements Grid {
 
     private void checkValue(int value, final String valueName) {
         if (value < 1 || value > SIDE) {
-            throw new IllegalArgumentException(valueName + " value should be between 1 and 16 but was " + value);
+            throw new IllegalArgumentException(valueName + " value should be between 1 and " + SIDE + " but was " + value);
         }
     }
 
@@ -102,22 +104,22 @@ public class ColorGrid implements Grid {
     }
 
     public void translate(int translateCol, int translateRow) {
-        this.transientTranslateCol = translateCol;
-        this.transientTranslateRow = translateRow;
+        transientTranslateCol = translateCol;
+        transientTranslateRow = translateRow;
     }
 
     public void freezeTranslation() {
-        translateCol = translateCol();
-        translateRow = translateRow();
+        translateCol = bound(getColumnTranslation());
+        translateRow = bound(getRowTranslation());
         transientTranslateCol = 0;
         transientTranslateRow = 0;
     }
 
-    private int translateRow() {
+    public int getRowTranslation() {
         return translateRow + transientTranslateRow;
     }
 
-    private int translateCol() {
+    public int getColumnTranslation() {
         return translateCol + transientTranslateCol;
     }
 
@@ -141,4 +143,7 @@ public class ColorGrid implements Grid {
         }
     }
 
+    private int bound(int value) {
+        return clip(-SIDE, value, SIDE);
+    }
 }

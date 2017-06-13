@@ -24,6 +24,7 @@ import com.savvasdalkitsis.gameframe.draw.model.Layer;
 import com.savvasdalkitsis.gameframe.draw.model.Model;
 import com.savvasdalkitsis.gameframe.draw.model.Tools;
 import com.savvasdalkitsis.gameframe.draw.presenter.DrawPresenter;
+import com.savvasdalkitsis.gameframe.grid.model.ColorGrid;
 import com.savvasdalkitsis.gameframe.grid.model.Grid;
 import com.savvasdalkitsis.gameframe.grid.view.GridTouchedListener;
 import com.savvasdalkitsis.gameframe.grid.view.LedGridView;
@@ -70,6 +71,7 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     private Historical<Model> modelHistory = new Historical<>(new Model());
     private boolean selected;
     private SwatchView activeSwatch;
+    private boolean displayLayoutBorders = true;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -127,6 +129,10 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.menu_borders:
+                displayLayoutBorders = !displayLayoutBorders;
+                render(modelHistory.present());
+                return true;
             case R.id.menu_undo:
                 modelHistory.stepBackInTime();
                 return true;
@@ -141,6 +147,12 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     public void onPrepareOptionsMenu(Menu menu) {
         showMenuItemEnabled(menu, R.id.menu_undo, modelHistory.hasPast());
         showMenuItemEnabled(menu, R.id.menu_redo, modelHistory.hasFuture());
+        MenuItem item = menu.findItem(R.id.menu_borders);
+        if (item != null) {
+            item.setIcon(displayLayoutBorders
+                    ? R.drawable.ic_border_outer_white_48px
+                    : R.drawable.ic_border_clear_white_48px);
+        }
     }
 
     @Override
@@ -284,8 +296,18 @@ public class DrawFragment extends AspectSupportFragment implements FragmentSelec
     }
 
     private void render(Model model) {
+        Layer selected = null;
         for (Layer layer : model.getLayers()) {
             blendUseCase.renderOn(layer, ledGridView);
+            if (layer.isSelected()) {
+                selected = layer;
+            }
+        }
+        if (selected != null && displayLayoutBorders) {
+            ColorGrid colorGrid = selected.getColorGrid();
+            ledGridView.displayBoundaries(colorGrid.getColumnTranslation(), colorGrid.getRowTranslation());
+        } else {
+            ledGridView.clearBoundaries();
         }
         ledGridView.invalidate();
         invalidateOptionsMenu();

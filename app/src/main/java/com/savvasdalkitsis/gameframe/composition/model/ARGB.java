@@ -2,6 +2,8 @@ package com.savvasdalkitsis.gameframe.composition.model;
 
 import android.graphics.Color;
 
+import com.savvasdalkitsis.gameframe.math.MathExtras;
+
 public class ARGB {
     public final int a;
     public final int r;
@@ -31,7 +33,7 @@ public class ARGB {
     }
 
     private int clip(int value) {
-        return Math.max(0, Math.min(value, 255));
+        return MathExtras.clip(0, value, 255);
     }
 
     public int color() {

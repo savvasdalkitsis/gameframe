@@ -3,17 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:title="@string/display_layer_borders"
+        android:orderInCategory="0"
+        android:icon="@drawable/ic_border_outer_white_48px"
+        android:id="@+id/menu_borders"
+        app:showAsAction="always"/>
+
+    <item
         android:title="@string/undo"
         android:orderInCategory="0"
         android:icon="@drawable/ic_undo_white_48px"
         android:id="@+id/menu_undo"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <item
         android:title="@string/redo"
         android:orderInCategory="1"
         android:icon="@drawable/ic_redo_white_48px"
         android:id="@+id/menu_redo"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
 </menu>
