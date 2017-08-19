@@ -6,22 +6,15 @@ import com.savvasdalkitsis.gameframe.grid.model.ColorGrid
 import com.savvasdalkitsis.gameframe.model.Moment
 import com.savvasdalkitsis.gameframe.model.MomentList
 
-import rx.Observable
 
 class Model constructor(val layers: MomentList<Layer> = newLayers(),
                                 val palettes: MomentList<Palette> = newPalettes()) : Moment<Model> {
 
     val selectedPalette: Palette
-        get() = Observable.from(palettes)
-                .first { it.isSelected }
-                .toBlocking()
-                .first()
+        get() = palettes.first { it.isSelected }
 
     val selectedLayer: Layer
-        get() = Observable.from(layers)
-                .first{ it.isSelected }
-                .toBlocking()
-                .first()
+        get() = layers.first { it.isSelected }
 
     override fun replicateMoment(): Model {
         return Model(layers.replicateMoment(), palettes.replicateMoment())

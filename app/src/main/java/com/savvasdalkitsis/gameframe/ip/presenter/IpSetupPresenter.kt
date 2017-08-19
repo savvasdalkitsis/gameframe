@@ -1,19 +1,18 @@
 package com.savvasdalkitsis.gameframe.ip.presenter
 
+import com.savvasdalkitsis.gameframe.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.ip.view.IpSetupView
 import com.savvasdalkitsis.gameframe.rx.RxTransformers
-import com.savvasdalkitsis.gameframe.gameframe.usecase.GameFrameUseCase
-
-import rx.subscriptions.CompositeSubscription
+import io.reactivex.disposables.CompositeDisposable
 
 class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,
                        private val ipRepository: IpRepository,
                        private val ipDiscoveryUseCase: IpDiscoveryUseCase) {
 
-    private val subscriptions = CompositeSubscription()
+    private val disposables = CompositeDisposable()
     private var ipSetupView: IpSetupView? = null
 
     fun bindView(ipSetupView: IpSetupView) {
@@ -22,7 +21,7 @@ class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,
     }
 
     fun unbind() {
-        subscriptions.clear()
+        disposables.clear()
     }
 
     fun setup(ipAddress: IpAddress) {
@@ -32,12 +31,12 @@ class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,
 
     fun discoverIp() {
         ipSetupView?.displayDiscovering()
-        subscriptions.add(ipDiscoveryUseCase.monitoredIps()
-                .compose(RxTransformers.schedulers())
+        disposables.add(ipDiscoveryUseCase.monitoredIps()
+                .compose(RxTransformers.schedulersFlowable())
                 .subscribe( { ipSetupView?.tryingAddress(it) }, { }))
-        subscriptions.add(gameFrameUseCase.discoverGameFrameIp()
-                .compose(RxTransformers.schedulers())
-                .doOnCompleted { ipSetupView?.displayIdleView() }
+        disposables.add(gameFrameUseCase.discoverGameFrameIp()
+                .compose(RxTransformers.schedulers<IpAddress>())
+                .doOnSuccess { ipSetupView?.displayIdleView() }
                 .subscribe(
                         { ipSetupView?.ipAddressDiscovered(it) },
                         { throwable ->
@@ -48,7 +47,7 @@ class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,
     }
 
     fun cancelDiscover() {
-        subscriptions.clear()
+        disposables.clear()
         loadStoredIp()
     }
 

@@ -1,17 +1,16 @@
 package com.savvasdalkitsis.gameframe.ip.usecase
 
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress
-
-import rx.Observable
-import rx.subjects.BehaviorSubject
+import io.reactivex.Flowable
+import io.reactivex.processors.BehaviorProcessor
 
 class IpDiscoveryUseCase {
 
-    private val subject = BehaviorSubject.create<IpAddress>()
+    private val processor = BehaviorProcessor.create<IpAddress>()
 
-    fun monitoredIps(): Observable<IpAddress> = subject
+    fun monitoredIps(): Flowable<IpAddress> = processor
 
     fun emitMonitoredAddress(ip: IpAddress) {
-        subject.onNext(ip)
+        processor.onNext(ip)
     }
 }

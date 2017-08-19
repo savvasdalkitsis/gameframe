@@ -3,21 +3,22 @@ package com.savvasdalkitsis.gameframe.ip.repository
 import com.savvasdalkitsis.gameframe.infra.preferences.RxSharedPreferences
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.ip.model.IpBaseHostMissingException
-import rx.Observable
+import io.reactivex.Single
 
 class PreferenceIpRepository(private val preferences: RxSharedPreferences) : IpRepository {
 
-    override val ipAddress: Observable<IpAddress>
+    override val ipAddress: Single<IpAddress>
         get() = preferences.getString(PREF_IP_BASE)
-                .map<IpAddress> { IpAddress.parse(it) }
-                .flatMap<IpAddress> {
+                .map { IpAddress.parse(it) }
+                .switchIfEmpty { Single.error<String>(IllegalStateException("no saved ip address was found")) }
+                .flatMapSingle<IpAddress> {
                     if (it.isValid()) {
-                        Observable.just(it)
+                        Single.just(it)
                     } else {
-                        Observable.error(IllegalStateException("saved ip address was not valid: $it"))
+                        Single.error(IllegalStateException("saved ip address was not valid: $it"))
                     }
                 }
-                .onErrorResumeNext { Observable.error(IpBaseHostMissingException("Error trying to read ip address from repository", it)) }
+                .onErrorResumeNext { Single.error(IpBaseHostMissingException("Error trying to read ip address from repository", it)) }
 
     override fun saveIpAddress(ipAddress: IpAddress) {
         preferences.setString(PREF_IP_BASE, ipAddress.toString())

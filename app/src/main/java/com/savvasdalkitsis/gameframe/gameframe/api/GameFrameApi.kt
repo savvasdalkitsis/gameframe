@@ -1,29 +1,23 @@
 package com.savvasdalkitsis.gameframe.gameframe.api
 
+import io.reactivex.Completable
+import io.reactivex.Single
 import okhttp3.MultipartBody
-import retrofit2.http.FieldMap
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.Headers
-import retrofit2.http.Multipart
-import retrofit2.http.POST
-import retrofit2.http.Part
-import retrofit2.http.QueryMap
-import rx.Observable
+import retrofit2.http.*
 
 interface GameFrameApi {
 
     @FormUrlEncoded
     @POST("command")
     @Headers("Connection: close")
-    fun command(@FieldMap(encoded = true) fields: Map<String, String>): Observable<CommandResponse>
+    fun command(@FieldMap(encoded = true) fields: Map<String, String>): Single<CommandResponse>
 
     @GET("set")
     @Headers("Connection: close")
-    fun set(@QueryMap params: Map<String, String>): Observable<Void>
+    fun set(@QueryMap params: Map<String, String>): Completable
 
     @Multipart
     @POST("upload")
     @Headers("Connection: close")
-    fun upload(@Part file: MultipartBody.Part): Observable<CommandResponse>
+    fun upload(@Part file: MultipartBody.Part): Single<CommandResponse>
 }

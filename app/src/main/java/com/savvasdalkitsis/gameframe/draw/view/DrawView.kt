@@ -3,8 +3,6 @@ package com.savvasdalkitsis.gameframe.draw.view
 import com.savvasdalkitsis.gameframe.grid.model.Grid
 import com.savvasdalkitsis.gameframe.infra.kotlin.TypeAction
 
-import rx.functions.Action1
-
 interface DrawView {
 
     fun askForFileName(name: TypeAction<String>)

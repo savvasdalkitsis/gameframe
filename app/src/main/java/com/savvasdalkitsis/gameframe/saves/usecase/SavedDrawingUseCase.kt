@@ -4,51 +4,53 @@ import com.savvasdalkitsis.gameframe.GameFrameApplication
 import com.savvasdalkitsis.gameframe.bmp.usecase.BmpUseCase
 import com.savvasdalkitsis.gameframe.grid.model.Grid
 import com.savvasdalkitsis.gameframe.saves.model.SavedDrawingAlreadyExistsException
+import io.reactivex.Completable
+import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 import org.apache.commons.io.FileUtils
-import rx.Observable
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
 class SavedDrawingUseCase(private val bmpUseCase: BmpUseCase, private val application: GameFrameApplication) {
 
-    fun saveDrawing(name: String, colorGrid: Grid): Observable<File> {
+    fun saveDrawing(name: String, colorGrid: Grid): Single<File> {
         return file(name)
                 .flatMap { dir ->
                     when {
-                        dir.exists() -> Observable.error<File>(SavedDrawingAlreadyExistsException("The directory '$name' already exists"))
-                        !dir.mkdirs() -> Observable.error<File>(IOException("Could not create directory " + dir.absolutePath))
-                        else -> Observable.just(File(dir, "0.bmp"))
+                        dir.exists() -> Single.error<File>(SavedDrawingAlreadyExistsException("The directory '$name' already exists"))
+                        !dir.mkdirs() -> Single.error<File>(IOException("Could not create directory " + dir.absolutePath))
+                        else -> Single.just(File(dir, "0.bmp"))
                     }
                 }
-                .zipWith<ByteArray, Pair<File, ByteArray>>(bmpUseCase.rasterizeToBmp(colorGrid), { a, b -> Pair(a, b) })
+                .zipWith<ByteArray, Pair<File, ByteArray>>(bmpUseCase.rasterizeToBmp(colorGrid), BiFunction { a , b -> Pair(a, b) })
                 .flatMap { (file, bmp) ->
                     try {
                         val stream = FileOutputStream(file)
                         stream.write(bmp)
                         stream.close()
-                        Observable.just(file)
+                        Single.just(file)
                     } catch (e: IOException ) {
-                        Observable.error<File>(e)
+                        Single.error<File>(e)
                     }
                 }
     }
 
-    fun deleteDrawing(name: String): Observable<Void> {
+    fun deleteDrawing(name: String): Completable {
         return file(name)
-                .flatMap { dir ->
+                .flatMapCompletable { dir ->
                     if (!dir.exists()) {
-                        Observable.just<Void>(null)
+                        Completable.complete()
                     } else try {
                         FileUtils.deleteDirectory(dir)
-                        Observable.just<Void>(null)
+                        Completable.complete()
                     } catch (e: IOException) {
-                        Observable.error<Void>(e)
+                        Completable.error(e)
                     }
                 }
     }
 
-    private fun file(name: String): Observable<File> {
-        return Observable.just(File(application.getExternalFilesDir(null), name))
+    private fun file(name: String): Single<File> {
+        return Single.just(File(application.getExternalFilesDir(null), name))
     }
 }

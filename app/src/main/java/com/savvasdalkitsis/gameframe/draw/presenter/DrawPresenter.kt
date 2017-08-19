@@ -29,8 +29,8 @@ class DrawPresenter(private val gameFrameUseCase: GameFrameUseCase,
         view.displayUploading()
         uploading = true
         savedDrawingUseCase.deleteDrawing(name)
-                .flatMap { gameFrameUseCase.removeFolder(name) }
-                .compose(RxTransformers.schedulers<Void>())
+                .concatWith { gameFrameUseCase.removeFolder(name) }
+                .compose(RxTransformers.schedulers())
                 .doOnTerminate { uploading = false }
                 .subscribe({ upload(name, colorGrid) }, { view.failedToDelete(it) })
     }
@@ -39,10 +39,10 @@ class DrawPresenter(private val gameFrameUseCase: GameFrameUseCase,
         view.displayUploading()
         uploading = true
         savedDrawingUseCase.saveDrawing(name, colorGrid)
-                .flatMap<File> { file -> gameFrameUseCase.createFolder(name).map<File> { file } }
-                .flatMap<Void>({ gameFrameUseCase.uploadFile(it) })
-                .flatMap { gameFrameUseCase.play(name) }
-                .compose(RxTransformers.schedulers<Void>())
+                .flatMap<File> { file -> gameFrameUseCase.createFolder(name).toSingleDefault<File>(file) }
+                .flatMapCompletable { gameFrameUseCase.uploadFile(it) }
+                .concatWith { gameFrameUseCase.play(name) }
+                .compose(RxTransformers.schedulers())
                 .doOnTerminate { uploading = false }
                 .subscribe({ view.fileUploaded() }, { e ->
                     if (e is SavedDrawingAlreadyExistsException || e is AlreadyExistsOnGameFrameException) {

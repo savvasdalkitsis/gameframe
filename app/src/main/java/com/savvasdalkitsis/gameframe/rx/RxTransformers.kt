@@ -3,16 +3,18 @@ package com.savvasdalkitsis.gameframe.rx
 import android.util.Log
 import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector
 import com.savvasdalkitsis.gameframe.ip.model.IpBaseHostMissingException
-import rx.Observable
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
+import io.reactivex.CompletableTransformer
+import io.reactivex.FlowableTransformer
+import io.reactivex.SingleTransformer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 object RxTransformers {
 
     private val navigator = NavigatorInjector.navigator()
 
-    fun <T> interceptIpMissingException() = Observable.Transformer<T, T> { o ->
-        o.doOnError {
+    fun interceptIpMissingException() = CompletableTransformer { c ->
+        c.doOnError {
             if (it is IpBaseHostMissingException) {
                 Log.e(RxTransformers::class.java.name, "Error: ", it)
                 navigator.navigateToIpSetup()
@@ -20,7 +22,15 @@ object RxTransformers {
         }
     }
 
-    fun <T> schedulers() = Observable.Transformer<T, T> { o ->
-        o.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+    fun schedulers() = CompletableTransformer { c ->
+        c.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun <T> schedulers() = SingleTransformer<T, T> { s ->
+        s.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun <T> schedulersFlowable() = FlowableTransformer<T, T> { f ->
+        f.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 }

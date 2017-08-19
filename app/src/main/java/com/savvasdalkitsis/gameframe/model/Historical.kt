@@ -1,10 +1,9 @@
 package com.savvasdalkitsis.gameframe.model
 
-import java.util.Deque
-import java.util.LinkedList
+import io.reactivex.Flowable
+import io.reactivex.processors.BehaviorProcessor
+import java.util.*
 
-import rx.Observable
-import rx.subjects.BehaviorSubject
 
 class Historical<T : Moment<T>>(present: T) {
 
@@ -13,13 +12,13 @@ class Historical<T : Moment<T>>(present: T) {
 
     private val past: Deque<T> = LinkedList()
     private val future: Deque<T> = LinkedList()
-    private val subject = BehaviorSubject.create<T>()
+    private val processor = BehaviorProcessor.create<T>()
 
     init {
         announcePresent()
     }
 
-    fun observe(): Observable<T> = subject
+    fun observe(): Flowable<T> = processor
 
     fun progressTimeWithoutAnnouncing() {
         past.add(present.replicateMoment())
@@ -48,7 +47,7 @@ class Historical<T : Moment<T>>(present: T) {
     }
 
     fun announcePresent() {
-        subject.onNext(present)
+        processor.onNext(present)
     }
 
     fun hasPast() = !past.isEmpty()

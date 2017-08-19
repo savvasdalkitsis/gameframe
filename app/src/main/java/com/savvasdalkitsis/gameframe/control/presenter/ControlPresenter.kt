@@ -6,7 +6,7 @@ import com.savvasdalkitsis.gameframe.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.model.*
 import com.savvasdalkitsis.gameframe.rx.RxTransformers
-import rx.Observable
+import io.reactivex.Completable
 
 class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase, private val ipRepository: IpRepository) {
 
@@ -54,15 +54,15 @@ class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase, private v
         runCommandAndIgnoreResult(gameFrameUseCase.setClockFace(clockFace))
     }
 
-    private fun runCommand(command: Observable<Void>) =
-            command.compose(RxTransformers.interceptIpMissingException<Void>())
-                    .compose(RxTransformers.schedulers<Void>())
+    private fun runCommand(command: Completable) =
+            command.compose(RxTransformers.interceptIpMissingException())
+                    .compose(RxTransformers.schedulers())
 
-    private fun runCommandAndNotifyView(command: Observable<Void>) {
+    private fun runCommandAndNotifyView(command: Completable) {
         runCommand(command).subscribe({ controlView.operationSuccess() }, { e -> controlView.operationFailure(e) })
     }
 
-    private fun runCommandAndIgnoreResult(command: Observable<Void>) {
+    private fun runCommandAndIgnoreResult(command: Completable) {
         runCommand(command).subscribe({ }, { })
     }
 }

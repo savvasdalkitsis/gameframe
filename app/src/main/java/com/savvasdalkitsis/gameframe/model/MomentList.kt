@@ -1,6 +1,5 @@
 package com.savvasdalkitsis.gameframe.model
 
-import rx.Observable
 import java.util.*
 
 class MomentList<M : Moment<M>> : ArrayList<M>, Moment<MomentList<M>> {
@@ -10,11 +9,7 @@ class MomentList<M : Moment<M>> : ArrayList<M>, Moment<MomentList<M>> {
     constructor(m: M) : this(listOf<M>(m))
 
     override fun replicateMoment(): MomentList<M> {
-        return MomentList(Observable.from(this)
-                .map<M>({ it.replicateMoment() })
-                .toList()
-                .toBlocking()
-                .first())
+        return MomentList(this.map { it.replicateMoment() })
     }
 
     override fun isIdenticalTo(moment: MomentList<M>): Boolean {
