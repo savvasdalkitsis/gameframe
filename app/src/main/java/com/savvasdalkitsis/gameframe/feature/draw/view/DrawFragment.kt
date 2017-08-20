@@ -17,13 +17,13 @@ import com.savvasdalkitsis.gameframe.feature.draw.model.Tools
 import com.savvasdalkitsis.gameframe.feature.draw.presenter.DrawPresenter
 import com.savvasdalkitsis.gameframe.feature.grid.model.Grid
 import com.savvasdalkitsis.gameframe.feature.grid.view.GridTouchedListener
+import com.savvasdalkitsis.gameframe.feature.history.model.Historical
+import com.savvasdalkitsis.gameframe.feature.home.view.HomeActivity
 import com.savvasdalkitsis.gameframe.infra.view.BaseFragment
 import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.drawPresenter
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.blendUseCase
-import com.savvasdalkitsis.gameframe.feature.home.view.HomeActivity
-import com.savvasdalkitsis.gameframe.feature.history.model.Historical
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_draw.*
 
@@ -79,7 +79,7 @@ class DrawFragment : BaseFragment(), FragmentSelectedListener, SwatchSelectedLis
         super.onViewCreated(view, savedInstanceState)
         view_draw_led_grid_view.setOnGridTouchedListener(this)
         val paletteView = view_draw_drawer.findViewById<PaletteView>(R.id.view_draw_palette)
-        modelHistory.observe().subscribe { model -> paletteView.bind(model.selectedPalette) }
+        modelHistory.observe().subscribe { paletteView.bind(it.selectedPalette) }
         paletteView.setOnSwatchSelectedListener(this)
     }
 

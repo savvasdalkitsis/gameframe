@@ -4,7 +4,6 @@ import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
 import java.util.*
 
-
 class Historical<T : Moment<T>>(present: T) {
 
     var present: T = present
@@ -50,9 +49,9 @@ class Historical<T : Moment<T>>(present: T) {
         processor.onNext(present)
     }
 
-    fun hasPast() = !past.isEmpty()
+    fun hasPast() = past.isNotEmpty()
 
-    fun hasFuture() = !future.isEmpty()
+    fun hasFuture() = future.isNotEmpty()
 
     fun collapsePresentWithPastIfTheSame() {
         if (hasPast()) {
