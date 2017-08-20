@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.savvasdalkitsis.gameframe.grid.view.LedGridView
+            <com.savvasdalkitsis.gameframe.feature.grid.view.LedGridView
                 android:id="@+id/view_draw_led_grid_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <com.savvasdalkitsis.gameframe.draw.view.ToolView
+                <com.savvasdalkitsis.gameframe.feature.draw.view.ToolView
                     android:id="@+id/view_draw_tools_current"
                     style="?attr/actionButtonStyle"
                     tools:src="@drawable/ic_create_black_48px"
@@ -84,7 +84,7 @@
 
         </RelativeLayout>
 
-        <com.savvasdalkitsis.gameframe.draw.view.ToolsView
+        <com.savvasdalkitsis.gameframe.feature.draw.view.ToolsView
             android:id="@+id/view_draw_tools"
             android:padding="8dp"
             android:layout_width="match_parent"
@@ -108,7 +108,7 @@
             android:gravity="center_horizontal"
             android:text="@string/palettes" />
 
-        <com.savvasdalkitsis.gameframe.draw.view.PalettesView
+        <com.savvasdalkitsis.gameframe.feature.draw.view.PalettesView
             android:id="@+id/view_draw_palettes"
             android:layout_width="240dp"
             android:layout_height="match_parent"
@@ -133,7 +133,7 @@
             android:gravity="center_horizontal"
             android:text="@string/layers" />
 
-        <com.savvasdalkitsis.gameframe.draw.view.LayersView
+        <com.savvasdalkitsis.gameframe.feature.draw.view.LayersView
             android:id="@+id/view_draw_layers"
             android:layout_width="240dp"
             android:layout_height="match_parent"

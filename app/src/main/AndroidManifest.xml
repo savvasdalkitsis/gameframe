@@ -18,7 +18,7 @@
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
         <activity
-            android:name=".home.view.HomeActivity"
+            android:name="com.savvasdalkitsis.gameframe.feature.home.view.HomeActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,13 +26,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ip.view.IpSetupActivity"
+        <activity android:name="com.savvasdalkitsis.gameframe.feature.ip.view.IpSetupActivity"
             android:label="@string/setup_ip_address"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"/>
 
         <service
-            android:name=".control.view.PowerTileService"
+            android:name="com.savvasdalkitsis.gameframe.feature.control.view.PowerTileService"
             android:label="@string/game_frame_power"
             android:icon="@drawable/ic_block_power"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -42,7 +42,7 @@
         </service>
         
         <receiver
-            android:name=".widget.view.PowerWidgetProvider"
+            android:name="com.savvasdalkitsis.gameframe.feature.widget.view.PowerWidgetProvider"
             android:label="@string/power">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -52,7 +52,7 @@
         </receiver>
 
         <receiver
-            android:name=".widget.view.NextWidgetProvider"
+            android:name="com.savvasdalkitsis.gameframe.feature.widget.view.NextWidgetProvider"
             android:label="@string/next">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -62,7 +62,7 @@
         </receiver>
 
         <receiver
-            android:name=".widget.view.MenuWidgetProvider"
+            android:name="com.savvasdalkitsis.gameframe.feature.widget.view.MenuWidgetProvider"
             android:label="@string/menu">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

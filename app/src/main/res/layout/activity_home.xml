@@ -17,13 +17,13 @@
             android:layout_height="match_parent">
 
             <fragment
-                android:name="com.savvasdalkitsis.gameframe.control.view.ControlFragment"
+                android:name="com.savvasdalkitsis.gameframe.feature.control.view.ControlFragment"
                 android:id="@+id/fragment_manage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
             <fragment
-                android:name="com.savvasdalkitsis.gameframe.draw.view.DrawFragment"
+                android:name="com.savvasdalkitsis.gameframe.feature.draw.view.DrawFragment"
                 android:id="@+id/fragment_draw"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

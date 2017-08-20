@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.savvasdalkitsis.gameframe.ip.view.IpTextView
+<com.savvasdalkitsis.gameframe.feature.ip.view.IpTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/view_ip_text_view"
     android:orientation="horizontal"
@@ -72,4 +72,4 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
-</com.savvasdalkitsis.gameframe.ip.view.IpTextView>
+</com.savvasdalkitsis.gameframe.feature.ip.view.IpTextView>

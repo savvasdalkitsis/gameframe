@@ -1,8 +1,8 @@
 package com.savvasdalkitsis.gameframe.infra.rx
 
 import android.util.Log
-import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector
-import com.savvasdalkitsis.gameframe.ip.model.IpBaseHostMissingException
+import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector
+import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
 import io.reactivex.CompletableTransformer
 import io.reactivex.FlowableTransformer
 import io.reactivex.SingleTransformer

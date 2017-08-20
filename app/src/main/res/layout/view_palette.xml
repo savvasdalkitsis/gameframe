@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.savvasdalkitsis.gameframe.draw.view.PaletteView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.savvasdalkitsis.gameframe.feature.draw.view.PaletteView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:grid="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,7 +7,7 @@
     grid:columnCount="8"
     grid:rowCount="2">
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -15,7 +15,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -23,7 +23,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -31,7 +31,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -39,7 +39,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -47,7 +47,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -55,7 +55,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -63,7 +63,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -71,7 +71,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -79,7 +79,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -87,7 +87,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -95,7 +95,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -103,7 +103,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -111,7 +111,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -119,7 +119,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -127,7 +127,7 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-    <com.savvasdalkitsis.gameframe.draw.view.SwatchView
+    <com.savvasdalkitsis.gameframe.feature.draw.view.SwatchView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/swatch_margin"
@@ -135,4 +135,4 @@
         grid:layout_columnWeight="1"
         grid:layout_gravity="fill_horizontal" />
 
-</com.savvasdalkitsis.gameframe.draw.view.PaletteView>
+</com.savvasdalkitsis.gameframe.feature.draw.view.PaletteView>
