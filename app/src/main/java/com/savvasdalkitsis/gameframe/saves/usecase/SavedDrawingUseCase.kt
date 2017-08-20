@@ -1,7 +1,7 @@
 package com.savvasdalkitsis.gameframe.saves.usecase
 
 import com.savvasdalkitsis.gameframe.GameFrameApplication
-import com.savvasdalkitsis.gameframe.bmp.usecase.BmpUseCase
+import com.savvasdalkitsis.gameframe.raster.usecase.BmpUseCase
 import com.savvasdalkitsis.gameframe.grid.model.Grid
 import com.savvasdalkitsis.gameframe.saves.model.SavedDrawingAlreadyExistsException
 import io.reactivex.Completable

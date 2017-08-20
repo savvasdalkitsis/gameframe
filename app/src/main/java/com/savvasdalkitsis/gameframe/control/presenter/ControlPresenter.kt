@@ -1,11 +1,11 @@
 package com.savvasdalkitsis.gameframe.control.presenter
 
+import com.savvasdalkitsis.gameframe.control.model.*
 import com.savvasdalkitsis.gameframe.control.view.ControlView
 import com.savvasdalkitsis.gameframe.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.ip.repository.IpRepository
-import com.savvasdalkitsis.gameframe.model.*
-import com.savvasdalkitsis.gameframe.rx.RxTransformers
+import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import io.reactivex.Completable
 
 class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase, private val ipRepository: IpRepository) {

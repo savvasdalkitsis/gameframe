@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.model
+package com.savvasdalkitsis.gameframe.history.model
 
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor

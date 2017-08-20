@@ -1,6 +1,6 @@
 package com.savvasdalkitsis.gameframe.draw.model
 
-import com.savvasdalkitsis.gameframe.model.Moment
+import com.savvasdalkitsis.gameframe.history.model.Moment
 import java.util.*
 
 data class Palette(

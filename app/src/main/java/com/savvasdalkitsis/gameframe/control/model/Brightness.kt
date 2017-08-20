@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.model
+package com.savvasdalkitsis.gameframe.control.model
 
 enum class Brightness(val queryParamName: String, private val level: Int) {
 

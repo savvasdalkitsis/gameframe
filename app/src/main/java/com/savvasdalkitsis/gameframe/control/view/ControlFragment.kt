@@ -2,23 +2,20 @@ package com.savvasdalkitsis.gameframe.control.view
 
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import butterknife.OnClick
 import butterknife.OnItemSelected
 import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.control.model.*
 import com.savvasdalkitsis.gameframe.infra.view.BaseFragment
 import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars
 import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress
-import com.savvasdalkitsis.gameframe.model.*
 import kotlinx.android.synthetic.main.fragment_control.*
 
 class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {

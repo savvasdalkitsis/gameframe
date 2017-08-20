@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.annotation.ColorInt
 import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
 import android.util.Log
 import android.view.*
@@ -23,8 +22,8 @@ import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.drawPresenter
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.blendUseCase
-import com.savvasdalkitsis.gameframe.main.view.MainActivity
-import com.savvasdalkitsis.gameframe.model.Historical
+import com.savvasdalkitsis.gameframe.home.view.HomeActivity
+import com.savvasdalkitsis.gameframe.history.model.Historical
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_draw.*
 
@@ -133,7 +132,7 @@ class DrawFragment : BaseFragment(), FragmentSelectedListener, SwatchSelectedLis
 
     override fun onSwatchLongPressed(swatch: SwatchView) {
         swatchToModify = swatch
-        ColorChooserDialog.Builder(context as MainActivity, R.string.change_color)
+        ColorChooserDialog.Builder(context as HomeActivity, R.string.change_color)
                 .show()
     }
 

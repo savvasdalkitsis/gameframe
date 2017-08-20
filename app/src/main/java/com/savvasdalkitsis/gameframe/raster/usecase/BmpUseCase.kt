@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.bmp.usecase
+package com.savvasdalkitsis.gameframe.raster.usecase
 
 import com.savvasdalkitsis.gameframe.grid.model.ColorGrid
 import com.savvasdalkitsis.gameframe.grid.model.Grid

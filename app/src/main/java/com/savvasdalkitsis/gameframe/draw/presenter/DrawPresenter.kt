@@ -5,7 +5,7 @@ import com.savvasdalkitsis.gameframe.gameframe.model.AlreadyExistsOnGameFrameExc
 import com.savvasdalkitsis.gameframe.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.grid.model.Grid
 import com.savvasdalkitsis.gameframe.saves.model.SavedDrawingAlreadyExistsException
-import com.savvasdalkitsis.gameframe.rx.RxTransformers
+import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import com.savvasdalkitsis.gameframe.saves.usecase.SavedDrawingUseCase
 import java.io.File
 

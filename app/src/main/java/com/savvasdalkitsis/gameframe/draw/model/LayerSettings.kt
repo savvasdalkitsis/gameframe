@@ -4,7 +4,7 @@ import com.savvasdalkitsis.gameframe.composition.model.AvailableBlendMode
 import com.savvasdalkitsis.gameframe.composition.model.AvailablePorterDuffOperator
 import com.savvasdalkitsis.gameframe.composition.model.BlendMode
 import com.savvasdalkitsis.gameframe.composition.model.PorterDuffOperator
-import com.savvasdalkitsis.gameframe.model.Moment
+import com.savvasdalkitsis.gameframe.history.model.Moment
 
 data class LayerSettings(
         val alpha: Float = 1f,

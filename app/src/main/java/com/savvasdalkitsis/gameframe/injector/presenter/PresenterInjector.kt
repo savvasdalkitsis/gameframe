@@ -3,7 +3,7 @@ package com.savvasdalkitsis.gameframe.injector.presenter
 import com.savvasdalkitsis.gameframe.control.presenter.ControlPresenter
 import com.savvasdalkitsis.gameframe.draw.presenter.DrawPresenter
 import com.savvasdalkitsis.gameframe.ip.presenter.IpSetupPresenter
-import com.savvasdalkitsis.gameframe.main.presenter.MainPresenter
+import com.savvasdalkitsis.gameframe.home.presenter.HomePresenter
 import com.savvasdalkitsis.gameframe.widget.presenter.WidgetPresenter
 
 import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector.navigator
@@ -19,7 +19,7 @@ object PresenterInjector {
 
     fun controlPresenter() = ControlPresenter(gameFrameUseCase(), ipRepository())
 
-    fun mainPresenter() = MainPresenter(ipRepository())
+    fun mainPresenter() = HomePresenter(ipRepository())
 
     fun widgetPresenter() =
             WidgetPresenter(gameFrameUseCase(), ipRepository(), navigator())

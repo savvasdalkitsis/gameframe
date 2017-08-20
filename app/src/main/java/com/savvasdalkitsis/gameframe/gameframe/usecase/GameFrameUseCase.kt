@@ -3,13 +3,13 @@ package com.savvasdalkitsis.gameframe.gameframe.usecase
 import android.net.wifi.WifiManager
 import android.text.format.Formatter
 import android.util.Log
+import com.savvasdalkitsis.gameframe.control.model.*
 import com.savvasdalkitsis.gameframe.gameframe.api.CommandResponse
 import com.savvasdalkitsis.gameframe.gameframe.api.GameFrameApi
 import com.savvasdalkitsis.gameframe.gameframe.model.AlreadyExistsOnGameFrameException
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.ip.model.IpNotFoundException
 import com.savvasdalkitsis.gameframe.ip.usecase.IpDiscoveryUseCase
-import com.savvasdalkitsis.gameframe.model.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single

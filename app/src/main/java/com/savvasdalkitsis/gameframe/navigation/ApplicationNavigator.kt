@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.infra.navigation
+package com.savvasdalkitsis.gameframe.navigation
 
 import android.app.Activity
 import android.content.Context

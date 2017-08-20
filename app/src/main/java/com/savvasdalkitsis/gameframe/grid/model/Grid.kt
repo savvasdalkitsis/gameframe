@@ -2,7 +2,7 @@ package com.savvasdalkitsis.gameframe.grid.model
 
 import android.support.annotation.ColorInt
 
-import com.savvasdalkitsis.gameframe.model.Moment
+import com.savvasdalkitsis.gameframe.history.model.Moment
 
 interface Grid : Moment<Grid> {
 

@@ -1,8 +1,8 @@
-package com.savvasdalkitsis.gameframe.main.view
+package com.savvasdalkitsis.gameframe.home.view
 
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress
 
-interface MainView {
+interface HomeView {
 
     fun ipAddressLoaded(ipAddress: IpAddress)
     fun ipCouldNotBeFound(throwable: Throwable)

@@ -6,7 +6,7 @@ import com.savvasdalkitsis.gameframe.draw.model.Layer
 import com.savvasdalkitsis.gameframe.draw.model.LayerSettings
 import com.savvasdalkitsis.gameframe.draw.model.Model
 import com.savvasdalkitsis.gameframe.infra.kotlin.findIndexOrThrow
-import com.savvasdalkitsis.gameframe.model.Historical
+import com.savvasdalkitsis.gameframe.history.model.Historical
 import java.util.*
 
 internal class LayersAdapter : RecyclerView.Adapter<LayerViewHolder>() {

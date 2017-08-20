@@ -1,7 +1,7 @@
 package com.savvasdalkitsis.gameframe.draw.model
 
 import com.savvasdalkitsis.gameframe.grid.model.ColorGrid
-import com.savvasdalkitsis.gameframe.model.Moment
+import com.savvasdalkitsis.gameframe.history.model.Moment
 
 data class Layer(
         var layerSettings: LayerSettings,

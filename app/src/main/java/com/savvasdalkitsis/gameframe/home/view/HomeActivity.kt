@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.main.view
+package com.savvasdalkitsis.gameframe.home.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -13,15 +13,15 @@ import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 import com.savvasdalkitsis.gameframe.ip.model.IpAddress
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_home.*
 
-class MainActivity : BaseActivity(), MainView, ColorChooserDialog.ColorCallback {
+class HomeActivity : BaseActivity(), HomeView, ColorChooserDialog.ColorCallback {
 
     private val presenter = PresenterInjector.mainPresenter()
     private val navigator = NavigatorInjector.navigator()
 
     override val layoutId: Int
-        get() = R.layout.activity_main
+        get() = R.layout.activity_home
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)

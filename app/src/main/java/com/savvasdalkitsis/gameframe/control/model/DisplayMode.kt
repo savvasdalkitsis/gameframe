@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.model
+package com.savvasdalkitsis.gameframe.control.model
 
 enum class DisplayMode(val queryParamName: String, private val level: Int) {
 

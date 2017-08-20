@@ -6,7 +6,7 @@ import com.savvasdalkitsis.gameframe.draw.model.Model
 import com.savvasdalkitsis.gameframe.draw.model.Palette
 import com.savvasdalkitsis.gameframe.draw.model.PaletteSettings
 import com.savvasdalkitsis.gameframe.infra.kotlin.findIndexOrThrow
-import com.savvasdalkitsis.gameframe.model.Historical
+import com.savvasdalkitsis.gameframe.history.model.Historical
 
 
 internal class PalettesAdapter : RecyclerView.Adapter<PaletteViewHolder>() {

@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 
 import com.savvasdalkitsis.gameframe.draw.model.Palette
-import com.savvasdalkitsis.gameframe.model.Historical
+import com.savvasdalkitsis.gameframe.history.model.Historical
 import com.savvasdalkitsis.gameframe.draw.model.Model
 
 class PalettesView : RecyclerView {

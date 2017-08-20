@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.rx
+package com.savvasdalkitsis.gameframe.infra.rx
 
 import android.util.Log
 import com.savvasdalkitsis.gameframe.injector.infra.navigation.NavigatorInjector

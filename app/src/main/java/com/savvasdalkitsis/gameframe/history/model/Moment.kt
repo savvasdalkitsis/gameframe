@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.model
+package com.savvasdalkitsis.gameframe.history.model
 
 interface Moment<T> {
 

@@ -5,7 +5,7 @@ import com.savvasdalkitsis.gameframe.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.ip.view.IpSetupView
-import com.savvasdalkitsis.gameframe.rx.RxTransformers
+import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import io.reactivex.disposables.CompositeDisposable
 
 class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,
