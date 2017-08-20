@@ -1,3 +1,5 @@
 package com.savvasdalkitsis.gameframe.gameframe.usecase
 
-internal class GameFrameCommandError(msg: String) : Throwable(msg)
+import com.savvasdalkitsis.gameframe.gameframe.api.CommandResponse
+
+internal class GameFrameCommandError(msg: String, val response: CommandResponse) : Throwable(msg)

@@ -24,39 +24,32 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
                        private val gameFrameApi: GameFrameApi,
                        private val ipDiscoveryUseCase: IpDiscoveryUseCase) {
 
-    fun togglePower(): Completable = issueCommand("power")
+    fun togglePower() = issueCommand("power")
 
-    fun menu(): Completable = issueCommand("menu")
+    fun menu() = issueCommand("menu")
 
-    fun next(): Completable  = issueCommand("next")
+    fun next()  = issueCommand("next")
 
-    fun setBrightness(brightness: Brightness) =
-            gameFrameApi.set(param(brightness.queryParamName))
+    fun setBrightness(brightness: Brightness) = setParam(brightness.queryParamName)
 
-    fun setPlaybackMode(playbackMode: PlaybackMode) =
-            gameFrameApi.set(param(playbackMode.queryParamName))
+    fun setPlaybackMode(playbackMode: PlaybackMode) = setParam(playbackMode.queryParamName)
 
-    fun setCycleInterval(cycleInterval: CycleInterval) =
-            gameFrameApi.set(param(cycleInterval.queryParamName))
+    fun setCycleInterval(cycleInterval: CycleInterval) = setParam(cycleInterval.queryParamName)
 
-    fun setDisplayMode(displayMode: DisplayMode) =
-            gameFrameApi.set(param(displayMode.queryParamName))
+    fun setDisplayMode(displayMode: DisplayMode) = setParam(displayMode.queryParamName)
 
-    fun setClockFace(clockFace: ClockFace) =
-            gameFrameApi.set(param(clockFace.queryParamName))
+    fun setClockFace(clockFace: ClockFace) = setParam(clockFace.queryParamName)
 
-    fun createFolder(name: String): Completable  =
-            gameFrameApi.command(singletonMap("mkdir", name))
-                    .flatMapCompletable { response -> when {
-                        isSuccess(response) ->
-                            Completable.complete()
-                        response.message?.contains("exists") ?: false ->
-                            Completable.error(AlreadyExistsOnGameFrameException("Could not create folder on game frame with name '$name' as it already exists"))
-                        else ->
-                            Completable.error(wrap(response))
-                    } }
+    fun createFolder(name: String): Completable  = issueCommand("mkdir", name)
+            .onErrorResumeNext {
+                if (it is GameFrameCommandError && (it.response.message?.contains("exists")) == true) {
+                    Completable.error(AlreadyExistsOnGameFrameException("Could not create folder on game frame with name '$name' as it already exists", it))
+                } else {
+                    Completable.error(it)
+                }
+            }
 
-    fun removeFolder(name: String): Completable = issueCommand("rmdir", name)
+    fun removeFolder(name: String) = issueCommand("rmdir", name)
 
     fun uploadFile(file: File): Completable {
         val requestFile = RequestBody.create(MediaType.parse("image/bmp"), file)
@@ -64,37 +57,34 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
         return gameFrameApi.upload(filePart).to(mapResponse())
     }
 
-    fun play(name: String): Completable = issueCommand("play", name)
+    fun play(name: String) = issueCommand("play", name)
 
-    fun discoverGameFrameIp(): Single<IpAddress> {
-        return Single.defer(this::deviceIp)
-                .flattenAsFlowable(wholePart4Subrange())
-                .concatMap { ip ->
-                    ipDiscoveryUseCase.emitMonitoredAddress(ip)
-                    var result: Flowable<IpAddress> = Flowable.empty<IpAddress>()
-                    try {
-                        if (isFromGameFrame(ping(ip))) {
-                            result = Flowable.just(ip)
-                        }
-                    } catch (e: IOException) {
-                        Log.w(GameFrameUseCase::class.java.name, "Error trying to call " + ip, e)
+    fun discoverGameFrameIp(): Single<IpAddress> = Single.defer(this::deviceIp)
+            .flattenAsFlowable(wholePart4Subrange())
+            .concatMap { ip ->
+                ipDiscoveryUseCase.emitMonitoredAddress(ip)
+                var result: Flowable<IpAddress> = Flowable.empty<IpAddress>()
+                try {
+                    if (isFromGameFrame(ping(ip))) {
+                        result = Flowable.just(ip)
                     }
-                    result
+                } catch (e: IOException) {
+                    Log.w(GameFrameUseCase::class.java.name, "Error trying to call " + ip, e)
                 }
-                .firstOrError()
-                .onErrorResumeNext { e -> Single.error<IpAddress>(IpNotFoundException("Game Frame IP not found", e)) }
-    }
+                result
+            }
+            .firstOrError()
+            .onErrorResumeNext { e -> Single.error<IpAddress>(IpNotFoundException("Game Frame IP not found", e)) }
 
     private fun wholePart4Subrange() = { ip: IpAddress ->
-        (0..256).map { it.toString() }.map { part -> ip.copy(part4 = part) }
+        (0..255).map { it.toString() }.map { ip.copy(part4 = it) }
     }
 
-    private val deviceIp: Single<IpAddress>
-        get() {
-            @Suppress("DEPRECATION")
-            val ip = Formatter.formatIpAddress(wifiManager.connectionInfo.ipAddress)
-            return Single.defer { Single.just(IpAddress.parse(ip)) }
-        }
+    @Suppress("DEPRECATION")
+    private fun deviceIp(): Single<IpAddress> {
+        val ip = Formatter.formatIpAddress(wifiManager.connectionInfo.ipAddress)
+        return Single.defer { Single.just(IpAddress.parse(ip)) }
+    }
 
     private fun isFromGameFrame(response: Response) =
             response.isSuccessful && response.headers().get("Server")?.startsWith("Webduino/") ?: false
@@ -105,7 +95,7 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
             .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "next="))
             .build()).execute()
 
-    private fun param(name: String) = singletonMap(name, "")
+    private fun param(key: String, value: String = "") = singletonMap(key, value)
 
     private fun mapResponse(): Function<Single<CommandResponse>, Completable> = Function { s ->
         s.flatMapCompletable {
@@ -116,11 +106,13 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
         }
     }
 
-    private fun issueCommand(key: String, value: String = "") =
-            gameFrameApi.command(singletonMap(key, value)).to(mapResponse())
+    private fun issueCommand(key: String, value: String = ""): Completable =
+            gameFrameApi.command(param(key, value)).to(mapResponse())
 
-    private fun wrap(response: CommandResponse?) =
-            GameFrameCommandError("Command was not successful. response: " + response!!)
+    private fun setParam(key: String): Completable = gameFrameApi.set(param(key))
+
+    private fun wrap(response: CommandResponse) =
+            GameFrameCommandError("Command was not successful. response: $response", response)
 
     private fun isSuccess(response: CommandResponse?) = "success" == response?.status
 }
