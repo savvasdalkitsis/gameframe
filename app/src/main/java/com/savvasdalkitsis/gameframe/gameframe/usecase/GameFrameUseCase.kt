@@ -24,14 +24,11 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
                        private val gameFrameApi: GameFrameApi,
                        private val ipDiscoveryUseCase: IpDiscoveryUseCase) {
 
-    fun togglePower(): Completable =
-            gameFrameApi.command(param("power")).to(mapResponse())
+    fun togglePower(): Completable = issueCommand("power")
 
-    fun menu(): Completable =
-            gameFrameApi.command(param("menu")).to(mapResponse())
+    fun menu(): Completable = issueCommand("menu")
 
-    fun next(): Completable  =
-            gameFrameApi.command(param("next")).to(mapResponse())
+    fun next(): Completable  = issueCommand("next")
 
     fun setBrightness(brightness: Brightness) =
             gameFrameApi.set(param(brightness.queryParamName))
@@ -59,8 +56,7 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
                             Completable.error(wrap(response))
                     } }
 
-    fun removeFolder(name: String): Completable =
-            gameFrameApi.command(singletonMap("rmdir", name)).to(mapResponse())
+    fun removeFolder(name: String): Completable = issueCommand("rmdir", name)
 
     fun uploadFile(file: File): Completable {
         val requestFile = RequestBody.create(MediaType.parse("image/bmp"), file)
@@ -68,8 +64,7 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
         return gameFrameApi.upload(filePart).to(mapResponse())
     }
 
-    fun play(name: String): Completable =
-            gameFrameApi.command(singletonMap("play", name)).to(mapResponse())
+    fun play(name: String): Completable = issueCommand("play", name)
 
     fun discoverGameFrameIp(): Single<IpAddress> {
         return Single.defer(this::deviceIp)
@@ -120,6 +115,9 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
             }
         }
     }
+
+    private fun issueCommand(key: String, value: String = "") =
+            gameFrameApi.command(singletonMap(key, value)).to(mapResponse())
 
     private fun wrap(response: CommandResponse?) =
             GameFrameCommandError("Command was not successful. response: " + response!!)
