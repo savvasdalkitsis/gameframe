@@ -26,9 +26,7 @@ class SavedDrawingUseCase(private val bmpUseCase: BmpUseCase, private val applic
                 .zipWith<ByteArray, Pair<File, ByteArray>>(bmpUseCase.rasterizeToBmp(colorGrid), BiFunction { a , b -> Pair(a, b) })
                 .flatMap { (file, bmp) ->
                     try {
-                        val stream = FileOutputStream(file)
-                        stream.write(bmp)
-                        stream.close()
+                        FileOutputStream(file).use { it.write(bmp) }
                         Single.just(file)
                     } catch (e: IOException ) {
                         Single.error<File>(e)
