@@ -6,7 +6,6 @@ enum class PlaybackMode(val queryParamName: String, private val level: Int) {
     SHUFFLE("p1", 1),
     SHUFFLE_NO_ANIMATION("p2", 2);
 
-
     companion object {
 
         fun from(level: Int): PlaybackMode {

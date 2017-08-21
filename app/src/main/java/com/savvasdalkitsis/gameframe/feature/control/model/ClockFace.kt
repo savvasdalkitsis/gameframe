@@ -8,7 +8,6 @@ enum class ClockFace(val queryParamName: String, private val level: Int) {
     BINARY_1("f4", 3),
     BINARY_2("f5", 4);
 
-
     companion object {
 
         fun from(level: Int): ClockFace {

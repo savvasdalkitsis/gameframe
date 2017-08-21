@@ -25,7 +25,7 @@
         android:layout_marginRight="12dp"
         tools:ignore="RtlHardcoded">
 
-        <com.savvasdalkitsis.gameframe.feature.grid.view.LedGridView
+        <com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.LedGridView
             android:id="@+id/view_layer_thumbnail"
             android:layout_width="100dp"
             android:layout_height="100dp" />

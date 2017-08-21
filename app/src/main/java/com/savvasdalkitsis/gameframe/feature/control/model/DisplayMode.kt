@@ -5,7 +5,6 @@ enum class DisplayMode(val queryParamName: String, private val level: Int) {
     GALLERY("m0", 0),
     CLOCK("m1", 1);
 
-
     companion object {
 
         fun from(level: Int): DisplayMode {

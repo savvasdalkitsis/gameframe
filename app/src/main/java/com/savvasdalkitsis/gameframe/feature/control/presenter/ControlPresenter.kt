@@ -5,10 +5,13 @@ import com.savvasdalkitsis.gameframe.feature.control.view.ControlView
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
+import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import io.reactivex.Completable
 
-class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase, private val ipRepository: IpRepository) {
+class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase,
+                       private val ipRepository: IpRepository,
+                       private val navigator: Navigator) {
 
     private lateinit var controlView: ControlView
 
@@ -22,37 +25,23 @@ class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase, private v
                 .subscribe({ controlView.ipAddressLoaded(it) }, { controlView.ipCouldNotBeFound(it) })
     }
 
-    fun togglePower() {
-        runCommandAndNotifyView(gameFrameUseCase.togglePower())
-    }
+    fun togglePower() = runCommandAndNotifyView(gameFrameUseCase.togglePower())
 
-    fun menu() {
-        runCommandAndNotifyView(gameFrameUseCase.menu())
-    }
+    fun menu() = runCommandAndNotifyView(gameFrameUseCase.menu())
 
-    fun next() {
-        runCommandAndNotifyView(gameFrameUseCase.next())
-    }
+    fun next() = runCommandAndNotifyView(gameFrameUseCase.next())
 
-    fun changeBrightness(brightness: Brightness) {
-        runCommandAndIgnoreResult(gameFrameUseCase.setBrightness(brightness))
-    }
+    fun changeBrightness(brightness: Brightness) = runCommandAndIgnoreResult(gameFrameUseCase.setBrightness(brightness))
 
-    fun changePlaybackMode(playbackMode: PlaybackMode) {
-        runCommandAndIgnoreResult(gameFrameUseCase.setPlaybackMode(playbackMode))
-    }
+    fun changePlaybackMode(playbackMode: PlaybackMode) = runCommandAndIgnoreResult(gameFrameUseCase.setPlaybackMode(playbackMode))
 
-    fun changeCycleInterval(cycleInterval: CycleInterval) {
-        runCommandAndIgnoreResult(gameFrameUseCase.setCycleInterval(cycleInterval))
-    }
+    fun changeCycleInterval(cycleInterval: CycleInterval) = runCommandAndIgnoreResult(gameFrameUseCase.setCycleInterval(cycleInterval))
 
-    fun changeDisplayMode(displayMode: DisplayMode) {
-        runCommandAndIgnoreResult(gameFrameUseCase.setDisplayMode(displayMode))
-    }
+    fun changeDisplayMode(displayMode: DisplayMode) = runCommandAndIgnoreResult(gameFrameUseCase.setDisplayMode(displayMode))
 
-    fun changeClockFace(clockFace: ClockFace) {
-        runCommandAndIgnoreResult(gameFrameUseCase.setClockFace(clockFace))
-    }
+    fun changeClockFace(clockFace: ClockFace) = runCommandAndIgnoreResult(gameFrameUseCase.setClockFace(clockFace))
+
+    fun setup() = navigator.navigateToIpSetup()
 
     private fun runCommand(command: Completable) =
             command.compose(RxTransformers.interceptIpMissingException())

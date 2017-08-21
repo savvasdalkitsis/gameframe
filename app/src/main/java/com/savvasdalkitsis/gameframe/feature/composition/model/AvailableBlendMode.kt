@@ -5,15 +5,15 @@ import java.lang.Math.*
 /**
  * Implementing blending modes described at https://www.w3.org/TR/compositing-1/
  */
-enum class AvailableBlendMode(private val key: String, private val blendComponent: (Float, Float) -> Float) : BlendMode {
+enum class AvailableBlendMode(private val blendComponent: (Float, Float) -> Float) : BlendMode {
 
-    NORMAL("normal", { source, _ -> source }),
+    NORMAL({ source, _ -> source }),
 
-    MULTIPLY("multiply", { source, dest -> source * dest }),
+    MULTIPLY({ source, dest -> source * dest }),
 
-    SCREEN("screen", { source, dest -> dest + source - dest * source }),
+    SCREEN({ source, dest -> dest + source - dest * source }),
 
-    HARD_LIGHT("hardLight", { source, dest ->
+    HARD_LIGHT({ source, dest ->
         if (source <= 0.5) {
             MULTIPLY.blendComponent(2 * source, dest)
         } else {
@@ -21,13 +21,13 @@ enum class AvailableBlendMode(private val key: String, private val blendComponen
         }
     }),
 
-    OVERLAY("overlay", { source, dest -> HARD_LIGHT.blendComponent(dest, source) }),
+    OVERLAY({ source, dest -> HARD_LIGHT.blendComponent(dest, source) }),
 
-    DARKEN("darken", { a, b -> Math.min(a, b) }),
+    DARKEN({ source, dest -> Math.min(source, dest) }),
 
-    LIGHTEN("lighten", { a, b -> Math.max(a, b) }),
+    LIGHTEN({ source, dest -> Math.max(source, dest) }),
 
-    COLOR_DOGE("colorDodge", { source, dest ->
+    COLOR_DOGE({ source, dest ->
         when {
             dest == 0f -> 0f
             source == 1f -> 1f
@@ -35,7 +35,7 @@ enum class AvailableBlendMode(private val key: String, private val blendComponen
         }
     }),
 
-    COLOR_BURN("colorBurn", { source, dest ->
+    COLOR_BURN({ source, dest ->
         when {
             dest == 1f -> 1f
             source == 0f -> 0f
@@ -43,7 +43,7 @@ enum class AvailableBlendMode(private val key: String, private val blendComponen
         }
     }),
 
-    SOFT_LIGHT("softLight", { source, dest ->
+    SOFT_LIGHT({ source, dest ->
         if (source <= 0.5) {
             dest - (1 - 2 * source) * dest * (1 - dest)
         } else {
@@ -51,9 +51,9 @@ enum class AvailableBlendMode(private val key: String, private val blendComponen
         }
     }),
 
-    DIFFERENCE("difference", { source, dest -> abs(dest - source) }),
+    DIFFERENCE({ source, dest -> abs(dest - source) }),
 
-    EXCLUSION("exclusion", { source, dest -> dest + source - 2f * dest * source });
+    EXCLUSION({ source, dest -> dest + source - 2f * dest * source });
 
     override fun blend(source: ARGB, dest: ARGB) = ARGB(
             blendWith(blendComponent, source.a, dest.a),
@@ -66,9 +66,6 @@ enum class AvailableBlendMode(private val key: String, private val blendComponen
 
         fun defaultMode() = NORMAL
 
-        fun from(key: String) = values().firstOrNull { it.key == key }
-                ?: defaultMode()
-
         fun indexOf(blendMode: BlendMode): Int = values()
                 .mapIndexed { i, mode -> Pair(i, mode) }
                 .firstOrNull { (_, mode) -> mode == blendMode }?.first
@@ -79,7 +76,7 @@ enum class AvailableBlendMode(private val key: String, private val blendComponen
 
         private fun toRGB(inRange: Float) = (inRange * 255).toInt()
 
-        internal fun d(value: Float) = if (value <= 0.25) {
+        private fun d(value: Float) = if (value <= 0.25) {
             ((16 * value - 12) * value + 4) * value
         } else {
             sqrt(value.toDouble()).toFloat()

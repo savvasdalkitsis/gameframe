@@ -42,4 +42,5 @@
     <string name="tools">Tools</string>
     <string name="change_tool">Change tool:</string>
     <string name="display_layer_borders">Display layer borders</string>
+    <string name="game_frame_ip">Game Frame IP: $1%s</string>
 </resources>

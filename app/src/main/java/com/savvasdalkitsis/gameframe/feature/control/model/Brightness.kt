@@ -11,7 +11,6 @@ enum class Brightness(val queryParamName: String, private val level: Int) {
     LEVEL_6("b6", 6),
     LEVEL_7("b7", 7);
 
-
     companion object {
 
         fun from(level: Int): Brightness {

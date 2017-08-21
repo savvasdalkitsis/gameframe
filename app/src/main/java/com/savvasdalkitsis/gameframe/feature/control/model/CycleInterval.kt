@@ -11,7 +11,6 @@ enum class CycleInterval(val queryParamName: String, private val level: Int) {
     HOUR_1("c7", 6),
     INFINITE("c8", 7);
 
-
     companion object {
 
         fun from(level: Int): CycleInterval {

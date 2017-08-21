@@ -1,6 +1,7 @@
 package com.savvasdalkitsis.gameframe.feature.control.view
 
 import android.os.Bundle
+import android.support.annotation.ArrayRes
 import android.support.design.widget.FloatingActionButton
 import android.util.Log
 import android.view.View
@@ -10,16 +11,14 @@ import butterknife.OnClick
 import butterknife.OnItemSelected
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.control.model.*
+import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.infra.view.BaseFragment
 import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars
-import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import kotlinx.android.synthetic.main.fragment_control.*
 
 class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
-    private val navigator = NavigatorInjector.navigator()
 
     private val presenter = PresenterInjector.controlPresenter()
     private lateinit var fab: FloatingActionButton
@@ -67,7 +66,7 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
 
     @OnClick(R.id.view_control_setup)
     fun setup() {
-        navigator.navigateToIpSetup()
+        presenter.setup()
     }
 
     @OnClick(R.id.view_brightness_low)
@@ -108,7 +107,7 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
     }
 
     override fun ipAddressLoaded(ipAddress: IpAddress) {
-        view_ip.text = String.format("Game Frame IP: %s", ipAddress.toString())
+        view_ip.text = getString(R.string.game_frame_ip, ipAddress.toString())
         view_control_error.visibility = View.GONE
         view_control_content.visibility = View.VISIBLE
     }
@@ -119,11 +118,10 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
         view_control_content.visibility = View.GONE
     }
 
-    private fun adapter(data: Int): ArrayAdapter<CharSequence> {
-        val adapter = ArrayAdapter.createFromResource(context, data, android.R.layout.simple_spinner_item)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        return adapter
-    }
+    private fun adapter(@ArrayRes data: Int) =
+            ArrayAdapter.createFromResource(context, data, android.R.layout.simple_spinner_item).apply {
+                setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            }
 
     private inner class BrightnessChangedListener : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar, level: Int, b: Boolean) {

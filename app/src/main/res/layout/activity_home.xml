@@ -23,7 +23,7 @@
                 android:layout_height="match_parent"/>
 
             <fragment
-                android:name="com.savvasdalkitsis.gameframe.feature.draw.view.DrawFragment"
+                android:name="com.savvasdalkitsis.gameframe.feature.workspace.view.WorkspaceFragment"
                 android:id="@+id/fragment_draw"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

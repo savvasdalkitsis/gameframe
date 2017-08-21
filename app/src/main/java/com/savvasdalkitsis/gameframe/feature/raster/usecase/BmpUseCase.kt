@@ -1,7 +1,7 @@
 package com.savvasdalkitsis.gameframe.feature.raster.usecase
 
-import com.savvasdalkitsis.gameframe.feature.grid.model.ColorGrid
-import com.savvasdalkitsis.gameframe.feature.grid.model.Grid
+import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.ColorGrid
+import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import io.reactivex.Single
 import java.nio.ByteBuffer
 
