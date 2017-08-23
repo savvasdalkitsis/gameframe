@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/view_coordinator"
-        android:layout_above="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation">
 
         <ViewSwitcher
             android:id="@+id/fragment_switcher"
@@ -17,55 +17,49 @@
             android:layout_height="match_parent">
 
             <fragment
-                android:name="com.savvasdalkitsis.gameframe.feature.control.view.ControlFragment"
                 android:id="@+id/fragment_manage"
+                android:name="com.savvasdalkitsis.gameframe.feature.control.view.ControlFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
             <fragment
+                android:id="@+id/fragment_workspace"
                 android:name="com.savvasdalkitsis.gameframe.feature.workspace.view.WorkspaceFragment"
-                android:id="@+id/fragment_draw"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </ViewSwitcher>
 
-
-        <com.savvasdalkitsis.gameframe.infra.view.ProgressFloatingActionButton
-            android:id="@+id/view_fab_container"
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/view_fab_control"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
-            android:focusable="true"
-            android:clickable="true"
-            tools:ignore="RtlHardcoded">
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_power_settings_new_white_48px"
+            android:visibility="gone"
+            app:fabSize="normal"
+            tools:ignore="RtlHardcoded" />
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/view_fab"
-                android:layout_gravity="bottom|right"
-                android:layout_margin="16dp"
-                app:fabSize="normal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="RtlHardcoded" />
-
-            <ProgressBar
-                style="@style/Widget.AppCompat.ProgressBar"
-                android:id="@+id/view_fab_progress"
-                android:scaleX="0"
-                android:scaleY="0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </com.savvasdalkitsis.gameframe.infra.view.ProgressFloatingActionButton>
+        <io.github.yavski.fabspeeddial.CustomFabSpeedDial
+            android:id="@+id/view_fab_workspace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            app:fabDrawable="@drawable/ic_import_export_white_48px"
+            app:fabGravity="bottom_end"
+            app:fabMenu="@menu/menu_workspace_operations"
+            app:fabSize="normal"
+            app:touchGuard="false"
+            tools:ignore="RtlHardcoded" />
 
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:background="@color/colorPrimary"
         app:itemIconTint="@drawable/nav_item_selector"

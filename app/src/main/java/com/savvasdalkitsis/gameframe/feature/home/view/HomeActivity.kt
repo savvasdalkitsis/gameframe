@@ -8,11 +8,11 @@ import android.view.MenuItem
 import android.view.View
 import com.afollestad.materialdialogs.color.ColorChooserDialog
 import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.infra.view.BaseActivity
 import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity(), HomeView, ColorChooserDialog.ColorCallback {
@@ -51,18 +51,24 @@ class HomeActivity : BaseActivity(), HomeView, ColorChooserDialog.ColorCallback 
         when (item.itemId) {
             R.id.action_setup_ip -> {
                 navigator.navigateToIpSetup()
+                notifyAllFragmentsUnselected()
                 return true
             }
             R.id.action_manage -> {
-                fragment_switcher.displayedChild = 0
-                notifyAllFragmentsUnselected()
-                notifyFragmentSelected(R.id.fragment_manage)
-                return true
+                if (fragment_switcher.displayedChild != 0) {
+                    fragment_switcher.displayedChild = 0
+                    notifyFragmentUnselected(R.id.fragment_workspace)
+                    notifyFragmentSelected(R.id.fragment_manage)
+                    return true
+                }
             }
             R.id.action_draw -> {
-                fragment_switcher.displayedChild = 1
-                notifyFragmentSelected(R.id.fragment_draw)
-                return true
+                if (fragment_switcher.displayedChild != 1) {
+                    fragment_switcher.displayedChild = 1
+                    notifyFragmentUnselected(R.id.fragment_manage)
+                    notifyFragmentSelected(R.id.fragment_workspace)
+                    return true
+                }
             }
         }
         return false
@@ -82,15 +88,22 @@ class HomeActivity : BaseActivity(), HomeView, ColorChooserDialog.ColorCallback 
         }
     }
 
+    private fun notifyFragmentUnselected(fragmentId: Int) {
+        val fragment = supportFragmentManager.findFragmentById(fragmentId)
+        if (fragment != null) {
+            (fragment as FragmentSelectedListener).onFragmentUnselected()
+        }
+    }
+
     override fun ipAddressLoaded(ipAddress: IpAddress) {
-        view_fab_container.visibility = View.VISIBLE
+        view_fab_control.visibility = View.VISIBLE
     }
 
     override fun ipCouldNotBeFound(throwable: Throwable) {
-        view_fab_container.visibility = View.GONE
+        view_fab_control.visibility = View.GONE
     }
 
     override fun onColorSelection(dialog: ColorChooserDialog, @ColorInt selectedColor: Int) {
-        (supportFragmentManager.findFragmentById(R.id.fragment_draw) as ColorChooserDialog.ColorCallback).onColorSelection(dialog, selectedColor)
+        (supportFragmentManager.findFragmentById(R.id.fragment_workspace) as ColorChooserDialog.ColorCallback).onColorSelection(dialog, selectedColor)
     }
 }

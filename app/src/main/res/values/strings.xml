@@ -43,4 +43,7 @@
     <string name="change_tool">Change tool:</string>
     <string name="display_layer_borders">Display layer borders</string>
     <string name="game_frame_ip">Game Frame IP: %1$s</string>
+    <string name="save">Save</string>
+    <string name="send_to_game_frame">Send to GameFrame</string>
+    <string name="open_drawing">Open previously saved drawing</string>
 </resources>

@@ -28,7 +28,7 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        fab = activity.findViewById(R.id.view_fab)
+        fab = activity.findViewById(R.id.view_fab_control)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -48,11 +48,13 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
 
     override fun onFragmentSelected() {
         presenter.loadIpAddress()
-        fab.setImageResource(R.drawable.ic_power_settings_new_white_48px)
+        fab.visibility = View.VISIBLE
         fab.setOnClickListener { presenter.togglePower() }
     }
 
-    override fun onFragmentUnselected() {}
+    override fun onFragmentUnselected() {
+        fab.visibility = View.GONE
+    }
 
     @OnClick(R.id.view_menu)
     fun menu() {

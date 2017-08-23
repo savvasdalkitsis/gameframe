@@ -3,7 +3,7 @@ package com.savvasdalkitsis.gameframe.feature.workspace.view
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.support.annotation.ColorInt
-import android.support.design.widget.FloatingActionButton
+import android.support.design.internal.NavigationMenu
 import android.support.v4.widget.DrawerLayout
 import android.util.Log
 import android.view.*
@@ -31,12 +31,13 @@ import com.savvasdalkitsis.gameframe.infra.view.Snackbars
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.drawPresenter
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.blendUseCase
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
-import kotlinx.android.synthetic.main.fragment_draw.*
+import io.github.yavski.fabspeeddial.CustomFabSpeedDial
+import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter
+import kotlinx.android.synthetic.main.fragment_workspace.*
 
 class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelectedListener, GridTouchedListener, WorkspaceView, ColorChooserDialog.ColorCallback, ToolSelectedListener {
 
-    lateinit var fab: FloatingActionButton
-    private lateinit var fabProgress: View
+    lateinit var fab: CustomFabSpeedDial
     private val presenter = drawPresenter()
     private val blendUseCase = blendUseCase()
     private var swatchToModify: SwatchView? = null
@@ -46,7 +47,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
     private var displayLayoutBorders = true
 
     override val layoutId: Int
-        get() = R.layout.fragment_draw
+        get() = R.layout.fragment_workspace
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,8 +57,8 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        fab = activity.findViewById(R.id.view_fab)
-        fabProgress = activity.findViewById(R.id.view_fab_progress)
+        fab = activity.findViewById(R.id.view_fab_workspace)
+        setFabState()
         view_draw_layers.bind(modelHistory)
         view_draw_palettes.bind(modelHistory)
         modelHistory.observe().subscribe { this.render(it) }
@@ -91,7 +92,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
         if (selected) {
-            inflater.inflate(R.menu.menu_draw, menu)
+            inflater.inflate(R.menu.menu_workspace, menu)
         }
     }
 
@@ -101,7 +102,8 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
             render(modelHistory.present)
             true
         }
-        R.id.menu_undo -> { modelHistory.stepBackInTime()
+        R.id.menu_undo -> {
+            modelHistory.stepBackInTime()
             true
         }
         R.id.menu_redo -> {
@@ -123,12 +125,13 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
 
     override fun onFragmentSelected() {
         selected = true
-        setFabState()
+        fab.visibility = View.VISIBLE
         invalidateOptionsMenu()
     }
 
     override fun onFragmentUnselected() {
         selected = false
+        fab.visibility = View.GONE
         invalidateOptionsMenu()
     }
 
@@ -188,24 +191,24 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
 
     override fun fileUploaded() {
         Snackbars.success(coordinator(), R.string.success).show()
-        scaleProgress(0)
+        stopFabProgress()
     }
 
     override fun failedToUpload(e: Throwable) {
         Log.e(WorkspacePresenter::class.java.name, "Error uploading to game frame", e)
         Snackbars.error(coordinator(), R.string.operation_failed).show()
-        scaleProgress(0)
+        stopFabProgress()
     }
 
     override fun displayUploading() {
-        scaleProgress(1)
+        startFabProgress()
     }
 
     override fun drawingAlreadyExists(name: String, colorGrid: Grid, e: Throwable) {
         Log.e(WorkspacePresenter::class.java.name, "Drawing already exists", e)
         Snackbars.actionError(coordinator(), R.string.already_exists, R.string.replace,
                 { presenter.replaceDrawing(name, colorGrid) }).show()
-        scaleProgress(0)
+        stopFabProgress()
     }
 
     override fun failedToDelete(e: Throwable) {
@@ -231,30 +234,57 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
     }
 
     @SuppressLint("RtlHardcoded")
-    private fun setFabState() {
+    private fun setFabState() = with(fab) {
         when {
             view_draw_drawer.isDrawerOpen(Gravity.RIGHT) -> {
-                fab.setOnClickListener { view_draw_layers.addNewLayer() }
-                fab.setImageResource(R.drawable.ic_add_white_48px)
+                setMenuListener(addNewLayerOperation())
+                setImageResource(R.drawable.ic_add_white_48px)
             }
             view_draw_drawer.isDrawerOpen(Gravity.LEFT) -> {
-                fab.setOnClickListener {
-                    AddPaletteView.show(context, view_draw_drawer, object: AddNewPaletteSelectedListener {
-                        override fun onAddNewPalletSelected(palette: Palette) {
-                            view_draw_palettes.addNewPalette(palette)
-                        }
-                    }) }
-                fab.setImageResource(R.drawable.ic_add_white_48px)
+                setMenuListener(addNewPaletteOperation())
+                setImageResource(R.drawable.ic_add_white_48px)
             }
             else -> {
-                fab.setOnClickListener { presenter.upload(view_draw_led_grid_view.colorGrid) }
-                fab.setImageResource(R.drawable.ic_publish_white_48px)
+                setMenuListener(standardOperation())
+                setImageResource(R.drawable.ic_import_export_white_48px)
             }
         }
     }
 
-    private fun scaleProgress(value: Int) {
-        fabProgress.animate().scaleX(value.toFloat()).scaleY(value.toFloat()).start()
+    private fun addNewPaletteOperation() = object : SimpleMenuListenerAdapter() {
+        override fun onPrepareMenu(navigationMenu: NavigationMenu?): Boolean {
+            AddPaletteView.show(context, view_draw_drawer, object : AddNewPaletteSelectedListener {
+                override fun onAddNewPalletSelected(palette: Palette) {
+                    view_draw_palettes.addNewPalette(palette)
+                }
+            })
+            return false
+        }
+    }
+
+    private fun addNewLayerOperation() = object : SimpleMenuListenerAdapter() {
+        override fun onPrepareMenu(navigationMenu: NavigationMenu?): Boolean {
+            view_draw_layers.addNewLayer()
+            return false
+        }
+    }
+
+    private fun standardOperation() = object : SimpleMenuListenerAdapter() {
+        override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
+            R.id.operation_upload -> {
+                presenter.upload(view_draw_led_grid_view.colorGrid)
+                true
+            }
+            else -> false
+        }
+    }
+
+    private fun startFabProgress() {
+        fab.startProgress()
+    }
+
+    private fun stopFabProgress() {
+        fab.stopProgress(R.drawable.ic_import_export_white_48px)
     }
 
     private fun coordinator() = activity.findViewById<View>(R.id.view_coordinator)
