@@ -11,7 +11,7 @@ import butterknife.OnClick
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.ColorChooserDialog
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.feature.history.model.Historical
+import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.home.view.HomeActivity
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.GridTouchedListener
@@ -33,6 +33,8 @@ import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.blendUseCa
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import io.github.yavski.fabspeeddial.CustomFabSpeedDial
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter
+import io.reactivex.SingleTransformer
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_workspace.*
 
 class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelectedListener, GridTouchedListener, WorkspaceView, ColorChooserDialog.ColorCallback, ToolSelectedListener {
@@ -41,7 +43,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
     private val presenter = drawPresenter()
     private val blendUseCase = blendUseCase()
     private var swatchToModify: SwatchView? = null
-    private val modelHistory = Historical(WorkspaceModel())
+    private val modelHistory = HistoryUseCase(WorkspaceModel())
     private var selected: Boolean = false
     private var activeSwatch: SwatchView? = null
     private var displayLayoutBorders = true
@@ -61,7 +63,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
         setFabState()
         view_draw_layers.bind(modelHistory)
         view_draw_palettes.bind(modelHistory)
-        modelHistory.observe().subscribe { this.render(it) }
+        modelHistory.observe().subscribeOn(AndroidSchedulers.mainThread()).subscribe { this.render(it) }
         view_draw_tools.setOnToolSelectedListener(this)
         view_draw_tools_current.bind(Tools.defaultTool())
 
@@ -86,7 +88,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
         super.onViewCreated(view, savedInstanceState)
         view_draw_led_grid_view.setOnGridTouchedListener(this)
         val paletteView = view_draw_drawer.findViewById<PaletteView>(R.id.view_draw_palette)
-        modelHistory.observe().subscribe { paletteView.bind(it.selectedPalette) }
+        modelHistory.observe().subscribeOn(AndroidSchedulers.mainThread()).subscribe { paletteView.bind(it.selectedPalette) }
         paletteView.setOnSwatchSelectedListener(this)
     }
 
@@ -114,8 +116,12 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        showMenuItemEnabled(menu, R.id.menu_undo, modelHistory.hasPast())
-        showMenuItemEnabled(menu, R.id.menu_redo, modelHistory.hasFuture())
+        modelHistory.hasPast()
+                .compose(bindMenuItem(menu, R.id.menu_undo))
+                .subscribe()
+        modelHistory.hasFuture()
+                .compose(bindMenuItem(menu, R.id.menu_redo))
+                .subscribe()
         val item = menu.findItem(R.id.menu_borders)
         item?.setIcon(if (displayLayoutBorders)
             R.drawable.ic_border_outer_white_48px
@@ -307,9 +313,12 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
         activity.invalidateOptionsMenu()
     }
 
-    private fun showMenuItemEnabled(menu: Menu, menuId: Int, enabled: Boolean) {
-        menu.findItem(menuId)?.let {
-            it.icon.alpha = if (enabled) 255 else 125
-        }
+    private fun bindMenuItem(menu: Menu, menuId: Int) = SingleTransformer<Boolean, Boolean> { timeline -> timeline
+            .doOnSuccess { hasMoments ->
+                menu.findItem(menuId)?.let { item ->
+                    item.icon.alpha = if (hasMoments) 255 else 125
+                }
+            }
+            .observeOn(AndroidSchedulers.mainThread())
     }
 }

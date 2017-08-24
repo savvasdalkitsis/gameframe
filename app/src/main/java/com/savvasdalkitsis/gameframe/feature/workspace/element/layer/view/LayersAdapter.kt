@@ -2,16 +2,17 @@ package com.savvasdalkitsis.gameframe.feature.workspace.element.layer.view
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import com.savvasdalkitsis.gameframe.feature.history.model.Historical
+import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.LayerSettings
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
 import com.savvasdalkitsis.gameframe.infra.kotlin.findIndexOrThrow
+import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
 
 internal class LayersAdapter : RecyclerView.Adapter<LayerViewHolder>() {
 
-    private lateinit var modelHistory: Historical<WorkspaceModel>
+    private lateinit var modelHistory: HistoryUseCase<WorkspaceModel>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             LayerViewHolder(parent)
@@ -106,9 +107,9 @@ internal class LayersAdapter : RecyclerView.Adapter<LayerViewHolder>() {
 
     private fun progressTime() = modelHistory.progressTime()
 
-    fun bind(modelHistory: Historical<WorkspaceModel>) {
+    fun bind(modelHistory: HistoryUseCase<WorkspaceModel>) {
         this.modelHistory = modelHistory
-        modelHistory.observe().subscribe { notifyDataSetChanged() }
+        modelHistory.observe().subscribeOn(AndroidSchedulers.mainThread()).subscribe { notifyDataSetChanged() }
     }
 
     private fun selectedItemPosition() = layers().findIndexOrThrow(

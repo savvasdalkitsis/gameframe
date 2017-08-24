@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.util.AttributeSet
 
-import com.savvasdalkitsis.gameframe.feature.history.model.Historical
+import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
 
 class LayersView : RecyclerView {
@@ -31,7 +31,7 @@ class LayersView : RecyclerView {
 
     fun addNewLayer() = layers.addNewLayer()
 
-    fun bind(modelHistory: Historical<WorkspaceModel>) = layers.bind(modelHistory)
+    fun bind(modelHistory: HistoryUseCase<WorkspaceModel>) = layers.bind(modelHistory)
 
     private inner class MoveLayersItemHelper internal constructor() : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0) {
 
