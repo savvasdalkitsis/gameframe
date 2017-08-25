@@ -6,6 +6,7 @@ import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.LayerSettings
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
+import com.savvasdalkitsis.gameframe.infra.kotlin.TypeAction
 import com.savvasdalkitsis.gameframe.infra.kotlin.findIndexOrThrow
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
@@ -29,7 +30,7 @@ internal class LayersAdapter : RecyclerView.Adapter<LayerViewHolder>() {
 
     override fun getItemCount() = layers().size
 
-    private fun modifyLayer(holder: LayerViewHolder, layerModifier: (Layer) -> Unit) {
+    private fun modifyLayer(holder: LayerViewHolder, layerModifier: TypeAction<Layer>) {
         val position = holder.adapterPosition
         progressTime()
         val layer = layers()[position]
@@ -89,7 +90,11 @@ internal class LayersAdapter : RecyclerView.Adapter<LayerViewHolder>() {
     private fun layerSettings(holder: LayerViewHolder) {
         val context = holder.itemView.context
         LayerSettingsView.show(context, layers()[holder.adapterPosition], holder.itemView as ViewGroup,
-                { layerSettings: LayerSettings -> modifyLayer(holder, { it.layerSettings = layerSettings }) } as LayerSettingsSetListener)
+                object: LayerSettingsSetListener {
+                    override fun onLayerSettingsSet(layerSettings: LayerSettings) {
+                        modifyLayer(holder, { it.layerSettings = layerSettings })
+                    }
+                })
     }
 
     fun addNewLayer() = addNewLayer(Layer(layerSettings = LayerSettings(title = "Layer ${layers().size}")), layers().size)
