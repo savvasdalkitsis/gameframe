@@ -4,7 +4,7 @@ import com.savvasdalkitsis.gameframe.feature.raster.usecase.BmpUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
-import com.savvasdalkitsis.gameframe.feature.saves.usecase.SavedDrawingUseCase
+import com.savvasdalkitsis.gameframe.feature.saves.usecase.SaveFileUseCase
 
 import com.savvasdalkitsis.gameframe.injector.ApplicationInjector.application
 import com.savvasdalkitsis.gameframe.injector.feature.gameframe.api.GameFrameApiInjector.gameFrameApi
@@ -24,9 +24,9 @@ object UseCaseInjector {
 
     fun ipDiscoveryUseCase() = IP_DISCOVERY_USE_CASE
 
-    private fun bmpUseCase() = BmpUseCase()
+    fun bmpUseCase() = BmpUseCase()
 
-    fun savedDrawingUseCase() = SavedDrawingUseCase(bmpUseCase(), application())
+    fun savedDrawingUseCase() = SaveFileUseCase(application())
 
     fun blendUseCase() = BlendUseCase()
 }

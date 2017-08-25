@@ -4,18 +4,18 @@ import com.savvasdalkitsis.gameframe.feature.composition.model.ARGB
 import com.savvasdalkitsis.gameframe.feature.composition.model.BlendMode
 import com.savvasdalkitsis.gameframe.feature.composition.model.PorterDuffOperator
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.ColorGrid
+import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.GridDisplay
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
-import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.LedGridView
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 
 class BlendUseCase {
 
-    fun renderOn(layer: Layer, ledGridView: LedGridView) { with(layer) {
+    fun renderOn(layer: Layer, gridDisplay: GridDisplay) { with(layer) {
         when { isVisible ->
-            ledGridView.display(if (isBackground) {
+            gridDisplay.display(if (isBackground) {
                 colorGrid
             } else {
-                compose(ledGridView.colorGrid, colorGrid, layerSettings.blendMode, layerSettings.porterDuffOperator, layerSettings.alpha)
+                compose(gridDisplay.current(), colorGrid, layerSettings.blendMode, layerSettings.porterDuffOperator, layerSettings.alpha)
             })
         }
     } }

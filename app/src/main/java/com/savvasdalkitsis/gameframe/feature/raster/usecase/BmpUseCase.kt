@@ -2,25 +2,18 @@ package com.savvasdalkitsis.gameframe.feature.raster.usecase
 
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.ColorGrid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
-import io.reactivex.Single
 import java.nio.ByteBuffer
 
 class BmpUseCase {
 
-    fun rasterizeToBmp(colorGrid: Grid): Single<ByteArray> {
-        return Single.create { source ->
-            val rasterByteSize = ColorGrid.SIDE * ColorGrid.SIDE * 3
-            val fileSize = rasterByteSize + DATA_OFFSET
+    fun rasterizeToBmp(colorGrid: Grid): ByteArray {
+        val rasterByteSize = ColorGrid.SIDE * ColorGrid.SIDE * 3
+        val fileSize = rasterByteSize + DATA_OFFSET
 
-            try {
-                val buffer = ByteBuffer.allocate(fileSize)
-                writeHeader(buffer, fileSize, rasterByteSize)
-                writeData(buffer, colorGrid)
-                source.onSuccess(buffer.array())
-            } catch (e: Throwable) {
-                source.onError(e)
-            }
-        }
+        val buffer = ByteBuffer.allocate(fileSize)
+        writeHeader(buffer, fileSize, rasterByteSize)
+        writeData(buffer, colorGrid)
+        return buffer.array()
     }
 
     private fun writeHeader(buffer: ByteBuffer, fileSize: Int, rasterByteSize: Int) {

@@ -11,10 +11,11 @@ import android.view.View
 import android.view.View.OnTouchListener
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.ColorGrid
+import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.GridDisplay
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import com.savvasdalkitsis.gameframe.infra.kotlin.clip
 
-class LedGridView : View {
+class LedGridView : View, GridDisplay {
 
     var colorGrid: Grid = ColorGrid()
         private set
@@ -54,10 +55,12 @@ class LedGridView : View {
         thumbBackground = resources.getDrawable(R.drawable.transparency_backround_tiled)
     }
 
-    fun display(colorGrid: Grid) {
-        this.colorGrid = colorGrid
+    override fun display(grid: Grid) {
+        this.colorGrid = grid
         invalidate()
     }
+
+    override fun current() = colorGrid
 
     fun displayBoundaries(columnTranslation: Int, rowTranslation: Int) {
         this.columnTranslation = columnTranslation

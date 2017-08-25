@@ -14,7 +14,7 @@ import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.home.view.HomeActivity
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
-import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.GridTouchedListener
+import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.element.palette.model.Palette
 import com.savvasdalkitsis.gameframe.feature.workspace.element.palette.view.AddNewPaletteSelectedListener
 import com.savvasdalkitsis.gameframe.feature.workspace.element.palette.view.AddPaletteView
@@ -25,45 +25,38 @@ import com.savvasdalkitsis.gameframe.feature.workspace.element.tools.model.Tools
 import com.savvasdalkitsis.gameframe.feature.workspace.element.tools.view.ToolSelectedListener
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
 import com.savvasdalkitsis.gameframe.feature.workspace.presenter.WorkspacePresenter
+import com.savvasdalkitsis.gameframe.infra.kotlin.TypeAction
 import com.savvasdalkitsis.gameframe.infra.view.BaseFragment
 import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.infra.view.Snackbars
-import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.drawPresenter
-import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.blendUseCase
+import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.workspacePresenter
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import io.github.yavski.fabspeeddial.CustomFabSpeedDial
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter
-import io.reactivex.SingleTransformer
-import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_workspace.*
 
-class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelectedListener, GridTouchedListener, WorkspaceView, ColorChooserDialog.ColorCallback, ToolSelectedListener {
+class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
+        SwatchSelectedListener, WorkspaceView<Menu>,
+        ColorChooserDialog.ColorCallback, ToolSelectedListener {
 
-    lateinit var fab: CustomFabSpeedDial
-    private val presenter = drawPresenter()
-    private val blendUseCase = blendUseCase()
+    private lateinit var fab: CustomFabSpeedDial
+    private lateinit var drawer: DrawerLayout
+    private val presenter = workspacePresenter()
     private var swatchToModify: SwatchView? = null
-    private val modelHistory = HistoryUseCase(WorkspaceModel())
     private var selected: Boolean = false
     private var activeSwatch: SwatchView? = null
-    private var displayLayoutBorders = true
 
     override val layoutId: Int
         get() = R.layout.fragment_workspace
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        presenter.bindView(this)
         setHasOptionsMenu(true)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         fab = activity.findViewById(R.id.view_fab_workspace)
-        setFabState()
-        view_draw_layers.bind(modelHistory)
-        view_draw_palettes.bind(modelHistory)
-        modelHistory.observe().subscribeOn(AndroidSchedulers.mainThread()).subscribe { this.render(it) }
         view_draw_tools.setOnToolSelectedListener(this)
         view_draw_tools_current.bind(Tools.defaultTool())
 
@@ -73,7 +66,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
                 fab.animate().scaleY(scale).scaleX(scale).start()
             }
         })
-        view_draw_drawer.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
+        drawer.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
             override fun onDrawerOpened(drawerView: View?) {
                 setFabState()
             }
@@ -84,11 +77,21 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
         })
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view_draw_led_grid_view.setOnGridTouchedListener(this)
-        val paletteView = view_draw_drawer.findViewById<PaletteView>(R.id.view_draw_palette)
-        modelHistory.observe().subscribeOn(AndroidSchedulers.mainThread()).subscribe { paletteView.bind(it.selectedPalette) }
+        drawer = view.findViewById(R.id.view_draw_drawer)
+        view_draw_led_grid_view.setOnGridTouchedListener(presenter)
+        presenter.bindView(this, view_draw_led_grid_view)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setFabState()
+    }
+
+    override fun bindPalette(selectedPalette: Palette) {
+        val paletteView = drawer.findViewById<PaletteView>(R.id.view_draw_palette)
+        paletteView.bind(selectedPalette)
         paletteView.setOnSwatchSelectedListener(this)
     }
 
@@ -100,33 +103,52 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.menu_borders -> {
-            displayLayoutBorders = !displayLayoutBorders
-            render(modelHistory.present)
+            presenter.selectedOptionBorders()
             true
         }
         R.id.menu_undo -> {
-            modelHistory.stepBackInTime()
+            presenter.selectedOptionUndo()
             true
         }
         R.id.menu_redo -> {
-            modelHistory.stepForwardInTime()
+            presenter.selectedOptionRedo()
             true
         }
         else -> false
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
-        modelHistory.hasPast()
-                .compose(bindMenuItem(menu, R.id.menu_undo))
-                .subscribe()
-        modelHistory.hasFuture()
-                .compose(bindMenuItem(menu, R.id.menu_redo))
-                .subscribe()
-        val item = menu.findItem(R.id.menu_borders)
-        item?.setIcon(if (displayLayoutBorders)
-            R.drawable.ic_border_outer_white_48px
-        else
-            R.drawable.ic_border_clear_white_48px)
+        presenter.prepareOptions(menu)
+    }
+
+    override fun displayLayoutBordersEnabled(options: Menu) {
+        options.findItem(R.id.menu_borders)?.setIcon(R.drawable.ic_border_outer_white_48px)
+    }
+
+    override fun displayLayoutBordersDisabled(options: Menu) {
+        options.findItem(R.id.menu_borders)?.setIcon(R.drawable.ic_border_clear_white_48px)
+    }
+
+    override fun enableUndo(options: Menu) {
+        setMenuAlpha(options, R.id.menu_undo, 255)
+    }
+
+    override fun disableUndo(options: Menu) {
+        setMenuAlpha(options, R.id.menu_undo, 125)
+    }
+
+    override fun enableRedo(options: Menu) {
+        setMenuAlpha(options, R.id.menu_redo, 255)
+    }
+
+    override fun disableRedo(options: Menu) {
+        setMenuAlpha(options, R.id.menu_redo, 125)
+    }
+
+    private fun setMenuAlpha(options: Menu, id: Int, alpha: Int) {
+        options.findItem(id)?.let { item ->
+            item.icon.alpha = alpha
+        }
     }
 
     override fun onFragmentSelected() {
@@ -141,6 +163,11 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
         invalidateOptionsMenu()
     }
 
+    override fun observe(history: HistoryUseCase<WorkspaceModel>) {
+        view_draw_layers.bind(history)
+        view_draw_palettes.bind(history)
+    }
+
     override fun onSwatchSelected(swatchView: SwatchView) {
         this.activeSwatch = swatchView
     }
@@ -153,31 +180,18 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
 
     override fun onColorSelection(dialog: ColorChooserDialog, @ColorInt selectedColor: Int) {
         swatchToModify?.let {
-            if (it.color != selectedColor) {
-                with(modelHistory) {
-                    progressTimeWithoutAnnouncing()
-                    present.selectedPalette.changeColor(it.index, selectedColor)
-                    collapsePresentWithPastIfTheSame()
-                    announcePresent()
-                }
-            }
+            presenter.changeColor(it.color, selectedColor, it.index)
         }
     }
 
-    override fun onGridTouchStarted() {
-        modelHistory.progressTime()
-    }
-
-    override fun onGridTouch(startColumn: Int, startRow: Int, column: Int, row: Int) {
+    override fun drawLayer(layer: Layer, startColumn: Int, startRow: Int, column: Int, row: Int) {
         activeSwatch?.let {
-            view_draw_tools_current.drawingTool?.drawOn(modelHistory.present.selectedLayer, startColumn, startRow, column, row, it.color)
-            render(modelHistory.present)
+            view_draw_tools_current.drawingTool?.drawOn(layer, startColumn, startRow, column, row, it.color)
         }
     }
 
-    override fun onGridTouchFinished() {
-        view_draw_tools_current.drawingTool?.finishStroke(modelHistory.present.selectedLayer)
-        modelHistory.collapsePresentWithPastIfTheSame()
+    override fun finishStroke(layer: Layer) {
+        view_draw_tools_current.drawingTool?.finishStroke(layer)
     }
 
     override fun onToolSelected(tool: Tools) {
@@ -185,11 +199,11 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
         view_draw_sliding_up_panel.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
     }
 
-    override fun askForFileName(name: Function1<String, Unit>) {
+    override fun askForFileName(positiveText: Int, nameEntered: TypeAction<String>) {
         MaterialDialog.Builder(activity)
-                .input(R.string.name_of_drawing, 0, false) { _, input -> name.invoke(input.toString()) }
+                .input(R.string.name_of_drawing, 0, false) { _, input -> nameEntered(input.toString()) }
                 .title(R.string.enter_name_for_drawing)
-                .positiveText(R.string.upload)
+                .positiveText(positiveText)
                 .negativeText(android.R.string.cancel)
                 .build()
                 .show()
@@ -225,13 +239,13 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
     @SuppressLint("RtlHardcoded")
     @OnClick(R.id.view_draw_open_layers)
     fun openLayers() {
-        view_draw_drawer.openDrawer(Gravity.RIGHT)
+        drawer.openDrawer(Gravity.RIGHT)
     }
 
     @SuppressLint("RtlHardcoded")
     @OnClick(R.id.view_draw_open_palette)
     fun openPalette() {
-        view_draw_drawer.openDrawer(Gravity.LEFT)
+        drawer.openDrawer(Gravity.LEFT)
     }
 
     @OnClick(R.id.view_draw_tools_change, R.id.view_draw_tools_current)
@@ -242,11 +256,11 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
     @SuppressLint("RtlHardcoded")
     private fun setFabState() = with(fab) {
         when {
-            view_draw_drawer.isDrawerOpen(Gravity.RIGHT) -> {
+            drawer.isDrawerOpen(Gravity.RIGHT) -> {
                 setMenuListener(addNewLayerOperation())
                 setImageResource(R.drawable.ic_add_white_48px)
             }
-            view_draw_drawer.isDrawerOpen(Gravity.LEFT) -> {
+            drawer.isDrawerOpen(Gravity.LEFT) -> {
                 setMenuListener(addNewPaletteOperation())
                 setImageResource(R.drawable.ic_add_white_48px)
             }
@@ -259,7 +273,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
 
     private fun addNewPaletteOperation() = object : SimpleMenuListenerAdapter() {
         override fun onPrepareMenu(navigationMenu: NavigationMenu?): Boolean {
-            AddPaletteView.show(context, view_draw_drawer, object : AddNewPaletteSelectedListener {
+            AddPaletteView.show(context, drawer, object : AddNewPaletteSelectedListener {
                 override fun onAddNewPalletSelected(palette: Palette) {
                     view_draw_palettes.addNewPalette(palette)
                 }
@@ -281,6 +295,10 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
                 presenter.upload(view_draw_led_grid_view.colorGrid)
                 true
             }
+            R.id.operation_save -> {
+                presenter.saveWorkspace()
+                true
+            }
             else -> false
         }
     }
@@ -295,30 +313,20 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener, SwatchSelect
 
     private fun coordinator() = activity.findViewById<View>(R.id.view_coordinator)
 
-    private fun render(model: WorkspaceModel) {
-        model.layers.forEach { blendUseCase.renderOn(it, view_draw_led_grid_view) }
-        val selected = model.layers.firstOrNull { it.isSelected }
+    override fun displayBoundaries(col: Int, row: Int) {
+        view_draw_led_grid_view.displayBoundaries(col, row)
+    }
 
-        if (selected != null && displayLayoutBorders) {
-            val colorGrid = selected.colorGrid
-            view_draw_led_grid_view.displayBoundaries(colorGrid.columnTranslation, colorGrid.rowTranslation)
-        } else {
-            view_draw_led_grid_view.clearBoundaries()
-        }
+    override fun clearBoundaries() {
+        view_draw_led_grid_view.clearBoundaries()
+    }
+
+    override fun rendered() {
         view_draw_led_grid_view.invalidate()
         invalidateOptionsMenu()
     }
 
     private fun invalidateOptionsMenu() {
         activity.invalidateOptionsMenu()
-    }
-
-    private fun bindMenuItem(menu: Menu, menuId: Int) = SingleTransformer<Boolean, Boolean> { timeline -> timeline
-            .doOnSuccess { hasMoments ->
-                menu.findItem(menuId)?.let { item ->
-                    item.icon.alpha = if (hasMoments) 255 else 125
-                }
-            }
-            .observeOn(AndroidSchedulers.mainThread())
     }
 }
