@@ -11,6 +11,7 @@ interface WorkspaceView<in O> {
 
     fun askForFileName(positiveText: Int, nameEntered: TypeAction<String>)
     fun displayProgress()
+    fun stopProgress()
     fun drawingAlreadyExists(name: String, colorGrid: Grid, e: Throwable)
     fun observe(history: HistoryUseCase<WorkspaceModel>)
     fun bindPalette(selectedPalette: Palette)
@@ -27,6 +28,7 @@ interface WorkspaceView<in O> {
     fun rendered()
     fun displayProjectName(name: String)
     fun askForProjectToLoad(projectNames: List<String>)
+    fun askForProjectsToDelete(projectNames: List<String>)
     fun operationFailed(e: Throwable)
     fun showSuccess()
     fun displayNoSavedProjectsExist()

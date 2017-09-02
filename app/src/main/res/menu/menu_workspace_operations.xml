@@ -10,6 +10,10 @@
         android:icon="@drawable/ic_save_white_48px"
         android:title="@string/save" />
     <item
+        android:id="@+id/operation_delete"
+        android:icon="@drawable/ic_delete_black_48px"
+        android:title="@string/delete_projects" />
+    <item
         android:id="@+id/operation_upload"
         android:icon="@drawable/ic_publish_white_48px"
         android:title="@string/send_to_game_frame" />

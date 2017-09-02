@@ -210,14 +210,19 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
     }
 
     override fun displayProgress() {
-        startFabProgress()
+        fab.startProgress()
+    }
+
+    override fun stopProgress() {
+        fab.stopProgress(R.drawable.ic_import_export_white_48px)
+
     }
 
     override fun drawingAlreadyExists(name: String, colorGrid: Grid, e: Throwable) {
         Log.e(WorkspacePresenter::class.java.name, "Drawing already exists", e)
         Snackbars.actionError(coordinator(), R.string.already_exists, R.string.replace,
                 { presenter.replaceDrawing(name, colorGrid) }).show()
-        stopFabProgress()
+        stopProgress()
     }
 
     @SuppressLint("RtlHardcoded")
@@ -287,6 +292,10 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
                 presenter.loadProject()
                 true
             }
+            R.id.operation_delete -> {
+                presenter.deleteProjects()
+                true
+            }
             else -> false
         }
     }
@@ -302,17 +311,21 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
                 .show()
     }
 
+    override fun askForProjectsToDelete(projectNames: List<String>) {
+        MaterialDialog.Builder(context)
+                .title(R.string.delete_projects)
+                .items(projectNames)
+                .itemsCallbackMultiChoice(null) { _, which, _ ->
+                    presenter.deleteProjects(which.map { projectNames[it] })
+                    true
+                }
+                .positiveText(R.string.delete)
+                .show()
+    }
+
     override fun displayNoSavedProjectsExist() {
         Snackbars.error(coordinator(), R.string.no_saved_projects).show()
-        stopFabProgress()
-    }
-
-    private fun startFabProgress() {
-        fab.startProgress()
-    }
-
-    private fun stopFabProgress() {
-        fab.stopProgress(R.drawable.ic_import_export_white_48px)
+        stopProgress()
     }
 
     override fun displayProjectName(name: String) {
@@ -340,12 +353,12 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
 
     override fun showSuccess() {
         Snackbars.success(coordinator(), R.string.success).show()
-        stopFabProgress()
+        stopProgress()
     }
 
     override fun operationFailed(e: Throwable) {
         Log.e(WorkspacePresenter::class.java.name, "Workspace operation failed", e)
         Snackbars.error(coordinator(), R.string.operation_failed).show()
-        stopFabProgress()
+        stopProgress()
     }
 }

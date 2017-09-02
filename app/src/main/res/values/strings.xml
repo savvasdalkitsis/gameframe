@@ -49,4 +49,6 @@
     <string name="untitled">Untitled</string>
     <string name="load_project">Load Project</string>
     <string name="no_saved_projects">There are no saved projects</string>
+    <string name="delete_projects">Delete saved projects</string>
+    <string name="delete">Delete</string>
 </resources>

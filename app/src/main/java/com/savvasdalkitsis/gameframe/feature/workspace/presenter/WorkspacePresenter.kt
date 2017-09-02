@@ -17,6 +17,7 @@ import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.view.WorkspaceView
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.File
 
@@ -92,15 +93,47 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
                     .subscribe(projectLoaded(name), { view.operationFailed(it) })
             else -> workspaceUseCase.savedProjects()
                     .compose(RxTransformers.schedulers<List<String>>())
-                    .subscribe(savedProjectsLoaded(), { view.operationFailed(it) })
+                    .subscribe(savedProjectsLoaded {
+                        view.stopProgress()
+                        view.askForProjectToLoad(it)
+                    }, {
+                        view.operationFailed(it)
+                    })
         }
     }
 
-    private fun savedProjectsLoaded(): (List<String>) -> Unit = {
+    fun deleteProjects(names: List<String>? = null) {
+        view.displayProgress()
+        if (names?.isEmpty() == false) {
+            Flowable.fromIterable(names)
+                    .flatMapCompletable(workspaceUseCase::deleteProject)
+                    .compose(RxTransformers.schedulers())
+                    .subscribe(projectsDeleted(names), { view.operationFailed(it) })
+        } else {
+            workspaceUseCase.savedProjects()
+                    .compose(RxTransformers.schedulers<List<String>>())
+                    .subscribe(savedProjectsLoaded {
+                        view.stopProgress()
+                        view.askForProjectsToDelete(it)
+                    }, {
+                        view.operationFailed(it)
+                    })
+        }
+    }
+
+    private fun projectsDeleted(names: List<String>) = {
+        view.showSuccess()
+        if (names.contains(project.name)) {
+            project.name = null
+            displayProjectName()
+        }
+    }
+
+    private fun savedProjectsLoaded(onNonEmpty: (List<String>) -> Unit): (List<String>) -> Unit = {
         if (it.isEmpty()) {
             view.displayNoSavedProjectsExist()
         } else {
-            view.askForProjectToLoad(it)
+            onNonEmpty(it)
         }
     }
 
@@ -111,13 +144,17 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
 
     private fun projectSaveFailed(): (Throwable) -> Unit = {
         view.operationFailed(it)
-        view.displayProjectName(project.name ?: stringUseCase.getString(R.string.untitled))
+        displayProjectName()
     }
 
     private fun projectChangedSuccessfully(name: String) {
         view.showSuccess()
-        view.displayProjectName(name)
         project.name = name
+        displayProjectName()
+    }
+
+    private fun displayProjectName() {
+        view.displayProjectName(project.name ?: stringUseCase.getString(R.string.untitled))
     }
 
     fun changeColor(currentColor: Int, newColor: Int, paletteIndex: Int) {

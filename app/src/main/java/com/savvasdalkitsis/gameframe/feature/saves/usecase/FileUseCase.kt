@@ -55,6 +55,16 @@ class FileUseCase(private val application: GameFrameApplication) {
     fun listFilesIn(dirName: String): Single<List<File>> = file(dirName)
             .map { it.listFiles().toList() }
 
+    fun deleteFile(dirName: String, fileName: String): Completable = file(dirName)
+            .map { File(it, fileName) }
+            .flatMapCompletable {
+                if (it.delete()) {
+                    Completable.complete()
+                } else {
+                    Completable.error(IOException("Could not delete file ${it.absolutePath}"))
+                }
+            }
+
     private fun file(name: String) =
             Single.just(File(application.getExternalFilesDir(null), name))
 }
