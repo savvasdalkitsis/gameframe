@@ -8,12 +8,18 @@ import com.savvasdalkitsis.gameframe.infra.kotlin.clip
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector
 
 class ColorGrid : Grid {
+
     private val colors = Array(SIDE) { IntArray(SIDE) }
-    private val blendUseCase = UseCaseInjector.blendUseCase()
-    private var transientTranslateCol: Int = 0
-    private var transientTranslateRow: Int = 0
     private var translateCol: Int = 0
     private var translateRow: Int = 0
+
+    @Transient
+    private val blendUseCase = UseCaseInjector.blendUseCase()
+    @Transient
+    private var transientTranslateCol: Int = 0
+    @Transient
+    private var transientTranslateRow: Int = 0
+    @Transient
     private var scratch: ColorGrid? = null
 
     init {
