@@ -61,13 +61,14 @@
         app:layout_anchorGravity="bottom|right|end"
         tools:ignore="RtlHardcoded" />
 
-    <com.savvasdalkitsis.gameframe.infra.view.ProgressFloatingActionButton
+    <com.savvasdalkitsis.gameframe.infra.android.ProgressFloatingActionButton
         android:id="@+id/view_setup_fab_container"
         android:layout_margin="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:clickable="true"
+        android:focusable="true"
         tools:ignore="RtlHardcoded">
 
         <android.support.design.widget.FloatingActionButton
@@ -92,6 +93,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-    </com.savvasdalkitsis.gameframe.infra.view.ProgressFloatingActionButton>
+    </com.savvasdalkitsis.gameframe.infra.android.ProgressFloatingActionButton>
 
 </android.support.design.widget.CoordinatorLayout>

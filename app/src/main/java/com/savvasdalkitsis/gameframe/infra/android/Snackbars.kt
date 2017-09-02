@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.infra.view
+package com.savvasdalkitsis.gameframe.infra.android
 
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar

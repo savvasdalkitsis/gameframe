@@ -9,8 +9,8 @@ import android.view.View
 import com.afollestad.materialdialogs.color.ColorChooserDialog
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
-import com.savvasdalkitsis.gameframe.infra.view.BaseActivity
-import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener
+import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
+import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 import kotlinx.android.synthetic.main.activity_home.*

@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.infra.view
+package com.savvasdalkitsis.gameframe.infra.android
 
 interface FragmentSelectedListener {
 

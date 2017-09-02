@@ -3,12 +3,16 @@ package io.github.yavski.fabspeeddial
 import android.content.Context
 import android.support.annotation.DrawableRes
 import android.support.v4.view.ViewCompat
+import android.support.v4.view.ViewPropertyAnimatorCompat
 import android.util.AttributeSet
+import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.infra.kotlin.Action
 
 class CustomFabSpeedDial(context: Context, attrs: AttributeSet): FabSpeedDial(context, attrs) {
+
+    private val animations: MutableSet<ViewPropertyAnimatorCompat> = HashSet()
 
     fun setImageResource(resId: Int, scale: Boolean = true, endAction: Action? = null) {
         if (scale) {
@@ -25,7 +29,10 @@ class CustomFabSpeedDial(context: Context, attrs: AttributeSet): FabSpeedDial(co
                                 .setDuration(50)
                                 .withLayer()
                                 .withEndAction { endAction?.invoke() }
-                    }
+                    }.apply {
+                animations.add(this)
+                start()
+            }
         } else {
             fab.setImageResource(resId)
             endAction?.invoke()
@@ -51,11 +58,15 @@ class CustomFabSpeedDial(context: Context, attrs: AttributeSet): FabSpeedDial(co
                 .withEndAction {
                     fab.rotation = 0f
                     startProgress(false)
-                }
-                .start()
+                }.apply {
+            animations.add(this)
+            start()
+        }
     }
 
     fun stopProgress(@DrawableRes restingDrawableId: Int) {
+        animations.forEach { it.cancel() }
+        animations.clear()
         fab.clearAnimation()
         fab.animate().rotation(0f).withEndAction {
             setImageResource(restingDrawableId)

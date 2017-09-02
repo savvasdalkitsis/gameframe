@@ -2,17 +2,16 @@ package com.savvasdalkitsis.gameframe.feature.saves.usecase
 
 import com.savvasdalkitsis.gameframe.GameFrameApplication
 import com.savvasdalkitsis.gameframe.feature.saves.model.FileAlreadyExistsException
-import com.savvasdalkitsis.gameframe.infra.kotlin.ByteArrayProvider
+import com.savvasdalkitsis.gameframe.infra.kotlin.InputStreamProvider
 import io.reactivex.Completable
 import io.reactivex.Single
 import org.apache.commons.io.FileUtils
-import java.io.File
-import java.io.IOException
+import java.io.*
 
-class SaveFileUseCase(private val application: GameFrameApplication) {
+class FileUseCase(private val application: GameFrameApplication) {
 
     fun saveFile(dirName: String, fileName: String,
-                 fileContentsProvider: ByteArrayProvider,
+                 fileContentsProvider: InputStreamProvider,
                  overwriteFile: Boolean = false): Single<File> =
             file(dirName)
                     .flatMap { dir ->
@@ -29,7 +28,7 @@ class SaveFileUseCase(private val application: GameFrameApplication) {
                     }}
                     .flatMap { file ->
                         try {
-                            file.writeBytes(fileContentsProvider())
+                            FileUtils.copyInputStreamToFile(fileContentsProvider(), file)
                             Single.just(file)
                         } catch (e: Throwable ) {
                             Single.error<File>(e)
@@ -47,6 +46,14 @@ class SaveFileUseCase(private val application: GameFrameApplication) {
                     Completable.error(e)
                 }
             }
+
+    fun readFile(dirName: String, fileName: String): Single<Reader> = file(dirName)
+            .map { File(it, fileName) }
+            .map { BufferedReader(FileReader(it)) }
+
+
+    fun listFilesIn(dirName: String): Single<List<File>> = file(dirName)
+            .map { it.listFiles().toList() }
 
     private fun file(name: String) =
             Single.just(File(application.getExternalFilesDir(null), name))

@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.infra.view
+package com.savvasdalkitsis.gameframe.infra.android
 
 import android.content.Context
 import android.os.Bundle

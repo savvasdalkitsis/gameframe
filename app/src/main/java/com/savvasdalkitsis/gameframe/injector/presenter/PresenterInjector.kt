@@ -12,7 +12,9 @@ import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.blendUseCa
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.bmpUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.gameFrameUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.ipDiscoveryUseCase
-import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.savedDrawingUseCase
+import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.fileUseCase
+import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.stringUseCase
+import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.workspaceUseCase
 
 object PresenterInjector {
 
@@ -26,6 +28,6 @@ object PresenterInjector {
     fun widgetPresenter() =
             WidgetPresenter(gameFrameUseCase(), ipRepository(), navigator())
 
-    fun workspacePresenter() = WorkspacePresenter<Menu>(gameFrameUseCase(), savedDrawingUseCase(),
-            bmpUseCase(), blendUseCase())
+    fun workspacePresenter() = WorkspacePresenter<Menu>(gameFrameUseCase(), fileUseCase(),
+            bmpUseCase(), blendUseCase(), workspaceUseCase(), stringUseCase())
 }

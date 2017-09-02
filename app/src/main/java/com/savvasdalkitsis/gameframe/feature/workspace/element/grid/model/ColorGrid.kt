@@ -2,7 +2,6 @@ package com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model
 
 import android.graphics.Color
 import android.support.annotation.ColorInt
-
 import com.savvasdalkitsis.gameframe.feature.composition.model.AvailableBlendMode
 import com.savvasdalkitsis.gameframe.feature.composition.model.AvailablePorterDuffOperator
 import com.savvasdalkitsis.gameframe.infra.kotlin.clip

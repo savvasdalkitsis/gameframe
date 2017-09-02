@@ -26,9 +26,9 @@ import com.savvasdalkitsis.gameframe.feature.workspace.element.tools.view.ToolSe
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
 import com.savvasdalkitsis.gameframe.feature.workspace.presenter.WorkspacePresenter
 import com.savvasdalkitsis.gameframe.infra.kotlin.TypeAction
-import com.savvasdalkitsis.gameframe.infra.view.BaseFragment
-import com.savvasdalkitsis.gameframe.infra.view.FragmentSelectedListener
-import com.savvasdalkitsis.gameframe.infra.view.Snackbars
+import com.savvasdalkitsis.gameframe.infra.android.BaseFragment
+import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
+import com.savvasdalkitsis.gameframe.infra.android.Snackbars
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.workspacePresenter
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import io.github.yavski.fabspeeddial.CustomFabSpeedDial
@@ -209,18 +209,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
                 .show()
     }
 
-    override fun fileUploaded() {
-        Snackbars.success(coordinator(), R.string.success).show()
-        stopFabProgress()
-    }
-
-    override fun failedToUpload(e: Throwable) {
-        Log.e(WorkspacePresenter::class.java.name, "Error uploading to game frame", e)
-        Snackbars.error(coordinator(), R.string.operation_failed).show()
-        stopFabProgress()
-    }
-
-    override fun displayUploading() {
+    override fun displayProgress() {
         startFabProgress()
     }
 
@@ -229,11 +218,6 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
         Snackbars.actionError(coordinator(), R.string.already_exists, R.string.replace,
                 { presenter.replaceDrawing(name, colorGrid) }).show()
         stopFabProgress()
-    }
-
-    override fun failedToDelete(e: Throwable) {
-        Log.e(WorkspacePresenter::class.java.name, "Failed to delete drawing", e)
-        Snackbars.error(coordinator(), R.string.operation_failed).show()
     }
 
     @SuppressLint("RtlHardcoded")
@@ -299,8 +283,28 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
                 presenter.saveWorkspace()
                 true
             }
+            R.id.operation_open -> {
+                presenter.loadProject()
+                true
+            }
             else -> false
         }
+    }
+
+    override fun askForProjectToLoad(projectNames: List<String>) {
+        MaterialDialog.Builder(context)
+                .title(R.string.load_project)
+                .items(projectNames)
+                .itemsCallbackSingleChoice(-1) { _, _, which, _ ->
+                    presenter.loadProject(projectNames[which])
+                    true
+                }
+                .show()
+    }
+
+    override fun displayNoSavedProjectsExist() {
+        Snackbars.error(coordinator(), R.string.no_saved_projects).show()
+        stopFabProgress()
     }
 
     private fun startFabProgress() {
@@ -309,6 +313,10 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
 
     private fun stopFabProgress() {
         fab.stopProgress(R.drawable.ic_import_export_white_48px)
+    }
+
+    override fun displayProjectName(name: String) {
+        view_draw_project_name.text = name
     }
 
     private fun coordinator() = activity.findViewById<View>(R.id.view_coordinator)
@@ -328,5 +336,16 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
 
     private fun invalidateOptionsMenu() {
         activity.invalidateOptionsMenu()
+    }
+
+    override fun showSuccess() {
+        Snackbars.success(coordinator(), R.string.success).show()
+        stopFabProgress()
+    }
+
+    override fun operationFailed(e: Throwable) {
+        Log.e(WorkspacePresenter::class.java.name, "Workspace operation failed", e)
+        Snackbars.error(coordinator(), R.string.operation_failed).show()
+        stopFabProgress()
     }
 }

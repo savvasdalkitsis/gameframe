@@ -18,11 +18,27 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/view_draw_project_name"
+                android:text="@string/untitled"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="4dp"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="SmallSp" />
+
             <com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.LedGridView
                 android:id="@+id/view_draw_led_grid_view"
+                android:layout_below="@id/view_draw_project_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp" />
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp" />
 
             <ImageView
                 android:id="@+id/view_draw_open_palette"
@@ -62,7 +78,7 @@
                 android:orientation="horizontal"
                 android:padding="12dp"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/view_draw_tools_change"

@@ -7,25 +7,30 @@ import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.raster.usecase.BmpUseCase
 import com.savvasdalkitsis.gameframe.feature.saves.model.FileAlreadyExistsException
-import com.savvasdalkitsis.gameframe.feature.saves.usecase.SaveFileUseCase
+import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.GridDisplay
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.GridTouchedListener
 import com.savvasdalkitsis.gameframe.feature.workspace.model.Project
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
+import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.view.WorkspaceView
+import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.File
 
 class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
-                            private val saveFileUseCase: SaveFileUseCase,
+                            private val fileUseCase: FileUseCase,
                             private val bmpUseCase: BmpUseCase,
-                            private val blendUseCase: BlendUseCase): GridTouchedListener {
+                            private val blendUseCase: BlendUseCase,
+                            private val workspaceUseCase: WorkspaceUseCase,
+                            private val stringUseCase: StringUseCase) : GridTouchedListener {
 
     private lateinit var view: WorkspaceView<O>
     private lateinit var gridDisplay: GridDisplay
     private var uploading: Boolean = false
+    private var tempName: String? = null
     private var project = Project(history = HistoryUseCase(WorkspaceModel()))
     private val history: HistoryUseCase<WorkspaceModel>
         get() = project.history
@@ -56,17 +61,63 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
     }
 
     fun replaceDrawing(name: String, colorGrid: Grid) {
-        view.displayUploading()
+        view.displayProgress()
         uploading = true
-        saveFileUseCase.deleteDirectory(name)
+        fileUseCase.deleteDirectory(name)
                 .concatWith { gameFrameUseCase.removeFolder(name) }
                 .compose(RxTransformers.schedulers())
                 .doOnTerminate { uploading = false }
-                .subscribe({ upload(name, colorGrid) }, { view.failedToDelete(it) })
+                .subscribe({ upload(name, colorGrid) }, { view.operationFailed(it) })
     }
 
     fun saveWorkspace() {
+        view.displayProgress()
+        project.name?.let { tempName = it }
+        tempName?.let { name ->
+            tempName = null
+            workspaceUseCase.saveProject(name, present)
+                    .compose(RxTransformers.schedulers<File>())
+                    .subscribe({ projectChangedSuccessfully(name) }, projectSaveFailed())
+        } ?: view.askForFileName(R.string.save) {
+            tempName = it
+            saveWorkspace()
+        }
+    }
 
+    fun loadProject(name: String? = null) {
+        view.displayProgress()
+        when {
+            name != null -> workspaceUseCase.load(name)
+                    .compose(RxTransformers.schedulers<WorkspaceModel>())
+                    .subscribe(projectLoaded(name), { view.operationFailed(it) })
+            else -> workspaceUseCase.savedProjects()
+                    .compose(RxTransformers.schedulers<List<String>>())
+                    .subscribe(savedProjectsLoaded(), { view.operationFailed(it) })
+        }
+    }
+
+    private fun savedProjectsLoaded(): (List<String>) -> Unit = {
+        if (it.isEmpty()) {
+            view.displayNoSavedProjectsExist()
+        } else {
+            view.askForProjectToLoad(it)
+        }
+    }
+
+    private fun projectLoaded(name: String): (WorkspaceModel) -> Unit = {
+        history.restartFrom(it)
+        projectChangedSuccessfully(name)
+    }
+
+    private fun projectSaveFailed(): (Throwable) -> Unit = {
+        view.operationFailed(it)
+        view.displayProjectName(project.name ?: stringUseCase.getString(R.string.untitled))
+    }
+
+    private fun projectChangedSuccessfully(name: String) {
+        view.showSuccess()
+        view.displayProjectName(name)
+        project.name = name
     }
 
     fun changeColor(currentColor: Int, newColor: Int, paletteIndex: Int) {
@@ -97,18 +148,22 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
     fun prepareOptions(options: O) {
         history.hasPast()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { hasPast -> if (hasPast) {
-                    view.enableUndo(options)
-                } else {
-                    view.disableUndo(options)
-                }}
+                .subscribe { hasPast ->
+                    if (hasPast) {
+                        view.enableUndo(options)
+                    } else {
+                        view.disableUndo(options)
+                    }
+                }
         history.hasFuture()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { hasFuture -> if (hasFuture) {
-                    view.enableRedo(options)
-                } else {
-                    view.disableRedo(options)
-                }}
+                .subscribe { hasFuture ->
+                    if (hasFuture) {
+                        view.enableRedo(options)
+                    } else {
+                        view.disableRedo(options)
+                    }
+                }
         if (displayLayoutBorders) {
             view.displayLayoutBordersEnabled(options)
         } else {
@@ -130,19 +185,19 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
     }
 
     private fun upload(name: String, colorGrid: Grid) {
-        view.displayUploading()
+        view.displayProgress()
         uploading = true
-        saveFileUseCase.saveFile(name, "0.bmp", { bmpUseCase.rasterizeToBmp(colorGrid) })
+        fileUseCase.saveFile("bmp/$name", "0.bmp", { bmpUseCase.rasterizeToBmp(colorGrid) })
                 .flatMap<File> { file -> gameFrameUseCase.createFolder(name).toSingleDefault<File>(file) }
                 .flatMapCompletable { gameFrameUseCase.uploadFile(it) }
                 .concatWith { gameFrameUseCase.play(name) }
                 .compose(RxTransformers.schedulers())
                 .doOnTerminate { uploading = false }
-                .subscribe({ view.fileUploaded() }, { e ->
+                .subscribe({ view.showSuccess() }, { e ->
                     if (e is FileAlreadyExistsException || e is AlreadyExistsOnGameFrameException) {
                         view.drawingAlreadyExists(name, colorGrid, e)
                     } else {
-                        view.failedToUpload(e)
+                        view.operationFailed(e)
                     }
                 })
     }

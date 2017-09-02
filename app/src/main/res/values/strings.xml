@@ -46,4 +46,7 @@
     <string name="save">Save</string>
     <string name="send_to_game_frame">Send to GameFrame</string>
     <string name="open_drawing">Open previously saved drawing</string>
+    <string name="untitled">Untitled</string>
+    <string name="load_project">Load Project</string>
+    <string name="no_saved_projects">There are no saved projects</string>
 </resources>

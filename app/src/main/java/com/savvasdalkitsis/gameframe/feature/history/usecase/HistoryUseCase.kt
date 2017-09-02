@@ -67,6 +67,13 @@ class HistoryUseCase<T : Moment<T>>(present: T,
                 .doOnSuccess { forgetPresent() }
     }
 
+    fun restartFrom(moment: T) {
+        past.clearTimeline()
+        future.clearTimeline()
+        present = moment
+        announcePresent()
+    }
+
     private fun forgetPresent() {
         hasPast()
                 .filter(hasMoments())

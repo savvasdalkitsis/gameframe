@@ -66,6 +66,12 @@ enum class AvailableBlendMode(private val blendComponent: (Float, Float) -> Floa
 
         fun defaultMode() = NORMAL
 
+        fun from(blendMode: BlendMode) =
+                values().firstOrNull { it == blendMode } ?: defaultMode()
+
+        fun fromName(name: String) =
+                values().firstOrNull { it.name == name } ?: defaultMode()
+
         fun indexOf(blendMode: BlendMode): Int = values()
                 .mapIndexed { i, mode -> Pair(i, mode) }
                 .firstOrNull { (_, mode) -> mode == blendMode }?.first

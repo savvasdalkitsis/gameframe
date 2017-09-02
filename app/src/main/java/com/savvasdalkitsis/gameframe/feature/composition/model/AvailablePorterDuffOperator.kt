@@ -28,6 +28,13 @@ enum class AvailablePorterDuffOperator(private val fa: (Float) -> Float, private
     }
 
     companion object {
+
+        fun from(porterDuffOperator: PorterDuffOperator) =
+                AvailablePorterDuffOperator.values().firstOrNull { it == porterDuffOperator } ?: defaultOperator()
+
+        fun fromName(name: String) =
+                AvailablePorterDuffOperator.values().firstOrNull { it.name == name } ?: defaultOperator()
+
         fun indexOf(porterDuffOperator: PorterDuffOperator): Int {
             var i = values().indexOfFirst { mode -> mode == porterDuffOperator }
             if (i < 0) {

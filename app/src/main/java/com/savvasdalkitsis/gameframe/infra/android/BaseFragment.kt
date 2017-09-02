@@ -1,4 +1,4 @@
-package com.savvasdalkitsis.gameframe.infra.view
+package com.savvasdalkitsis.gameframe.infra.android
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

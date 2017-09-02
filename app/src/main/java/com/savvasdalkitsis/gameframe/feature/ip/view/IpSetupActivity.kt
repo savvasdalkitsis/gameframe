@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewPropertyAnimator
 import butterknife.OnClick
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.infra.view.BaseActivity
-import com.savvasdalkitsis.gameframe.infra.view.Snackbars
+import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
+import com.savvasdalkitsis.gameframe.infra.android.Snackbars
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.ipSetupPresenter
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import kotlinx.android.synthetic.main.activity_ip_setup.*
