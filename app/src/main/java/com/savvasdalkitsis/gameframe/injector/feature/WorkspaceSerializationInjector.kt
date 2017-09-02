@@ -10,11 +10,9 @@ import com.savvasdalkitsis.gameframe.feature.workspace.serialization.WorkspaceMo
 
 object WorkspaceSerializationInjector {
 
-    fun workspaceSerialization(gsonBuilder: GsonBuilder) {
-        gsonBuilder
-                .registerTypeHierarchyAdapter(BlendMode::class.java, BlendModeAdapter())
-                .registerTypeHierarchyAdapter(PorterDuffOperator::class.java, PorterDuffAdapter())
-                .registerTypeHierarchyAdapter(WorkspaceModel::class.java, WorkspaceModelAdapter())
-    }
+    fun workspaceSerialization(gsonBuilder: GsonBuilder): GsonBuilder = gsonBuilder
+            .registerTypeHierarchyAdapter(BlendMode::class.java, BlendModeAdapter())
+            .registerTypeHierarchyAdapter(PorterDuffOperator::class.java, PorterDuffAdapter())
+            .registerTypeHierarchyAdapter(WorkspaceModel::class.java, WorkspaceModelAdapter())
 
 }

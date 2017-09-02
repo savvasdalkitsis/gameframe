@@ -7,7 +7,7 @@ import com.savvasdalkitsis.gameframe.injector.feature.WorkspaceSerializationInje
 object GsonInjector {
 
     fun gson(): Gson = GsonBuilder()
-            .apply { workspaceSerialization(this) }
+            .let { workspaceSerialization(it) }
             .create()
 }
 
