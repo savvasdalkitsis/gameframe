@@ -51,4 +51,9 @@
     <string name="no_saved_projects">There are no saved projects</string>
     <string name="delete_projects">Delete saved projects</string>
     <string name="delete">Delete</string>
+    <string name="new_project">Create new project</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="dismiss_changes_question">Dismiss changes?</string>
+    <string name="unsaved_changes">There are unsaved changes. Are you sure you want to dismiss them?</string>
+    <string name="do_not_dismiss">Do not dismiss</string>
 </resources>

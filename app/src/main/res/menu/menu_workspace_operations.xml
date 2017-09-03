@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/operation_new"
+        android:icon="@drawable/ic_create_new_folder_white_48px"
+        android:title="@string/new_project" />
+    <item
         android:id="@+id/operation_open"
         android:icon="@drawable/ic_folder_open_white_48px"
         android:title="@string/open_drawing" />

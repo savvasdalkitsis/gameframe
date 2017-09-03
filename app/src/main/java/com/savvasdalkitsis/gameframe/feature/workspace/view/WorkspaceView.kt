@@ -32,4 +32,5 @@ interface WorkspaceView<in O> {
     fun operationFailed(e: Throwable)
     fun showSuccess()
     fun displayNoSavedProjectsExist()
+    fun askForApprovalToDismissChanges()
 }

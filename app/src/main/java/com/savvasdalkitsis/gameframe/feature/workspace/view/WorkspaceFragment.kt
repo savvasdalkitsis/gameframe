@@ -296,8 +296,22 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
                 presenter.deleteProjects()
                 true
             }
+            R.id.operation_new -> {
+                presenter.createNewProject()
+                true
+            }
             else -> false
         }
+    }
+
+    override fun askForApprovalToDismissChanges() {
+        MaterialDialog.Builder(context)
+                .title(R.string.dismiss_changes_question)
+                .content(R.string.unsaved_changes)
+                .positiveText(R.string.dismiss)
+                .negativeText(R.string.do_not_dismiss)
+                .onPositive { _, _ -> presenter.createNewProject(true) }
+                .show()
     }
 
     override fun askForProjectToLoad(projectNames: List<String>) {

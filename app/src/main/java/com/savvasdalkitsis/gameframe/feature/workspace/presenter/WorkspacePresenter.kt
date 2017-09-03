@@ -45,6 +45,8 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
             project.displayLayoutBorders = value
         }
     private var savedState: WorkspaceModel? = present
+    private val modified
+        get() = present != savedState
 
     fun bindView(view: WorkspaceView<O>, gridDisplay: GridDisplay) {
         this.view = view
@@ -125,6 +127,15 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
         }
     }
 
+    fun createNewProject(force: Boolean = false) {
+        if (!modified || force) {
+            history.restartFrom(WorkspaceModel())
+            projectModified(null)
+        } else {
+            view.askForApprovalToDismissChanges()
+        }
+    }
+
     private fun projectsDeleted(names: List<String>) = {
         view.showSuccess()
         if (names.contains(project.name)) {
@@ -153,13 +164,16 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
 
     private fun projectChangedSuccessfully(name: String) {
         view.showSuccess()
+        projectModified(name)
+    }
+
+    private fun projectModified(name: String?) {
         project.name = name
         savedState = present
         displayProjectName()
     }
 
     private fun displayProjectName() {
-        val modified = present != savedState
         view.displayProjectName("${project.name ?: stringUseCase.getString(R.string.untitled)}${if (modified) "*" else ""}")
     }
 
