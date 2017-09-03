@@ -4,6 +4,7 @@ import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGameFrameException
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
+import com.savvasdalkitsis.gameframe.feature.history.model.MomentList
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.raster.usecase.BmpUseCase
 import com.savvasdalkitsis.gameframe.feature.saves.model.FileAlreadyExistsException
@@ -11,6 +12,7 @@ import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.GridDisplay
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.GridTouchedListener
+import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.model.Project
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
@@ -42,6 +44,7 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
         set(value) {
             project.displayLayoutBorders = value
         }
+    private var savedState: WorkspaceModel? = present
 
     fun bindView(view: WorkspaceView<O>, gridDisplay: GridDisplay) {
         this.view = view
@@ -50,8 +53,9 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
         history.observe()
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    render(it)
+                    render(it.layers)
                     view.bindPalette(it.selectedPalette)
+                    displayProjectName()
                 }
     }
 
@@ -150,11 +154,13 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
     private fun projectChangedSuccessfully(name: String) {
         view.showSuccess()
         project.name = name
+        savedState = present
         displayProjectName()
     }
 
     private fun displayProjectName() {
-        view.displayProjectName(project.name ?: stringUseCase.getString(R.string.untitled))
+        val modified = present != savedState
+        view.displayProjectName("${project.name ?: stringUseCase.getString(R.string.untitled)}${if (modified) "*" else ""}")
     }
 
     fun changeColor(currentColor: Int, newColor: Int, paletteIndex: Int) {
@@ -174,7 +180,7 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
 
     override fun onGridTouch(startColumn: Int, startRow: Int, column: Int, row: Int) {
         view.drawLayer(present.selectedLayer, startColumn, startRow, column, row)
-        render(present)
+        render(present.layers)
     }
 
     override fun onGridTouchFinished() {
@@ -210,7 +216,7 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
 
     fun selectedOptionBorders() {
         displayLayoutBorders = !displayLayoutBorders
-        render(present)
+        render(present.layers)
     }
 
     fun selectedOptionUndo() {
@@ -239,9 +245,9 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
                 })
     }
 
-    private fun render(model: WorkspaceModel) {
-        model.layers.forEach { blendUseCase.renderOn(it, gridDisplay) }
-        val selected = model.layers.firstOrNull { it.isSelected }
+    private fun render(layers: MomentList<Layer>) {
+        layers.forEach { blendUseCase.renderOn(it, gridDisplay) }
+        val selected = layers.firstOrNull { it.isSelected }
 
         if (selected != null && displayLayoutBorders) {
             val colorGrid = selected.colorGrid

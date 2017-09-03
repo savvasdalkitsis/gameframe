@@ -22,7 +22,8 @@ class HistoryUseCase<T : Moment<T>>(present: T,
     fun observe(): Flowable<T> = processor
 
     fun progressTimeWithoutAnnouncing() {
-        past.addMoment(present.replicateMoment())
+        past.addMoment(present)
+        present = present.replicateMoment()
         future.clearTimeline()
     }
 
