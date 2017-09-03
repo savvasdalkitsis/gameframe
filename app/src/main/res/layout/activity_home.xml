@@ -38,6 +38,8 @@
             android:layout_margin="16dp"
             android:src="@drawable/ic_power_settings_new_white_48px"
             android:visibility="gone"
+            app:layout_anchor="@id/fragment_switcher"
+            app:layout_anchorGravity="bottom|right"
             app:fabSize="normal"
             tools:ignore="RtlHardcoded" />
 
@@ -46,6 +48,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
+            app:layout_anchor="@id/fragment_switcher"
+            app:layout_anchorGravity="bottom|right"
             app:fabDrawable="@drawable/ic_import_export_white_48px"
             app:fabGravity="bottom_end"
             app:fabMenu="@menu/menu_workspace_operations"
