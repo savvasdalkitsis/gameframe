@@ -2,6 +2,7 @@ package com.savvasdalkitsis.gameframe.feature.workspace.usecase
 
 import com.google.gson.Gson
 import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
+import com.savvasdalkitsis.gameframe.feature.workspace.model.SaveContainer
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -26,9 +27,9 @@ class WorkspaceUseCase(private val gson: Gson,
 
     fun deleteProject(name: String): Completable = fileUseCase.deleteFile(SAVED_PROJECTS_DIR, withExtension(name))
 
-    private fun deserialize(reader: Reader) = gson.fromJson(reader, WorkspaceModel::class.java)
+    private fun deserialize(reader: Reader) = gson.fromJson(reader, SaveContainer::class.java).workspaceModel
 
-    private fun serialize(model: WorkspaceModel): InputStream = gson.toJson(model).byteInputStream()
+    private fun serialize(model: WorkspaceModel): InputStream = gson.toJson(SaveContainer(model)).byteInputStream()
 
     private fun withExtension(name: String) = "$name$SAVED_EXTENSION"
 
