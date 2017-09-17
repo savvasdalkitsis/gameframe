@@ -53,7 +53,7 @@ class FileUseCase(private val application: GameFrameApplication) {
 
 
     fun listFilesIn(dirName: String): Single<List<File>> = file(dirName)
-            .map { it.listFiles().toList() }
+            .map { it.listFiles().orEmpty().toList() }
 
     fun deleteFile(dirName: String, fileName: String): Completable = file(dirName)
             .map { File(it, fileName) }

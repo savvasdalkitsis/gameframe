@@ -1,8 +1,8 @@
 package com.savvasdalkitsis.gameframe.feature.ip.repository
 
-import com.savvasdalkitsis.gameframe.infra.preferences.RxSharedPreferences
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
+import com.savvasdalkitsis.gameframe.infra.preferences.RxSharedPreferences
 import io.reactivex.Single
 
 class PreferenceIpRepository(private val preferences: RxSharedPreferences) : IpRepository {
@@ -10,8 +10,8 @@ class PreferenceIpRepository(private val preferences: RxSharedPreferences) : IpR
     override val ipAddress: Single<IpAddress>
         get() = preferences.getString(PREF_IP_BASE)
                 .map { IpAddress.parse(it) }
-                .switchIfEmpty { Single.error<String>(IllegalStateException("no saved ip address was found")) }
-                .flatMapSingle<IpAddress> {
+                .toSingle()
+                .flatMap<IpAddress> {
                     if (it.isValid()) {
                         Single.just(it)
                     } else {

@@ -12,12 +12,10 @@ import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector
-import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity(), HomeView, ColorChooserDialog.ColorCallback {
 
-    private val presenter = PresenterInjector.mainPresenter()
     private val navigator = NavigatorInjector.navigator()
 
     override val layoutId: Int
@@ -27,7 +25,6 @@ class HomeActivity : BaseActivity(), HomeView, ColorChooserDialog.ColorCallback 
         super.onPostCreate(savedInstanceState)
         bottom_navigation.setOnNavigationItemSelectedListener(this::onOptionsItemSelected)
         notifyFragmentSelected(R.id.fragment_manage)
-        presenter.bindView(this)
         val actionBar = supportActionBar
         actionBar?.run {
             title = ""
@@ -35,11 +32,6 @@ class HomeActivity : BaseActivity(), HomeView, ColorChooserDialog.ColorCallback 
             setDisplayUseLogoEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        presenter.loadIpAddress()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

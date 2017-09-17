@@ -48,8 +48,6 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
 
     override fun onFragmentSelected() {
         presenter.loadIpAddress()
-        fab.visibility = View.VISIBLE
-        fab.setOnClickListener { presenter.togglePower() }
     }
 
     override fun onFragmentUnselected() {
@@ -112,12 +110,15 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
         view_ip.text = getString(R.string.game_frame_ip, ipAddress.toString())
         view_control_error.visibility = View.GONE
         view_control_content.visibility = View.VISIBLE
+        fab.visibility = View.VISIBLE
+        fab.setOnClickListener { presenter.togglePower() }
     }
 
     override fun ipCouldNotBeFound(throwable: Throwable) {
         Log.e(ControlFragment::class.java.name, "Could not find ip", throwable)
         view_control_error.visibility = View.VISIBLE
         view_control_content.visibility = View.GONE
+        fab.visibility = View.GONE
     }
 
     private fun adapter(@ArrayRes data: Int) =
