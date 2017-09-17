@@ -48,6 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
+            android:visibility="gone"
             app:layout_behavior="com.savvasdalkitsis.gameframe.infra.android.RespectSnackbarBehavior"
             app:layout_anchor="@id/fragment_switcher"
             app:layout_anchorGravity="bottom|right"

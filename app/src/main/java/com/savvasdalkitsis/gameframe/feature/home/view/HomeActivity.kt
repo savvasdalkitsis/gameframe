@@ -5,16 +5,14 @@ import android.os.Bundle
 import android.support.annotation.ColorInt
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import com.afollestad.materialdialogs.color.ColorChooserDialog
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector
 import kotlinx.android.synthetic.main.activity_home.*
 
-class HomeActivity : BaseActivity(), HomeView, ColorChooserDialog.ColorCallback {
+class HomeActivity : BaseActivity(), ColorChooserDialog.ColorCallback {
 
     private val navigator = NavigatorInjector.navigator()
 
@@ -85,14 +83,6 @@ class HomeActivity : BaseActivity(), HomeView, ColorChooserDialog.ColorCallback 
         if (fragment != null) {
             (fragment as FragmentSelectedListener).onFragmentUnselected()
         }
-    }
-
-    override fun ipAddressLoaded(ipAddress: IpAddress) {
-        view_fab_control.visibility = View.VISIBLE
-    }
-
-    override fun ipCouldNotBeFound(throwable: Throwable) {
-        view_fab_control.visibility = View.GONE
     }
 
     override fun onColorSelection(dialog: ColorChooserDialog, @ColorInt selectedColor: Int) {
