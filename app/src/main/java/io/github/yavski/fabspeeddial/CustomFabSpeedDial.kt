@@ -5,7 +5,6 @@ import android.support.annotation.DrawableRes
 import android.support.v4.view.ViewCompat
 import android.support.v4.view.ViewPropertyAnimatorCompat
 import android.util.AttributeSet
-import android.view.animation.Animation
 import android.view.animation.LinearInterpolator
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.infra.kotlin.Action

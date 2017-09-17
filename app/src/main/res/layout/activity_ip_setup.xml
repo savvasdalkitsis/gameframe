@@ -67,6 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
+        app:layout_behavior="com.savvasdalkitsis.gameframe.infra.android.RespectSnackbarBehavior"
         android:clickable="true"
         android:focusable="true"
         tools:ignore="RtlHardcoded">
