@@ -7,6 +7,15 @@ android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
 
+    signingConfigs {
+        release {
+            storeFile file(KEYSTORE_FILE)
+            storePassword ""
+            keyAlias KEYSTORE_ALIAS
+            keyPassword ""
+        }
+    }
+
     defaultConfig {
         applicationId "com.savvasdalkitsis.gameframe"
         minSdkVersion 16
@@ -19,6 +28,7 @@ android {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     return void
@@ -57,4 +67,26 @@ dependencies {
     )
     testCompile 'junit:junit:4.12'
     kapt "com.jakewharton:butterknife-compiler:$butterknife_version"
+}
+
+gradle.taskGraph.whenReady { taskGraph ->
+    if(taskGraph.hasTask(':app:assembleRelease')) {
+        android.signingConfigs.release.storePassword = readPass("store")
+        android.signingConfigs.release.keyPassword = readPass("key")
+    }
+}
+
+private static String readPass(String type) {
+    def pass = ''
+    if (System.console() == null) {
+        throw new InvalidUserDataException("Need console to enter password.")
+    } else {
+        pass = System.console().readPassword("\nPlease enter key passphrase for $type: \n\n")
+        pass = new String(pass)
+    }
+
+    if (pass.size() <= 0) {
+        throw new InvalidUserDataException("You must enter a password to proceed.")
+    }
+    pass
 }
