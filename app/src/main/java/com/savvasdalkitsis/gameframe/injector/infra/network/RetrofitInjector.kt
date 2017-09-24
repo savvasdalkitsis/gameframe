@@ -12,8 +12,7 @@ object RetrofitInjector {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .baseUrl("http://nothing")
-            .client(okHttpClient(3)
-                    .addInterceptor(ipBaseHostInterceptor())
+            .client(okHttpClient(3, ipBaseHostInterceptor())
                     .build())
             .build()
 }

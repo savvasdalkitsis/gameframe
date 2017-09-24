@@ -15,6 +15,7 @@ import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.functions.Function
 import okhttp3.*
@@ -70,7 +71,7 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
                     overwriteFile = true)
                     .flatMap<File> { file -> createFolder(name).toSingleDefault<File>(file) }
                     .flatMapCompletable { uploadFile(it) }
-                    .concatWith { play(name) }
+                    .andThen(play(name))
 
     private fun createFolder(name: String): Completable  = issueCommand("mkdir", name)
             .onErrorResumeNext {
@@ -109,7 +110,7 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
 
     private fun param(key: String, value: String = "") = singletonMap(key, value)
 
-    private fun mapResponse(): Function<Single<CommandResponse>, Completable> = Function { s ->
+    private fun mapResponse(): Function<Maybe<CommandResponse>, Completable> = Function { s ->
         s.flatMapCompletable {
             when {
                 isSuccess(it) -> Completable.complete()
