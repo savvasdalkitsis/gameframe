@@ -35,18 +35,6 @@ class FileUseCase(private val application: GameFrameApplication) {
                         }
                     }
 
-    fun deleteDirectory(name: String): Completable = file(name)
-            .flatMapCompletable { dir ->
-                if (!dir.exists()) {
-                    Completable.complete()
-                } else try {
-                    FileUtils.deleteDirectory(dir)
-                    Completable.complete()
-                } catch (e: IOException) {
-                    Completable.error(e)
-                }
-            }
-
     fun readFile(dirName: String, fileName: String): Single<Reader> = file(dirName)
             .map { File(it, fileName) }
             .map { BufferedReader(FileReader(it)) }

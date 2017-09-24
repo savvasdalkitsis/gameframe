@@ -21,18 +21,20 @@ object UseCaseInjector {
             okHttpClient(1).build(),
             wifiManager(),
             gameFrameApi(),
-            ipDiscoveryUseCase()
+            ipDiscoveryUseCase(),
+            fileUseCase(),
+            bmpUseCase()
     )
 
     fun ipDiscoveryUseCase() = IP_DISCOVERY_USE_CASE
-
-    fun bmpUseCase() = BmpUseCase()
-
-    fun fileUseCase() = FileUseCase(application())
 
     fun blendUseCase() = BlendUseCase()
 
     fun workspaceUseCase() = WorkspaceUseCase(gson(), fileUseCase())
 
     fun stringUseCase() = StringUseCase(application())
+
+    private fun bmpUseCase() = BmpUseCase()
+
+    private fun fileUseCase() = FileUseCase(application())
 }

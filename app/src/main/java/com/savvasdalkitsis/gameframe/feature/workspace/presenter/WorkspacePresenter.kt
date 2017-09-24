@@ -6,9 +6,6 @@ import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGame
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.history.model.MomentList
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
-import com.savvasdalkitsis.gameframe.feature.raster.usecase.BmpUseCase
-import com.savvasdalkitsis.gameframe.feature.saves.model.FileAlreadyExistsException
-import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.GridDisplay
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.GridTouchedListener
@@ -18,21 +15,19 @@ import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.view.WorkspaceView
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
+import com.savvasdalkitsis.gameframe.infra.kotlin.Action
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.File
 
 class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
-                            private val fileUseCase: FileUseCase,
-                            private val bmpUseCase: BmpUseCase,
                             private val blendUseCase: BlendUseCase,
                             private val workspaceUseCase: WorkspaceUseCase,
                             private val stringUseCase: StringUseCase) : GridTouchedListener {
 
     private lateinit var view: WorkspaceView<O>
     private lateinit var gridDisplay: GridDisplay
-    private var uploading: Boolean = false
     private var tempName: String? = null
     private var project = Project(history = HistoryUseCase(WorkspaceModel()))
     private val history: HistoryUseCase<WorkspaceModel>
@@ -61,33 +56,23 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
                 }
     }
 
-    fun upload(colorGrid: Grid) {
-        if (!uploading) {
-            view.askForFileName(R.string.upload) { name -> upload(name, colorGrid) }
-        }
-    }
-
-    fun replaceDrawing(name: String, colorGrid: Grid) {
-        view.displayProgress()
-        uploading = true
-        fileUseCase.deleteDirectory(name)
-                .concatWith { gameFrameUseCase.removeFolder(name) }
-                .compose(RxTransformers.schedulers())
-                .doOnTerminate { uploading = false }
-                .subscribe({ upload(name, colorGrid) }, { view.operationFailed(it) })
-    }
-
-    fun saveWorkspace() {
+    fun saveWorkspace(successAction: Action? = null) {
         view.displayProgress()
         project.name?.let { tempName = it }
         tempName?.let { name ->
             tempName = null
             workspaceUseCase.saveProject(name, present)
                     .compose(RxTransformers.schedulers<File>())
-                    .subscribe({ projectChangedSuccessfully(name) }, projectSaveFailed())
+                    .subscribe(
+                            {
+                                projectChangedSuccessfully(name)
+                                successAction?.invoke()
+                            },
+                            projectSaveFailed()
+                    )
         } ?: view.askForFileName(R.string.save) {
             tempName = it
-            saveWorkspace()
+            saveWorkspace(successAction)
         }
     }
 
@@ -241,22 +226,28 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
         history.stepForwardInTime()
     }
 
-    private fun upload(name: String, colorGrid: Grid) {
+    fun replaceDrawing(name: String, colorGrid: Grid) {
         view.displayProgress()
-        uploading = true
-        fileUseCase.saveFile("bmp/$name", "0.bmp", { bmpUseCase.rasterizeToBmp(colorGrid) })
-                .flatMap<File> { file -> gameFrameUseCase.createFolder(name).toSingleDefault<File>(file) }
-                .flatMapCompletable { gameFrameUseCase.uploadFile(it) }
-                .concatWith { gameFrameUseCase.play(name) }
+        gameFrameUseCase.removeFolder(name)
                 .compose(RxTransformers.schedulers())
-                .doOnTerminate { uploading = false }
-                .subscribe({ view.showSuccess() }, { e ->
-                    if (e is FileAlreadyExistsException || e is AlreadyExistsOnGameFrameException) {
-                        view.drawingAlreadyExists(name, colorGrid, e)
-                    } else {
-                        view.operationFailed(e)
-                    }
-                })
+                .subscribe({ upload(colorGrid) }, { view.operationFailed(it) })
+    }
+
+    fun upload(grid: Grid) {
+        if (modified || project.name == null) {
+            saveWorkspace { upload(grid) }
+        } else {
+            val name = project.name as String
+            gameFrameUseCase.uploadAndDisplay(name, grid)
+                    .compose(RxTransformers.schedulers())
+                    .subscribe({ view.showSuccess() }, { e ->
+                        if (e is AlreadyExistsOnGameFrameException) {
+                            view.drawingAlreadyExists(name, grid, e)
+                        } else {
+                            view.operationFailed(e)
+                        }
+                    })
+        }
     }
 
     private fun render(layers: MomentList<Layer>) {

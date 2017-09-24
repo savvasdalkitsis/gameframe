@@ -10,6 +10,9 @@ import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGame
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpNotFoundException
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
+import com.savvasdalkitsis.gameframe.feature.raster.usecase.BmpUseCase
+import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
+import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -22,7 +25,9 @@ import java.util.Collections.singletonMap
 class GameFrameUseCase(private val okHttpClient: OkHttpClient,
                        private val wifiManager: WifiManager,
                        private val gameFrameApi: GameFrameApi,
-                       private val ipDiscoveryUseCase: IpDiscoveryUseCase) {
+                       private val ipDiscoveryUseCase: IpDiscoveryUseCase,
+                       private val fileUseCase: FileUseCase,
+                       private val bmpUseCase: BmpUseCase) {
 
     fun togglePower() = issueCommand("power")
 
@@ -40,24 +45,7 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
 
     fun setClockFace(clockFace: ClockFace) = setParam(clockFace.queryParamName)
 
-    fun createFolder(name: String): Completable  = issueCommand("mkdir", name)
-            .onErrorResumeNext {
-                if (it is GameFrameCommandError && (it.response.message?.contains("exists")) == true) {
-                    Completable.error(AlreadyExistsOnGameFrameException("Could not create folder on game frame with name '$name' as it already exists", it))
-                } else {
-                    Completable.error(it)
-                }
-            }
-
     fun removeFolder(name: String) = issueCommand("rmdir", name)
-
-    fun uploadFile(file: File): Completable {
-        val requestFile = RequestBody.create(MediaType.parse("image/bmp"), file)
-        val filePart = MultipartBody.Part.createFormData("my_file[]", "0.bmp", requestFile)
-        return gameFrameApi.upload(filePart).to(mapResponse())
-    }
-
-    fun play(name: String) = issueCommand("play", name)
 
     fun discoverGameFrameIp(): Single<IpAddress> = Single.defer(this::deviceIp)
             .flattenAsFlowable(wholePart4Subrange())
@@ -76,6 +64,30 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
             .firstOrError()
             .onErrorResumeNext { e -> Single.error<IpAddress>(IpNotFoundException("Game Frame IP not found", e)) }
 
+    fun uploadAndDisplay(name: String, colorGrid: Grid): Completable =
+            fileUseCase.saveFile(dirName = "bmp/$name", fileName = "0.bmp",
+                    fileContentsProvider = { bmpUseCase.rasterizeToBmp(colorGrid) },
+                    overwriteFile = true)
+                    .flatMap<File> { file -> createFolder(name).toSingleDefault<File>(file) }
+                    .flatMapCompletable { uploadFile(it) }
+                    .concatWith { play(name) }
+
+    private fun createFolder(name: String): Completable  = issueCommand("mkdir", name)
+            .onErrorResumeNext {
+                if (it is GameFrameCommandError && (it.response.message?.contains("exists")) == true) {
+                    Completable.error(AlreadyExistsOnGameFrameException("Could not create folder on game frame with name '$name' as it already exists", it))
+                } else {
+                    Completable.error(it)
+                }
+            }
+
+    private fun uploadFile(file: File): Completable {
+        val requestFile = RequestBody.create(MediaType.parse("image/bmp"), file)
+        val filePart = MultipartBody.Part.createFormData("my_file[]", "0.bmp", requestFile)
+        return gameFrameApi.upload(filePart).to(mapResponse())
+    }
+
+    private fun play(name: String) = issueCommand("play", name)
     private fun wholePart4Subrange() = { ip: IpAddress ->
         (0..255).map { it.toString() }.map { ip.copy(part4 = it) }
     }
