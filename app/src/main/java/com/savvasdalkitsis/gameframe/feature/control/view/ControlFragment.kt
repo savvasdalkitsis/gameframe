@@ -43,7 +43,9 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
 
     override fun onResume() {
         super.onResume()
-        presenter.loadIpAddress()
+        if (isVisible) {
+            presenter.loadIpAddress()
+        }
     }
 
     override fun onFragmentSelected() {
