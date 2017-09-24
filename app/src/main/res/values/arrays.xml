@@ -20,6 +20,7 @@
     <string-array name="display_mode">
         <item>Gallery</item>
         <item>Clock</item>
+        <item>Effects</item>
     </string-array>
 
     <string-array name="clock_face">
