@@ -242,6 +242,15 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
         view_draw_sliding_up_panel.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
     }
 
+    @OnClick(R.id.view_draw_add_palette, R.id.view_draw_add_palette_title)
+    fun addNewPalette() {
+        AddPaletteView.show(context, drawer, object : AddNewPaletteSelectedListener {
+            override fun onAddNewPalletSelected(palette: Palette) {
+                view_draw_palettes.addNewPalette(palette)
+            }
+        })
+    }
+
     @SuppressLint("RtlHardcoded")
     private fun setFabState() = with(fab) {
         when {
@@ -262,11 +271,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
 
     private fun addNewPaletteOperation() = object : SimpleMenuListenerAdapter() {
         override fun onPrepareMenu(navigationMenu: NavigationMenu?): Boolean {
-            AddPaletteView.show(context, drawer, object : AddNewPaletteSelectedListener {
-                override fun onAddNewPalletSelected(palette: Palette) {
-                    view_draw_palettes.addNewPalette(palette)
-                }
-            })
+            addNewPalette()
             return false
         }
     }
