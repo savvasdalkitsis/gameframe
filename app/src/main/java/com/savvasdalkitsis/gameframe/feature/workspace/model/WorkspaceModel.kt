@@ -1,9 +1,9 @@
 package com.savvasdalkitsis.gameframe.feature.workspace.model
 
-import android.graphics.Color
 import com.savvasdalkitsis.gameframe.feature.history.model.Moment
 import com.savvasdalkitsis.gameframe.feature.history.model.MomentList
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.ColorGrid
+import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.DEFAULT_BACKGROUND_COLOR
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.LayerSettings
 import com.savvasdalkitsis.gameframe.feature.workspace.element.palette.model.Palette
@@ -32,7 +32,7 @@ class WorkspaceModel constructor(val layers: MomentList<Layer> = newLayers(),
                 title = "Background"),
                 isBackground = true,
                 isSelected = true,
-                colorGrid = ColorGrid().fill(Color.GRAY),
+                colorGrid = ColorGrid().fill(DEFAULT_BACKGROUND_COLOR),
                 isVisible = true)
         )
 
