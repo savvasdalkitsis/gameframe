@@ -9,6 +9,7 @@ import android.text.style.AbsoluteSizeSpan
 import butterknife.ButterKnife
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.answers.Answers
+import com.savvasdalkitsis.gameframe.BuildConfig
 
 import com.savvasdalkitsis.gameframe.R
 import io.fabric.sdk.android.Fabric
@@ -21,7 +22,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Fabric.with(this, Crashlytics(), Answers())
+        if (!BuildConfig.DEBUG) {
+            Fabric.with(this, Crashlytics(), Answers())
+        }
         setContentView(layoutId)
         ButterKnife.bind(this)
     }

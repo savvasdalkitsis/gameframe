@@ -26,6 +26,9 @@ android {
         manifestPlaceholders = [fabric_api_key: FABRIC_API_KEY]
     }
     buildTypes {
+        debug {
+            ext.enableCrashlytics = false
+        }
         release {
             minifyEnabled false
             shrinkResources false
