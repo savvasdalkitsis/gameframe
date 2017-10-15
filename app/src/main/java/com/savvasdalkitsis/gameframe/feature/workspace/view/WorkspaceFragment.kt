@@ -194,9 +194,11 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
         view_draw_tools_current.drawingTool?.finishStroke(layer)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onToolSelected(tool: Tools) {
         view_draw_tools_current.bind(tool)
         view_draw_sliding_up_panel.panelState = SlidingUpPanelLayout.PanelState.HIDDEN
+        view_draw_tools_change.text = "${tool.label}:"
     }
 
     override fun askForFileName(positiveText: Int, nameEntered: TypeAction<String>) {
