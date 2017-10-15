@@ -10,7 +10,8 @@
         android:id="@+id/view_draw_sliding_up_panel"
         android:gravity="bottom"
         app:umanoPanelHeight="0dp"
-        app:umanoShadowHeight="4dp"
+        app:umanoShadowHeight="0dp"
+        app:umanoOverlay="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -101,11 +102,18 @@
                 tools:ignore="RtlHardcoded" />
         </RelativeLayout>
 
-        <com.savvasdalkitsis.gameframe.feature.workspace.element.tools.view.ToolsView
-            android:id="@+id/view_draw_tools"
-            android:padding="8dp"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent">
+
+            <com.savvasdalkitsis.gameframe.feature.workspace.element.tools.view.ToolsView
+                android:id="@+id/view_draw_tools"
+                android:background="@color/white"
+                android:padding="8dp"
+                android:layout_gravity="bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </FrameLayout>
 
     </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
