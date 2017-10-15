@@ -12,6 +12,7 @@ import com.savvasdalkitsis.gameframe.feature.composition.model.AvailableBlendMod
 import com.savvasdalkitsis.gameframe.feature.composition.model.AvailablePorterDuffOperator
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.LayerSettings
+import com.savvasdalkitsis.gameframe.infra.kotlin.visible
 
 class LayerSettingsView : LinearLayout {
 
@@ -39,10 +40,10 @@ class LayerSettingsView : LinearLayout {
     fun bindTo(layer: Layer) {
         title.setText(layer.layerSettings.title)
         alpha.progress = (layer.layerSettings.alpha * 100).toInt()
-        blendMode.visibility = View.VISIBLE
+        blendMode.visible()
         blendMode.setSelection(AvailableBlendMode.indexOf(layer.layerSettings.blendMode))
         porterDuff.setSelection(AvailablePorterDuffOperator.indexOf(layer.layerSettings.porterDuffOperator))
-        porterDuff.visibility = View.VISIBLE
+        porterDuff.visible()
     }
 
     private fun <T> adapter(values: Array<T>) = ArrayAdapter(context, android.R.layout.simple_spinner_item, values).apply {

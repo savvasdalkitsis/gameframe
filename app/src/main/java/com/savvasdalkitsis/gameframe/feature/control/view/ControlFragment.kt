@@ -15,6 +15,8 @@ import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.infra.android.BaseFragment
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.infra.android.Snackbars
+import com.savvasdalkitsis.gameframe.infra.kotlin.gone
+import com.savvasdalkitsis.gameframe.infra.kotlin.visible
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 import kotlinx.android.synthetic.main.fragment_control.*
 
@@ -53,7 +55,7 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
     }
 
     override fun onFragmentUnselected() {
-        fab.visibility = View.GONE
+        fab.gone()
     }
 
     @OnClick(R.id.view_menu)
@@ -110,17 +112,17 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
 
     override fun ipAddressLoaded(ipAddress: IpAddress) {
         view_ip.text = getString(R.string.game_frame_ip, ipAddress.toString())
-        view_control_error.visibility = View.GONE
-        view_control_content.visibility = View.VISIBLE
-        fab.visibility = View.VISIBLE
+        view_control_error.gone()
+        view_control_content.visible()
+        fab.visible()
         fab.setOnClickListener { presenter.togglePower() }
     }
 
     override fun ipCouldNotBeFound(throwable: Throwable) {
         Log.e(ControlFragment::class.java.name, "Could not find ip", throwable)
-        view_control_error.visibility = View.VISIBLE
-        view_control_content.visibility = View.GONE
-        fab.visibility = View.GONE
+        view_control_error.visible()
+        view_control_content.gone()
+        fab.gone()
     }
 
     private fun adapter(@ArrayRes data: Int) =

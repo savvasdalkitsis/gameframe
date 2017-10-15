@@ -8,9 +8,7 @@ import android.widget.TextView
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.LedGridView
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
-import com.savvasdalkitsis.gameframe.infra.kotlin.Action
-import com.savvasdalkitsis.gameframe.infra.kotlin.OnLayerVisibilityChangedListener
-import com.savvasdalkitsis.gameframe.infra.kotlin.ViewAction
+import com.savvasdalkitsis.gameframe.infra.kotlin.*
 
 internal class LayerViewHolder(parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_layer_view, parent, false)) {
@@ -31,14 +29,14 @@ internal class LayerViewHolder(parent: ViewGroup) :
         itemView.isSelected = layer.isSelected
         title.text = layer.layerSettings.title
         ledGridView.display(layer.colorGrid)
-        delete.visibility = View.VISIBLE
-        duplicate.visibility = View.VISIBLE
-        settings.visibility = View.VISIBLE
-        visibilityVisible.visibility = if (layer.isVisible) View.VISIBLE else View.GONE
-        visibilityInvisible.visibility = if (layer.isVisible) View.GONE else View.VISIBLE
+        delete.visible()
+        duplicate.visible()
+        settings.visible()
+        visibilityVisible.visibleOrGone(layer.isVisible)
+        visibilityInvisible.visibleOrGone(!layer.isVisible)
         if (layer.isBackground) {
             listOf(delete, duplicate, settings, visibilityInvisible, visibilityVisible)
-                    .forEach { it.visibility = View.GONE }
+                    .forEach { it.gone() }
         }
     }
 

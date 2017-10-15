@@ -29,6 +29,8 @@ import com.savvasdalkitsis.gameframe.infra.kotlin.TypeAction
 import com.savvasdalkitsis.gameframe.infra.android.BaseFragment
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.infra.android.Snackbars
+import com.savvasdalkitsis.gameframe.infra.kotlin.gone
+import com.savvasdalkitsis.gameframe.infra.kotlin.visible
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.workspacePresenter
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import io.github.yavski.fabspeeddial.CustomFabSpeedDial
@@ -63,7 +65,10 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
         view_draw_sliding_up_panel.addPanelSlideListener(object : SlidingUpPanelLayout.SimplePanelSlideListener() {
             override fun onPanelStateChanged(panel: View?, previousState: SlidingUpPanelLayout.PanelState?, newState: SlidingUpPanelLayout.PanelState?) {
                 val scale = if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) 0f else 1f
-                fab.animate().scaleY(scale).scaleX(scale).start()
+                fab.visible()
+                fab.animate().scaleY(scale).scaleX(scale)
+                        .withEndAction{ if (scale == 0f ) fab.gone() }
+                        .start()
             }
         })
         drawer.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
@@ -153,13 +158,13 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
 
     override fun onFragmentSelected() {
         selected = true
-        fab.visibility = View.VISIBLE
+        fab.visible()
         invalidateOptionsMenu()
     }
 
     override fun onFragmentUnselected() {
         selected = false
-        fab.visibility = View.GONE
+        fab.gone()
         invalidateOptionsMenu()
     }
 

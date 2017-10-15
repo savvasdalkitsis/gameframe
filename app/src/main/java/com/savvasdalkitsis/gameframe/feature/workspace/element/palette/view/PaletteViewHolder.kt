@@ -9,6 +9,7 @@ import android.widget.TextView
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.workspace.element.palette.model.Palette
 import com.savvasdalkitsis.gameframe.infra.kotlin.Action
+import com.savvasdalkitsis.gameframe.infra.kotlin.visibleOrGone
 
 internal class PaletteViewHolder(parent: ViewGroup, editable: Boolean) : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_palette_view, parent, false)) {
 
@@ -24,11 +25,11 @@ internal class PaletteViewHolder(parent: ViewGroup, editable: Boolean) : Recycle
     }
 
     private fun setEditable(editable: Boolean) {
-        controls.visibility = if (editable) View.VISIBLE else View.GONE
+        controls.visibleOrGone(editable)
     }
 
     fun setDeletable(deletable: Boolean) {
-        delete.visibility = if (deletable) View.VISIBLE else View.GONE
+        delete.visibleOrGone(deletable)
     }
 
     fun bind(palette: Palette) {
