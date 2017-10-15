@@ -81,6 +81,20 @@
                 android:layout_below="@id/view_draw_open_palette"
                 tools:ignore="SmallSp" />
 
+            <TextView
+                android:id="@+id/view_draw_layer_name"
+                android:text="@string/background"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="4dp"
+                android:textSize="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view_draw_open_layers"
+                android:layout_alignParentRight="true"
+                tools:ignore="RtlHardcoded,SmallSp" />
+
             <com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.LedGridView
                 android:id="@+id/view_draw_led_grid_view"
                 android:layout_below="@id/view_draw_project_name"

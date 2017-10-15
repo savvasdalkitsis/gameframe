@@ -351,6 +351,10 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
         view_draw_project_name.text = name
     }
 
+    override fun displaySelectedLayerName(layerName: String) {
+        view_draw_layer_name.text = layerName
+    }
+
     private fun coordinator() = activity.findViewById<View>(R.id.view_coordinator)
 
     override fun displayBoundaries(col: Int, row: Int) {

@@ -16,6 +16,7 @@ import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.view.WorkspaceView
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
 import com.savvasdalkitsis.gameframe.infra.kotlin.Action
+import com.savvasdalkitsis.gameframe.infra.kotlin.or
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -260,6 +261,7 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
         } else {
             view.clearBoundaries()
         }
+        view.displaySelectedLayerName(selected?.layerSettings?.title.or(stringUseCase.getString(R.string.background)))
         view.rendered()
     }
 }
