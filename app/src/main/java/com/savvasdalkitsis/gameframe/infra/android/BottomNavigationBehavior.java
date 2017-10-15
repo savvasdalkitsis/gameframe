@@ -21,6 +21,7 @@ import android.view.animation.Interpolator;
  * https://medium.com/@nullthemall/bottomnavigationview-missing-pearls-eaa950f9ad4e#.q48rxj59g
  * Created by Nikola D. on 3/15/2016.
  */
+@SuppressWarnings("unused")
 final class BottomNavigationBehavior<V extends View> extends VerticalScrollingBehavior<V> {
     private static final Interpolator INTERPOLATOR = new LinearOutSlowInInterpolator();
     private final BottomNavigationWithSnackbar mWithSnackBarImpl = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? new LollipopBottomNavWithSnackBarImpl() : new PreLollipopBottomNavWithSnackBarImpl();
