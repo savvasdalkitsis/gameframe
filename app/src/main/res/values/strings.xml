@@ -58,4 +58,6 @@
     <string name="do_not_dismiss">Do not dismiss</string>
     <string name="tool_not_for_background">This tool cannot be applied to the background layer</string>
     <string name="background">Background</string>
+    <string name="layer_borders_displaying">Displaying layer borders</string>
+    <string name="layer_borders_not_displaying">Not displaying layer borders</string>
 </resources>

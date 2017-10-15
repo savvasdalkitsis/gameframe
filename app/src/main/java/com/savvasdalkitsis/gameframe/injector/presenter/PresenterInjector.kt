@@ -6,6 +6,7 @@ import com.savvasdalkitsis.gameframe.feature.ip.presenter.IpSetupPresenter
 import com.savvasdalkitsis.gameframe.feature.widget.presenter.WidgetPresenter
 import com.savvasdalkitsis.gameframe.feature.workspace.presenter.WorkspacePresenter
 import com.savvasdalkitsis.gameframe.injector.feature.ip.repository.IpRepositoryInjector.ipRepository
+import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector.messageDisplay
 import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector.navigator
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.blendUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.gameFrameUseCase
@@ -24,5 +25,5 @@ object PresenterInjector {
             WidgetPresenter(gameFrameUseCase(), ipRepository(), navigator())
 
     fun workspacePresenter() = WorkspacePresenter<Menu>(gameFrameUseCase(),
-            blendUseCase(), workspaceUseCase(), stringUseCase())
+            blendUseCase(), workspaceUseCase(), stringUseCase(),  messageDisplay())
 }

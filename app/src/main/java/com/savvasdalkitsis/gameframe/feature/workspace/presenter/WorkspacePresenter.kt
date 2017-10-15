@@ -6,6 +6,7 @@ import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGame
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.history.model.MomentList
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
+import com.savvasdalkitsis.gameframe.feature.message.MessageDisplay
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.GridDisplay
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.GridTouchedListener
@@ -25,7 +26,8 @@ import java.io.File
 class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
                             private val blendUseCase: BlendUseCase,
                             private val workspaceUseCase: WorkspaceUseCase,
-                            private val stringUseCase: StringUseCase) : GridTouchedListener {
+                            private val stringUseCase: StringUseCase,
+                            private val messageDisplay: MessageDisplay) : GridTouchedListener {
 
     private lateinit var view: WorkspaceView<O>
     private lateinit var gridDisplay: GridDisplay
@@ -217,6 +219,12 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
     fun selectedOptionBorders() {
         displayLayoutBorders = !displayLayoutBorders
         render(present.layers)
+        messageDisplay.show(
+                if (displayLayoutBorders)
+                    R.string.layer_borders_displaying
+                else
+                    R.string.layer_borders_not_displaying
+        )
     }
 
     fun selectedOptionUndo() {
