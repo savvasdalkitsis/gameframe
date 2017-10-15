@@ -36,6 +36,12 @@ class WorkspaceModel constructor(val layers: MomentList<Layer> = newLayers(),
                 isVisible = true)
         )
 
-        private fun newPalettes() = MomentList(Palettes.defaultPalette().copy(isSelected = true))
+        private fun newPalettes() = MomentList(Palettes.preLoaded()
+                .filter { it != Palettes.emptyPalette() }
+                .apply {
+                    val default = indexOfFirst { it == Palettes.defaultPalette() }
+                    this[default].isSelected = true
+                }
+        )
     }
 }

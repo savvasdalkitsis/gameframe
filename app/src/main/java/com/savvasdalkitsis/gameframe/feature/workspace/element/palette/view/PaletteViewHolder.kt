@@ -33,8 +33,10 @@ internal class PaletteViewHolder(parent: ViewGroup, editable: Boolean) : Recycle
     }
 
     fun bind(palette: Palette) {
+        itemView.isSelected = palette.isSelected
         title.text = palette.title
         paletteView.bind(palette)
+        paletteView.isSelected = false
     }
 
     fun clearListeners() {
