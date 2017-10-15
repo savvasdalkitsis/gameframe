@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GameFrame</string>
+    <string name="app_name">Game Frame</string>
     <string name="setup">Setup</string>
     <string name="ip_separator">.</string>
     <string name="enter_ip_address">Enter IP address</string>
