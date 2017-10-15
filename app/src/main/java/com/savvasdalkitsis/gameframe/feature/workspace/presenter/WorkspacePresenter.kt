@@ -270,6 +270,7 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
             view.clearBoundaries()
         }
         view.displaySelectedLayerName(selected?.layerSettings?.title.or(stringUseCase.getString(R.string.background)))
+        view.displaySelectedPalette(stringUseCase.getString(R.string.palette_name, present.selectedPalette.title))
         view.rendered()
     }
 }

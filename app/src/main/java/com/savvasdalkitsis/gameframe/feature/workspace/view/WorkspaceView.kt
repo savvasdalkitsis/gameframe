@@ -34,4 +34,5 @@ interface WorkspaceView<in O> {
     fun displayNoSavedProjectsExist()
     fun askForApprovalToDismissChanges()
     fun displaySelectedLayerName(layerName: String)
+    fun displaySelectedPalette(paletteName: String)
 }

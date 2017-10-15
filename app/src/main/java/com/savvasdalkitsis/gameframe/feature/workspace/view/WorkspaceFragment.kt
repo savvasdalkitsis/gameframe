@@ -232,6 +232,10 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
         stopProgress()
     }
 
+    override fun displaySelectedPalette(paletteName: String) {
+        view_draw_palette_name.text = paletteName
+    }
+
     @SuppressLint("RtlHardcoded")
     @OnClick(R.id.view_draw_open_layers)
     fun openLayers() {

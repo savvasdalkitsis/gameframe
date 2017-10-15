@@ -60,4 +60,5 @@
     <string name="background">Background</string>
     <string name="layer_borders_displaying">Displaying layer borders</string>
     <string name="layer_borders_not_displaying">Hiding layer borders</string>
+    <string name="palette_name">Palette: %1$s</string>
 </resources>
