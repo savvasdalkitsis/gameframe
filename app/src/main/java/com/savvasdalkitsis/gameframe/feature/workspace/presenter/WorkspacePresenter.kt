@@ -7,12 +7,14 @@ import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.history.model.MomentList
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.message.MessageDisplay
+import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.GridDisplay
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.GridTouchedListener
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.model.Project
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
+import com.savvasdalkitsis.gameframe.feature.workspace.usecase.UnsupportedProjectVersionException
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.view.WorkspaceView
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
@@ -23,11 +25,13 @@ import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.File
 
+
 class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
                             private val blendUseCase: BlendUseCase,
                             private val workspaceUseCase: WorkspaceUseCase,
                             private val stringUseCase: StringUseCase,
-                            private val messageDisplay: MessageDisplay) : GridTouchedListener {
+                            private val messageDisplay: MessageDisplay,
+                            private val navigator: Navigator) : GridTouchedListener {
 
     private lateinit var view: WorkspaceView<O>
     private lateinit var gridDisplay: GridDisplay
@@ -84,7 +88,12 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
         when {
             name != null -> workspaceUseCase.load(name)
                     .compose(RxTransformers.schedulers<WorkspaceModel>())
-                    .subscribe(projectLoaded(name), { view.operationFailed(it) })
+                    .subscribe(projectLoaded(name), {
+                        view.operationFailed(it)
+                        if (it is UnsupportedProjectVersionException) {
+                            view.displayUnsupportedVersion()
+                        }
+                    })
             else -> workspaceUseCase.savedProjects()
                     .compose(RxTransformers.schedulers<List<String>>())
                     .subscribe(savedProjectsLoaded {
@@ -257,6 +266,10 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
                         }
                     })
         }
+    }
+
+    fun takeUserToPlayStore() {
+        navigator.navigateToPlayStore()
     }
 
     private fun render(layers: MomentList<Layer>) {

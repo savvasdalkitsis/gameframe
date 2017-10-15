@@ -61,4 +61,8 @@
     <string name="layer_borders_displaying">Displaying layer borders</string>
     <string name="layer_borders_not_displaying">Hiding layer borders</string>
     <string name="palette_name">Palette: %1$s</string>
+    <string name="unsupported_version">Unsupported version</string>
+    <string name="unsupported_version_description">This app does not support the version of the saved file. There may be a newer version available that supports it. Try searching the Play Store for an update?</string>
+    <string name="play_store">Play Store</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -35,4 +35,5 @@ interface WorkspaceView<in O> {
     fun askForApprovalToDismissChanges()
     fun displaySelectedLayerName(layerName: String)
     fun displaySelectedPalette(paletteName: String)
+    fun displayUnsupportedVersion()
 }

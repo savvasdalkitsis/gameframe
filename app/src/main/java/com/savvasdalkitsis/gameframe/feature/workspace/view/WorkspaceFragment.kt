@@ -343,6 +343,16 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
                 .show()
     }
 
+    override fun displayUnsupportedVersion() {
+        MaterialDialog.Builder(context)
+                .title(R.string.unsupported_version)
+                .content(R.string.unsupported_version_description)
+                .positiveText(R.string.play_store)
+                .negativeText(R.string.cancel)
+                .onPositive { _, _ -> presenter.takeUserToPlayStore()}
+                .show()
+    }
+
     override fun askForProjectsToDelete(projectNames: List<String>) {
         MaterialDialog.Builder(context)
                 .title(R.string.delete_projects)

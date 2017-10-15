@@ -25,5 +25,5 @@ object PresenterInjector {
             WidgetPresenter(gameFrameUseCase(), ipRepository(), navigator())
 
     fun workspacePresenter() = WorkspacePresenter<Menu>(gameFrameUseCase(),
-            blendUseCase(), workspaceUseCase(), stringUseCase(),  messageDisplay())
+            blendUseCase(), workspaceUseCase(), stringUseCase(), messageDisplay(), navigator())
 }
