@@ -3,6 +3,7 @@ package com.savvasdalkitsis.gameframe.feature.workspace.element.tools.model
 import android.support.annotation.DrawableRes
 
 import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector
 
 enum class Tools(val tool: DrawingTool, val label: String,
                  @param:DrawableRes val icon: Int,
@@ -13,7 +14,7 @@ enum class Tools(val tool: DrawingTool, val label: String,
     FILL_SCREEN(FillScreenTool(), "Fill Screen", R.drawable.ic_format_paint_black_48px, R.drawable.ic_format_paint_white_48px),
     CLEAR(ClearTool(), "Clear", R.drawable.ic_clear_black_48px, R.drawable.ic_clear_white_48px),
     ERASER(EraseTool(), "Eraser", R.drawable.ic_eraser_variant, R.drawable.ic_eraser_variant_white),
-    MOVE(MoveTool(), "Move", R.drawable.ic_open_with_black_48px, R.drawable.ic_open_with_white_48px),
+    MOVE(MoveTool(MessageDisplayInjector.messageDisplay()), "Move", R.drawable.ic_open_with_black_48px, R.drawable.ic_open_with_white_48px),
     RECTANGLE(RectangleTool(), "Rectangle", R.drawable.ic_crop_din_black_48px, R.drawable.ic_crop_din_white_48px),
     FILL_RECTANGLE(FillRectangleTool(), "Fill Rectangle", R.drawable.ic_rect_black_48px, R.drawable.ic_rect_white_48px),
     OVAL(OvalTool(), "Oval", R.drawable.ic_panorama_fish_eye_black_48px, R.drawable.ic_panorama_fish_eye_white_48px),

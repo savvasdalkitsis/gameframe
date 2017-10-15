@@ -56,4 +56,5 @@
     <string name="dismiss_changes_question">Dismiss changes?</string>
     <string name="unsaved_changes">There are unsaved changes. Are you sure you want to dismiss them?</string>
     <string name="do_not_dismiss">Do not dismiss</string>
+    <string name="tool_not_for_background">This tool cannot be applied to the background layer</string>
 </resources>
