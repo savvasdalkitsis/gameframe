@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 26
@@ -22,6 +23,7 @@ android {
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [fabric_api_key: FABRIC_API_KEY]
     }
     buildTypes {
         release {
@@ -36,9 +38,8 @@ android {
 
 repositories {
     jcenter()
-    maven {
-        url "https://maven.google.com"
-    }
+    maven { url "https://maven.google.com" }
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 dependencies {
@@ -66,6 +67,12 @@ dependencies {
             "io.github.yavski:fab-speed-dial:1.0.7",
             "com.androidadvance:topsnackbar:1.1.1",
     )
+    compile('com.crashlytics.sdk.android:crashlytics:2.7.0@aar') {
+        transitive = true
+    }
+    compile('com.crashlytics.sdk.android:answers:1.4.0@aar') {
+        transitive = true
+    }
     testCompile 'junit:junit:4.12'
     kapt "com.jakewharton:butterknife-compiler:$butterknife_version"
 }

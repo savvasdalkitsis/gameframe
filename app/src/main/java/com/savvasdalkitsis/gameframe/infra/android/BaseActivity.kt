@@ -7,8 +7,11 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import butterknife.ButterKnife
+import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.answers.Answers
 
 import com.savvasdalkitsis.gameframe.R
+import io.fabric.sdk.android.Fabric
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
@@ -18,6 +21,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Fabric.with(this, Crashlytics(), Answers())
         setContentView(layoutId)
         ButterKnife.bind(this)
     }

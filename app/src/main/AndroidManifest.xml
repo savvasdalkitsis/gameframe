@@ -71,6 +71,10 @@
                 android:resource="@xml/menu_appwidget_info" />
         </receiver>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="${fabric_api_key}" />
+
     </application>
 
 </manifest>
