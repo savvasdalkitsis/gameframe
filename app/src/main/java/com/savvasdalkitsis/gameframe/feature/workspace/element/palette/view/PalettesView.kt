@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.palette.model.Palette
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
+import com.savvasdalkitsis.gameframe.infra.kotlin.Action
 
 class PalettesView : RecyclerView {
 
@@ -29,8 +30,8 @@ class PalettesView : RecyclerView {
         palettes.addNewPalette(palette)
     }
 
-    fun bind(modelHistory: HistoryUseCase<WorkspaceModel>) {
-        palettes.bind(modelHistory)
+    fun bind(modelHistory: HistoryUseCase<WorkspaceModel>, action: Action) {
+        palettes.bind(modelHistory, action)
     }
 
 }

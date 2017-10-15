@@ -25,10 +25,10 @@ import com.savvasdalkitsis.gameframe.feature.workspace.element.tools.model.Tools
 import com.savvasdalkitsis.gameframe.feature.workspace.element.tools.view.ToolSelectedListener
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
 import com.savvasdalkitsis.gameframe.feature.workspace.presenter.WorkspacePresenter
-import com.savvasdalkitsis.gameframe.infra.kotlin.TypeAction
 import com.savvasdalkitsis.gameframe.infra.android.BaseFragment
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.infra.android.Snackbars
+import com.savvasdalkitsis.gameframe.infra.kotlin.TypeAction
 import com.savvasdalkitsis.gameframe.infra.kotlin.gone
 import com.savvasdalkitsis.gameframe.infra.kotlin.visible
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.workspacePresenter
@@ -36,6 +36,11 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import io.github.yavski.fabspeeddial.CustomFabSpeedDial
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter
 import kotlinx.android.synthetic.main.fragment_workspace.*
+
+@SuppressLint("RtlHardcoded")
+private const val GRAVITY_PALETTES = Gravity.LEFT
+@SuppressLint("RtlHardcoded")
+private const val GRAVITY_LAYERS = Gravity.RIGHT
 
 class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
         SwatchSelectedListener, WorkspaceView<Menu>,
@@ -169,8 +174,8 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
     }
 
     override fun observe(history: HistoryUseCase<WorkspaceModel>) {
-        view_draw_layers.bind(history)
-        view_draw_palettes.bind(history)
+        view_draw_layers.bind(history) { drawer.closeDrawer(GRAVITY_LAYERS) }
+        view_draw_palettes.bind(history) { drawer.closeDrawer(GRAVITY_PALETTES) }
     }
 
     override fun onSwatchSelected(swatchView: SwatchView) {
@@ -236,16 +241,14 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
         view_draw_palette_name.text = paletteName
     }
 
-    @SuppressLint("RtlHardcoded")
     @OnClick(R.id.view_draw_open_layers)
     fun openLayers() {
-        drawer.openDrawer(Gravity.RIGHT)
+        drawer.openDrawer(GRAVITY_LAYERS)
     }
 
-    @SuppressLint("RtlHardcoded")
     @OnClick(R.id.view_draw_open_palette)
     fun openPalette() {
-        drawer.openDrawer(Gravity.LEFT)
+        drawer.openDrawer(GRAVITY_PALETTES)
     }
 
     @OnClick(R.id.view_draw_tools_change, R.id.view_draw_tools_current)
@@ -262,14 +265,13 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
         })
     }
 
-    @SuppressLint("RtlHardcoded")
     private fun setFabState() = with(fab) {
         when {
-            drawer.isDrawerOpen(Gravity.RIGHT) -> {
+            drawer.isDrawerOpen(GRAVITY_LAYERS) -> {
                 setMenuListener(addNewLayerOperation())
                 setImageResource(R.drawable.ic_add_white_48px)
             }
-            drawer.isDrawerOpen(Gravity.LEFT) -> {
+            drawer.isDrawerOpen(GRAVITY_PALETTES) -> {
                 setMenuListener(addNewPaletteOperation())
                 setImageResource(R.drawable.ic_add_white_48px)
             }

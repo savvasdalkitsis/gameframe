@@ -6,6 +6,7 @@ import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.LayerSettings
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
+import com.savvasdalkitsis.gameframe.infra.kotlin.Action
 import com.savvasdalkitsis.gameframe.infra.kotlin.TypeAction
 import com.savvasdalkitsis.gameframe.infra.kotlin.findIndexOrThrow
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -14,6 +15,7 @@ import java.util.*
 internal class LayersAdapter : RecyclerView.Adapter<LayerViewHolder>() {
 
     private lateinit var modelHistory: HistoryUseCase<WorkspaceModel>
+    private var onSelectedAction: Action? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             LayerViewHolder(parent)
@@ -42,6 +44,7 @@ internal class LayersAdapter : RecyclerView.Adapter<LayerViewHolder>() {
     private fun selectWithHistory(position: Int) {
         progressTime()
         select(position)
+        onSelectedAction?.invoke()
     }
 
     private fun select(position: Int) {
@@ -112,8 +115,9 @@ internal class LayersAdapter : RecyclerView.Adapter<LayerViewHolder>() {
 
     private fun progressTime() = modelHistory.progressTime()
 
-    fun bind(modelHistory: HistoryUseCase<WorkspaceModel>) {
+    fun bind(modelHistory: HistoryUseCase<WorkspaceModel>, onSelectedAction: Action) {
         this.modelHistory = modelHistory
+        this.onSelectedAction = onSelectedAction
         modelHistory.observe().subscribeOn(AndroidSchedulers.mainThread()).subscribe { notifyDataSetChanged() }
     }
 

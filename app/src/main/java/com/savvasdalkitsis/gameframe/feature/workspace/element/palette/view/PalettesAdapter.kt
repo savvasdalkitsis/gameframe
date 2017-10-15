@@ -6,6 +6,7 @@ import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.palette.model.Palette
 import com.savvasdalkitsis.gameframe.feature.workspace.element.palette.model.PaletteSettings
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
+import com.savvasdalkitsis.gameframe.infra.kotlin.Action
 import com.savvasdalkitsis.gameframe.infra.kotlin.findIndexOrThrow
 import io.reactivex.android.schedulers.AndroidSchedulers
 
@@ -13,6 +14,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 internal class PalettesAdapter : RecyclerView.Adapter<PaletteViewHolder>() {
 
     private lateinit var modelHistory: HistoryUseCase<WorkspaceModel>
+    private var onSelectedAction: Action? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = PaletteViewHolder(parent, true)
 
@@ -31,6 +33,7 @@ internal class PalettesAdapter : RecyclerView.Adapter<PaletteViewHolder>() {
         progressTime()
         select(position)
         notifyObservers()
+        onSelectedAction?.invoke()
     }
 
     private fun select(position: Int) {
@@ -93,8 +96,9 @@ internal class PalettesAdapter : RecyclerView.Adapter<PaletteViewHolder>() {
 
     private fun progressTime() = modelHistory.progressTime()
 
-    fun bind(modelHistory: HistoryUseCase<WorkspaceModel>) {
+    fun bind(modelHistory: HistoryUseCase<WorkspaceModel>, onSelectedAction: Action) {
         this.modelHistory = modelHistory
+        this.onSelectedAction = onSelectedAction
         modelHistory.observe().subscribeOn(AndroidSchedulers.mainThread()).subscribe { notifyDataSetChanged() }
     }
 
