@@ -1,42 +1,58 @@
 package com.savvasdalkitsis.gameframe.infra.android
 
+import android.graphics.Color
 import android.support.annotation.StringRes
 import android.support.design.widget.BaseTransientBottomBar
 import android.support.design.widget.Snackbar
 import android.util.Log
 import android.view.View
 import android.view.accessibility.AccessibilityManager
+import android.widget.TextView
+import com.androidadvance.topsnackbar.TSnackbar
 import com.github.andrewlord1990.snackbarbuilder.SnackbarBuilder
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.infra.kotlin.ViewAction
+import com.savvasdalkitsis.gameframe.injector.infra.TopActivityProviderInjector
+
 
 object Snackbars {
 
     private var overridden = false
+    private val topActivity get() = TopActivityProviderInjector.topActivityProvider().topActivity
 
-    fun success(view: View, @StringRes message: Int): Snackbar = snack(view, message) {
+    fun success(view: View, @StringRes message: Int) = snack(view, message) {
         backgroundColorRes(R.color.success)
     }
 
-    fun error(view: View, @StringRes message: Int): Snackbar = snack(view, message) {
+    fun error(view: View, @StringRes message: Int) = snack(view, message) {
         backgroundColorRes(R.color.error)
     }
 
-    fun actionError(view: View, @StringRes message: Int, @StringRes actionText: Int, actionClick: ViewAction): Snackbar =
+    fun actionError(view: View, @StringRes message: Int, @StringRes actionText: Int, actionClick: ViewAction) =
             snack(view, message) {
                 actionText(actionText)
                         .actionClickListener(actionClick)
                         .backgroundColorRes(R.color.error)
             }
 
-    private fun snack(view: View, message: Int, build: SnackbarBuilder.() -> SnackbarBuilder): Snackbar {
-        return SnackbarBuilder(view)
+    fun topInfo(@StringRes message: Int) = topActivity?.let { activity ->
+        TSnackbar.make(activity.findViewById(R.id.view_coordinator), message, TSnackbar.LENGTH_SHORT).apply {
+            val view = view
+            view.setBackgroundResource(R.color.colorAccent)
+            val textView = view.findViewById<TextView>(com.androidadvance.topsnackbar.R.id.snackbar_text)
+            textView.setTextColor(Color.WHITE)
+        }.show()
+    }
+
+    private fun snack(view: View, message: Int, build: SnackbarBuilder.() -> SnackbarBuilder) {
+        SnackbarBuilder(view)
                 .message(message)
                 .duration(Snackbar.LENGTH_LONG)
                 .apply { build(this) }
                 .build()
                 .setId()
                 .overrideAnimationForAccessibility()
+                .show()
     }
 
     private fun Snackbar.setId(): Snackbar {

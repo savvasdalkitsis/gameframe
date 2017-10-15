@@ -228,7 +228,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
     override fun drawingAlreadyExists(name: String, colorGrid: Grid, e: Throwable) {
         Log.e(WorkspacePresenter::class.java.name, "Drawing already exists", e)
         Snackbars.actionError(coordinator(), R.string.already_exists, R.string.replace,
-                { presenter.replaceDrawing(name, colorGrid) }).show()
+                { presenter.replaceDrawing(name, colorGrid) })
         stopProgress()
     }
 
@@ -350,7 +350,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
     }
 
     override fun displayNoSavedProjectsExist() {
-        Snackbars.error(coordinator(), R.string.no_saved_projects).show()
+        Snackbars.error(coordinator(), R.string.no_saved_projects)
         stopProgress()
     }
 
@@ -382,13 +382,13 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
     }
 
     override fun showSuccess() {
-        Snackbars.success(coordinator(), R.string.success).show()
+        Snackbars.success(coordinator(), R.string.success)
         stopProgress()
     }
 
     override fun operationFailed(e: Throwable) {
         Log.e(WorkspacePresenter::class.java.name, "Workspace operation failed", e)
-        Snackbars.error(coordinator(), R.string.operation_failed).show()
+        Snackbars.error(coordinator(), R.string.operation_failed)
         stopProgress()
     }
 }

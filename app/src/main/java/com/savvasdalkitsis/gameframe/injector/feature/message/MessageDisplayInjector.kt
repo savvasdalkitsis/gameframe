@@ -1,10 +1,9 @@
 package com.savvasdalkitsis.gameframe.injector.feature.message
 
 import com.savvasdalkitsis.gameframe.feature.message.MessageDisplay
-import com.savvasdalkitsis.gameframe.feature.message.ToastMessageDisplay
-import com.savvasdalkitsis.gameframe.injector.ApplicationInjector
+import com.savvasdalkitsis.gameframe.feature.message.TopSnackbarMessageDisplay
 
 object MessageDisplayInjector {
 
-    fun messageDisplay(): MessageDisplay = ToastMessageDisplay(ApplicationInjector.application())
+    fun messageDisplay(): MessageDisplay = TopSnackbarMessageDisplay()
 }

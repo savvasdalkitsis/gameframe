@@ -74,7 +74,7 @@ class IpSetupActivity : BaseActivity(), IpSetupView {
 
     override fun errorDiscoveringIpAddress(throwable: Throwable) {
         Log.e(IpSetupActivity::class.java.name, "Could not load ip address", throwable)
-        Snackbars.error(view_setup_content, R.string.operation_failed).show()
+        Snackbars.error(view_setup_content, R.string.operation_failed)
     }
 
     override fun addressSaved(ipAddress: IpAddress) {
@@ -97,7 +97,7 @@ class IpSetupActivity : BaseActivity(), IpSetupView {
     }
 
     override fun ipAddressDiscovered(ipAddress: IpAddress) {
-        Snackbars.success(view_setup_content, R.string.game_frame_ip_found).show()
+        Snackbars.success(view_setup_content, R.string.game_frame_ip_found)
     }
 
     override fun tryingAddress(ipAddress: IpAddress) {

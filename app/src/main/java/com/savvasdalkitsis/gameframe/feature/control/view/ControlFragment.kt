@@ -103,11 +103,11 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
         presenter.changeClockFace(ClockFace.from(position))
     }
 
-    override fun operationSuccess() = Snackbars.success(activity.findViewById(R.id.view_coordinator), R.string.success).show()
+    override fun operationSuccess() = Snackbars.success(activity.findViewById(R.id.view_coordinator), R.string.success)
 
     override fun operationFailure(e: Throwable) {
         Log.e(ControlFragment::class.java.name, "Operation failure", e)
-        Snackbars.error(activity.findViewById(R.id.view_coordinator), R.string.operation_failed).show()
+        Snackbars.error(activity.findViewById(R.id.view_coordinator), R.string.operation_failed)
     }
 
     override fun ipAddressLoaded(ipAddress: IpAddress) {
