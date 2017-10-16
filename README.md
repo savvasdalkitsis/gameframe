@@ -19,16 +19,16 @@ Images
 Some of the things you can do with the app:
 
 
-![screen1](resources/images/screen1.png | width=300)
-![screen6](resources/images/screen6.png | width=300)
-![screen8](resources/images/screen8.png | width=300)
-![screen9](resources/images/screen9.png | width=300)
-![screen7](resources/images/screen7.png | width=300)
-![screen2](resources/images/screen2.png | width=300)
-![screen4](resources/images/screen4.png | width=300)
-![screen3](resources/images/screen3.png | width=300)
-![screen5](resources/images/screen5.png | width=300)
-![screen10](resources/images/screen10.png | width=300)
+<img src=resources/images/screen1.png width=300 />
+<img src=resources/images/screen6.png width=300 />
+<img src=resources/images/screen8.png width=300 />
+<img src=resources/images/screen9.png width=300 />
+<img src=resources/images/screen7.png width=300 />
+<img src=resources/images/screen2.png width=300 />
+<img src=resources/images/screen4.png width=300 />
+<img src=resources/images/screen3.png width=300 />
+<img src=resources/images/screen5.png width=300 />
+<img src=resources/images/screen10.png width=300 />
 
 <a href='https://play.google.com/store/apps/details?id=com.savvasdalkitsis.gameframe'>
 <img width="300" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/>
