@@ -14,7 +14,7 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.raster.usecase
+package com.savvasdalkitsis.gameframe.feature.bmp.usecase
 
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.ColorGrid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid

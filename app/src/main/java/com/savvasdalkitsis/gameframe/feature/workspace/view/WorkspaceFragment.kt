@@ -334,6 +334,10 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
                 presenter.createNewProject()
                 true
             }
+            R.id.operation_export -> {
+                presenter.exportImage(view_draw_led_grid_view)
+                true
+            }
             else -> false
         }
     }

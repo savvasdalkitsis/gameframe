@@ -65,4 +65,5 @@
     <string name="unsupported_version_description">This app does not support the version of the saved file. There may be a newer version available that supports it. Try searching the Play Store for an update?</string>
     <string name="play_store">Play Store</string>
     <string name="cancel">Cancel</string>
+    <string name="export_image">Export image</string>
 </resources>

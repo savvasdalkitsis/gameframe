@@ -16,8 +16,12 @@
  */
 package com.savvasdalkitsis.gameframe.feature.navigation
 
+import io.reactivex.Completable
+import java.io.File
+
 interface Navigator {
 
     fun navigateToIpSetup()
     fun navigateToPlayStore()
+    fun navigateToShareImageFile(file: File, name: String): Completable
 }

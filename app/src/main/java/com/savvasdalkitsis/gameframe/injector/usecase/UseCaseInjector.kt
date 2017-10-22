@@ -16,10 +16,11 @@
  */
 package com.savvasdalkitsis.gameframe.injector.usecase
 
+import com.savvasdalkitsis.gameframe.feature.bmp.usecase.AndroidViewBitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
-import com.savvasdalkitsis.gameframe.feature.raster.usecase.BmpUseCase
+import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BmpUseCase
 import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
@@ -53,4 +54,6 @@ object UseCaseInjector {
     private fun bmpUseCase() = BmpUseCase()
 
     private fun fileUseCase() = FileUseCase(application())
+
+    fun bitmapFileUseCase() = AndroidViewBitmapFileUseCase(application())
 }

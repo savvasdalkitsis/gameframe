@@ -17,6 +17,7 @@
 package com.savvasdalkitsis.gameframe.feature.workspace.presenter
 
 import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGameFrameException
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
@@ -42,14 +43,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import java.io.File
 
 
-class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
-                            private val blendUseCase: BlendUseCase,
-                            private val workspaceUseCase: WorkspaceUseCase,
-                            private val stringUseCase: StringUseCase,
-                            private val messageDisplay: MessageDisplay,
-                            private val navigator: Navigator) : GridTouchedListener {
+class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase: GameFrameUseCase,
+                                                   private val blendUseCase: BlendUseCase,
+                                                   private val workspaceUseCase: WorkspaceUseCase,
+                                                   private val stringUseCase: StringUseCase,
+                                                   private val messageDisplay: MessageDisplay,
+                                                   private val navigator: Navigator,
+                                                   private val bitmapFileUseCase: BitmapFileUseCase<BitmapSource>) : GridTouchedListener {
 
-    private lateinit var view: WorkspaceView<O>
+    private lateinit var view: WorkspaceView<Options>
     private lateinit var gridDisplay: GridDisplay
     private var tempName: String? = null
     private var project = Project(history = HistoryUseCase(WorkspaceModel()))
@@ -66,7 +68,7 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
     private val modified
         get() = present != savedState
 
-    fun bindView(view: WorkspaceView<O>, gridDisplay: GridDisplay) {
+    fun bindView(view: WorkspaceView<Options>, gridDisplay: GridDisplay) {
         this.view = view
         this.gridDisplay = gridDisplay
         view.observe(history)
@@ -215,7 +217,7 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
         history.collapsePresentWithPastIfTheSame()
     }
 
-    fun prepareOptions(options: O) {
+    fun prepareOptions(options: Options) {
         history.hasPast()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { hasPast ->
@@ -286,6 +288,17 @@ class WorkspacePresenter<O>(private val gameFrameUseCase: GameFrameUseCase,
 
     fun takeUserToPlayStore() {
         navigator.navigateToPlayStore()
+    }
+
+    fun exportImage(bitmapSource: BitmapSource) {
+        if (modified || project.name == null) {
+            saveWorkspace { exportImage(bitmapSource) }
+        } else {
+            val name = project.name as String
+            bitmapFileUseCase.getFileFor(bitmapSource, name)
+                    .flatMapCompletable { navigator.navigateToShareImageFile(it, name) }
+                    .subscribe({}, { view.operationFailed(it) })
+        }
     }
 
     private fun render(layers: MomentList<Layer>) {

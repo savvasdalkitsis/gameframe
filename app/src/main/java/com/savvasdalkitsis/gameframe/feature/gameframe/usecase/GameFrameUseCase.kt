@@ -26,7 +26,7 @@ import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGame
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpNotFoundException
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
-import com.savvasdalkitsis.gameframe.feature.raster.usecase.BmpUseCase
+import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BmpUseCase
 import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import io.reactivex.Completable

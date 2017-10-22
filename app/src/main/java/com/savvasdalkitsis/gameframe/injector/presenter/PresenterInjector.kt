@@ -17,6 +17,7 @@
 package com.savvasdalkitsis.gameframe.injector.presenter
 
 import android.view.Menu
+import android.view.View
 import com.savvasdalkitsis.gameframe.feature.control.presenter.ControlPresenter
 import com.savvasdalkitsis.gameframe.feature.ip.presenter.IpSetupPresenter
 import com.savvasdalkitsis.gameframe.feature.widget.presenter.WidgetPresenter
@@ -24,6 +25,7 @@ import com.savvasdalkitsis.gameframe.feature.workspace.presenter.WorkspacePresen
 import com.savvasdalkitsis.gameframe.injector.feature.ip.repository.IpRepositoryInjector.ipRepository
 import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector.messageDisplay
 import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector.navigator
+import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.bitmapFileUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.blendUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.gameFrameUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.ipDiscoveryUseCase
@@ -40,6 +42,6 @@ object PresenterInjector {
     fun widgetPresenter() =
             WidgetPresenter(gameFrameUseCase(), ipRepository(), navigator())
 
-    fun workspacePresenter() = WorkspacePresenter<Menu>(gameFrameUseCase(),
-            blendUseCase(), workspaceUseCase(), stringUseCase(), messageDisplay(), navigator())
+    fun workspacePresenter() = WorkspacePresenter<Menu, View>(gameFrameUseCase(),
+            blendUseCase(), workspaceUseCase(), stringUseCase(), messageDisplay(), navigator(), bitmapFileUseCase())
 }
