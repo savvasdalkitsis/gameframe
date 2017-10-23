@@ -10,7 +10,7 @@ body {
 </style>
 
 #### v1.1
-##### ?
+##### 23 Oct 2017
 
 * Export and share drawings as images
 * Support for App Shortcuts
