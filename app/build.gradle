@@ -69,6 +69,7 @@ dependencies {
             "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
             "io.github.yavski:fab-speed-dial:1.0.7",
             "com.androidadvance:topsnackbar:1.1.1",
+            "us.feras.mdv:markdownview:1.1.0",
     )
     compile('com.crashlytics.sdk.android:crashlytics:2.7.0@aar') {
         transitive = true

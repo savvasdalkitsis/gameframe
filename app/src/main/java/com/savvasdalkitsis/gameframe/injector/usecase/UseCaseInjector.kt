@@ -21,6 +21,7 @@ import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BmpUseCase
+import com.savvasdalkitsis.gameframe.feature.changelog.usecase.ChangeLogUseCase
 import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
@@ -29,6 +30,7 @@ import com.savvasdalkitsis.gameframe.injector.feature.gameframe.api.GameFrameApi
 import com.savvasdalkitsis.gameframe.injector.infra.android.AndroidInjector.wifiManager
 import com.savvasdalkitsis.gameframe.injector.infra.network.OkHttpClientInjector.okHttpClient
 import com.savvasdalkitsis.gameframe.injector.infra.parsing.GsonInjector.gson
+import com.savvasdalkitsis.gameframe.injector.infra.rx.RxSharedPreferencesInjector.rxSharedPreferences
 
 object UseCaseInjector {
 
@@ -56,4 +58,6 @@ object UseCaseInjector {
     private fun fileUseCase() = FileUseCase(application())
 
     fun bitmapFileUseCase() = AndroidViewBitmapFileUseCase(application())
+
+    fun changeLogUseCase() = ChangeLogUseCase(rxSharedPreferences())
 }
