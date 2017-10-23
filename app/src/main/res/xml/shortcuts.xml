@@ -1,0 +1,42 @@
+<shortcuts xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="app_shortcut_power"
+        android:enabled="true"
+        android:icon="@drawable/ic_block_power_black"
+        android:shortcutShortLabel="@string/power"
+        android:shortcutLongLabel="@string/game_frame_power"
+        android:shortcutDisabledMessage="@string/power"
+        tools:ignore="UnusedAttribute">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="gameframe://power"/>
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="app_shortcut_next"
+        android:enabled="true"
+        android:icon="@drawable/ic_skip_next_black_48px"
+        android:shortcutShortLabel="@string/next"
+        android:shortcutLongLabel="@string/next"
+        android:shortcutDisabledMessage="@string/next"
+        tools:ignore="UnusedAttribute">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="gameframe://next"/>
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="app_shortcut_menu"
+        android:enabled="true"
+        android:icon="@drawable/ic_view_headline_black_48px"
+        android:shortcutShortLabel="@string/menu"
+        android:shortcutLongLabel="@string/menu"
+        android:shortcutDisabledMessage="@string/menu"
+        tools:ignore="UnusedAttribute">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="gameframe://menu"/>
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>

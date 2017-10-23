@@ -24,12 +24,33 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <activity android:name="com.savvasdalkitsis.gameframe.feature.ip.view.IpSetupActivity"
             android:label="@string/setup_ip_address"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize"/>
+
+        <activity android:name=".feature.gameframe.view.DeepLinkActivity"
+            android:theme="@style/Theme.Transparent">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="gameframe"
+                    android:host="power"/>
+                <data
+                    android:scheme="gameframe"
+                    android:host="next"/>
+                <data
+                    android:scheme="gameframe"
+                    android:host="menu"/>
+            </intent-filter>
+        </activity>
 
         <service
             android:name="com.savvasdalkitsis.gameframe.feature.widget.view.PowerTileService"
