@@ -44,6 +44,7 @@ import com.savvasdalkitsis.gameframe.feature.workspace.presenter.WorkspacePresen
 import com.savvasdalkitsis.gameframe.infra.android.BaseFragment
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.infra.android.Snackbars
+import com.savvasdalkitsis.gameframe.infra.kotlin.Action
 import com.savvasdalkitsis.gameframe.infra.kotlin.TypeAction
 import com.savvasdalkitsis.gameframe.infra.kotlin.gone
 import com.savvasdalkitsis.gameframe.infra.kotlin.visible
@@ -227,12 +228,15 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
         view_draw_tools_change.text = "${tool.label}:"
     }
 
-    override fun askForFileName(positiveText: Int, nameEntered: TypeAction<String>) {
+    override fun askForFileName(positiveText: Int, nameEntered: TypeAction<String>, cancelAction: Action) {
         MaterialDialog.Builder(activity)
                 .input(R.string.name_of_drawing, 0, false) { _, input -> nameEntered(input.toString()) }
                 .title(R.string.enter_name_for_drawing)
                 .positiveText(positiveText)
                 .negativeText(android.R.string.cancel)
+                .onNegative { _, _ -> cancelAction() }
+                .canceledOnTouchOutside(true)
+                .cancelListener { cancelAction() }
                 .build()
                 .show()
     }

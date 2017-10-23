@@ -95,10 +95,12 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
                             },
                             projectSaveFailed()
                     )
-        } ?: view.askForFileName(R.string.save) {
+        } ?: view.askForFileName(R.string.save, {
             tempName = it
             saveWorkspace(successAction)
-        }
+        }, {
+            view.stopProgress()
+        })
     }
 
     fun loadProject(name: String? = null) {
@@ -270,7 +272,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
     }
 
     fun upload(grid: Grid) {
-        if (modified || project.name == null) {
+        if (needsSave()) {
             saveWorkspace { upload(grid) }
         } else {
             val name = project.name as String
@@ -291,7 +293,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
     }
 
     fun exportImage(bitmapSource: BitmapSource) {
-        if (modified || project.name == null) {
+        if (needsSave()) {
             saveWorkspace { exportImage(bitmapSource) }
         } else {
             val name = project.name as String
@@ -300,6 +302,8 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
                     .subscribe({}, { view.operationFailed(it) })
         }
     }
+
+    private fun needsSave() = modified || project.name == null
 
     private fun render(layers: MomentList<Layer>) {
         layers.forEach { blendUseCase.renderOn(it, gridDisplay) }

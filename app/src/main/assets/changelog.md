@@ -15,6 +15,7 @@ body {
 * Export and share drawings as images
 * Support for App Shortcuts
 * Changelog dialog on startup
+* Fix FAB animation when canceling any operation that asks to save the drawing
 
 #### v1.0
 
