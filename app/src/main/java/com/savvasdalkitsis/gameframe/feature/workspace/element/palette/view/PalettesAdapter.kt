@@ -73,8 +73,9 @@ internal class PalettesAdapter : RecyclerView.Adapter<PaletteViewHolder>() {
         val position = holder.adapterPosition
         progressTime()
         if (palettes()[position].isSelected) {
-            palettes()[position - 1].isSelected = true
-            notifyItemChanged(position - 1)
+            val newSelectedPosition = if (position > 0) position - 1 else position + 1
+            palettes()[newSelectedPosition].isSelected = true
+            notifyItemChanged(newSelectedPosition)
         }
         palettes().removeAt(position)
         notifyItemRemoved(position)
