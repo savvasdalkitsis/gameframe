@@ -9,6 +9,11 @@ body {
 }
 </style>
 
+#### v1.2
+##### ?
+
+* Make changelog dialog version dependant
+
 #### v1.1.1
 ##### 24 Oct 2017
 
