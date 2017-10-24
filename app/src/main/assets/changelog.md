@@ -9,6 +9,11 @@ body {
 }
 </style>
 
+#### v1.1.1
+##### 24 Oct 2017
+
+* Fix crash when deleting first palette
+
 #### v1.1
 ##### 23 Oct 2017
 
