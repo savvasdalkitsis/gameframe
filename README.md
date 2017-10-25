@@ -1,4 +1,4 @@
-Game frame
+Game Frame
 ======
 
 **Game Frame** is a grid of 256 ultra-bright LED pixels, perfect for showcasing pixel art and old school video game graphics.
