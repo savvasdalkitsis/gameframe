@@ -113,4 +113,6 @@ class HomeActivity : BaseActivity(), ColorChooserDialog.ColorCallback, HomeView 
     override fun onColorSelection(dialog: ColorChooserDialog, @ColorInt selectedColor: Int) {
         (supportFragmentManager.findFragmentById(R.id.fragment_workspace) as ColorChooserDialog.ColorCallback).onColorSelection(dialog, selectedColor)
     }
+
+    override fun onColorChooserDismissed(dialog: ColorChooserDialog) {}
 }

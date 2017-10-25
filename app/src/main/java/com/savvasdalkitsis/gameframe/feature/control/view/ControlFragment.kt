@@ -46,10 +46,10 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        fab = activity.findViewById(R.id.view_fab_control)
+        fab = activity!!.findViewById(R.id.view_fab_control)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view_brightness.setOnSeekBarChangeListener(BrightnessChangedListener())
         view_playback_mode.adapter = adapter(R.array.playback_mode)
@@ -119,11 +119,11 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
         presenter.changeClockFace(ClockFace.from(position))
     }
 
-    override fun operationSuccess() = Snackbars.success(activity.findViewById(R.id.view_coordinator), R.string.success)
+    override fun operationSuccess() = Snackbars.success(activity!!.findViewById(R.id.view_coordinator), R.string.success)
 
     override fun operationFailure(e: Throwable) {
         Log.e(ControlFragment::class.java.name, "Operation failure", e)
-        Snackbars.error(activity.findViewById(R.id.view_coordinator), R.string.operation_failed)
+        Snackbars.error(activity!!.findViewById(R.id.view_coordinator), R.string.operation_failed)
     }
 
     override fun ipAddressLoaded(ipAddress: IpAddress) {

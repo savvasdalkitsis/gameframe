@@ -58,23 +58,22 @@ dependencies {
             "io.reactivex.rxjava2:rxjava:$rxjava_version",
             "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version",
             "com.squareup.retrofit2:converter-gson:$retrofit_version",
-            'com.squareup.okhttp3:logging-interceptor:3.4.2',
-            'com.github.andrewlord1990:snackbarbuilder:0.7.0',
-            'uk.co.chrisjenx:calligraphy:2.2.0',
-            'com.android.support.constraint:constraint-layout:1.0.0-beta4',
-            'com.afollestad.material-dialogs:core:0.9.1.0',
-            'com.afollestad.material-dialogs:commons:0.9.1.0',
-            'commons-io:commons-io:2.5',
-            'com.sothree.slidinguppanel:library:3.4.0',
+            "com.squareup.okhttp3:logging-interceptor:$okhttp_version",
+            "com.github.andrewlord1990:snackbarbuilder:$snackbarbuilder_version",
+            "uk.co.chrisjenx:calligraphy:$calligraphy_version",
+            "com.afollestad.material-dialogs:core:$material_dialogs_version",
+            "com.afollestad.material-dialogs:commons:$material_dialogs_version",
+            "commons-io:commons-io:$commons_io_version",
+            "com.sothree.slidinguppanel:library:$slidinguppanel_version",
             "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
-            "io.github.yavski:fab-speed-dial:1.0.7",
-            "com.androidadvance:topsnackbar:1.1.1",
-            "us.feras.mdv:markdownview:1.1.0",
+            "io.github.yavski:fab-speed-dial:$fab_speed_dial_version",
+            "com.androidadvance:topsnackbar:$topsnackbar_version",
+            "us.feras.mdv:markdownview:$markdownview_version",
     )
-    compile('com.crashlytics.sdk.android:crashlytics:2.7.0@aar') {
+    compile("com.crashlytics.sdk.android:crashlytics:$crashlytics_version@aar") {
         transitive = true
     }
-    compile('com.crashlytics.sdk.android:answers:1.4.0@aar') {
+    compile("com.crashlytics.sdk.android:answers:$answers_version@aar") {
         transitive = true
     }
     testCompile 'junit:junit:4.12'

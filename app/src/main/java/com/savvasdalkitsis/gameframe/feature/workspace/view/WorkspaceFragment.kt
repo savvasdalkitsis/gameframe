@@ -80,7 +80,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        fab = activity.findViewById(R.id.view_fab_workspace)
+        fab = activity!!.findViewById(R.id.view_fab_workspace)
         view_draw_tools.setOnToolSelectedListener(this)
         view_draw_tools_current.bind(Tools.defaultTool())
 
@@ -94,11 +94,11 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
             }
         })
         drawer.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
-            override fun onDrawerOpened(drawerView: View?) {
+            override fun onDrawerOpened(drawerView: View) {
                 setFabState()
             }
 
-            override fun onDrawerClosed(drawerView: View?) {
+            override fun onDrawerClosed(drawerView: View) {
                 setFabState()
             }
         })
@@ -202,7 +202,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
     override fun onSwatchLongPressed(swatch: SwatchView) {
         swatchToModify = swatch
         ColorChooserDialog.Builder(context as HomeActivity, R.string.change_color)
-                .show()
+                .show(activity)
     }
 
     override fun onColorSelection(dialog: ColorChooserDialog, @ColorInt selectedColor: Int) {
@@ -210,6 +210,8 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
             presenter.changeColor(it.color, selectedColor, it.index)
         }
     }
+
+    override fun onColorChooserDismissed(dialog: ColorChooserDialog) {}
 
     override fun drawLayer(layer: Layer, startColumn: Int, startRow: Int, column: Int, row: Int) {
         activeSwatch?.let {
@@ -229,7 +231,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
     }
 
     override fun askForFileName(positiveText: Int, nameEntered: TypeAction<String>, cancelAction: Action) {
-        MaterialDialog.Builder(activity)
+        MaterialDialog.Builder(activity!!)
                 .input(R.string.name_of_drawing, 0, false) { _, input -> nameEntered(input.toString()) }
                 .title(R.string.enter_name_for_drawing)
                 .positiveText(positiveText)
@@ -278,7 +280,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
 
     @OnClick(R.id.view_draw_add_palette, R.id.view_draw_add_palette_title)
     fun addNewPalette() {
-        AddPaletteView.show(context, drawer, object : AddNewPaletteSelectedListener {
+        AddPaletteView.show(context!!, drawer, object : AddNewPaletteSelectedListener {
             override fun onAddNewPalletSelected(palette: Palette) {
                 view_draw_palettes.addNewPalette(palette)
             }
@@ -347,7 +349,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
     }
 
     override fun askForApprovalToDismissChanges() {
-        MaterialDialog.Builder(context)
+        MaterialDialog.Builder(context!!)
                 .title(R.string.dismiss_changes_question)
                 .content(R.string.unsaved_changes)
                 .positiveText(R.string.dismiss)
@@ -357,7 +359,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
     }
 
     override fun askForProjectToLoad(projectNames: List<String>) {
-        MaterialDialog.Builder(context)
+        MaterialDialog.Builder(context!!)
                 .title(R.string.load_project)
                 .items(projectNames)
                 .itemsCallbackSingleChoice(-1) { _, _, which, _ ->
@@ -368,7 +370,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
     }
 
     override fun displayUnsupportedVersion() {
-        MaterialDialog.Builder(context)
+        MaterialDialog.Builder(context!!)
                 .title(R.string.unsupported_version)
                 .content(R.string.unsupported_version_description)
                 .positiveText(R.string.play_store)
@@ -378,7 +380,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
     }
 
     override fun askForProjectsToDelete(projectNames: List<String>) {
-        MaterialDialog.Builder(context)
+        MaterialDialog.Builder(context!!)
                 .title(R.string.delete_projects)
                 .items(projectNames)
                 .itemsCallbackMultiChoice(null) { _, which, _ ->
@@ -402,7 +404,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
         view_draw_layer_name.text = layerName
     }
 
-    private fun coordinator() = activity.findViewById<View>(R.id.view_coordinator)
+    private fun coordinator() = activity!!.findViewById<View>(R.id.view_coordinator)
 
     override fun displayBoundaries(col: Int, row: Int) {
         view_draw_led_grid_view.displayBoundaries(col, row)
@@ -418,7 +420,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
     }
 
     private fun invalidateOptionsMenu() {
-        activity.invalidateOptionsMenu()
+        activity!!.invalidateOptionsMenu()
     }
 
     override fun showSuccess() {
