@@ -9,8 +9,8 @@ body {
 }
 </style>
 
-#### v1.2
-##### ?
+#### v1.1.2
+##### 04 Nov 2017
 
 * Make changelog dialog version dependant
 * Fix crash caused by not un registering view and stopping background process
