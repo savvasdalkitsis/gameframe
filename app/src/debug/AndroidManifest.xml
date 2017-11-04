@@ -1,0 +1,8 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.savvasdalkitsis.gameframe">
+
+    <application>
+        <meta-data android:name="firebase_crash_collection_enabled" android:value="false" />
+        <meta-data android:name="firebase_analytics_collection_deactivated" android:value="true" />
+    </application>
+</manifest>

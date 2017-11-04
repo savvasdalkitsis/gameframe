@@ -23,15 +23,9 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import butterknife.ButterKnife
-import com.crashlytics.android.Crashlytics
-import com.crashlytics.android.answers.Answers
-import com.savvasdalkitsis.gameframe.BuildConfig
-
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.base.BasePresenter
 import com.savvasdalkitsis.gameframe.base.BaseView
-import io.fabric.sdk.android.Fabric
-
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 abstract class BaseActivity<V: BaseView, out P: BasePresenter<V>> : AppCompatActivity() {
@@ -42,9 +36,6 @@ abstract class BaseActivity<V: BaseView, out P: BasePresenter<V>> : AppCompatAct
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (!BuildConfig.DEBUG) {
-            Fabric.with(this, Crashlytics(), Answers())
-        }
         setContentView(layoutId)
         ButterKnife.bind(this)
         presenter.bindView(view)

@@ -92,10 +92,6 @@
                 android:resource="@xml/menu_appwidget_info" />
         </receiver>
 
-        <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="${fabric_api_key}" />
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.savvasdalkitsis.gameframe.fileProvider"
