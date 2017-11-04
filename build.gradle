@@ -17,7 +17,7 @@ buildscript {
         fab_speed_dial_version = '1.0.7'
         topsnackbar_version = '1.1.1'
         markdownview_version = '1.1.0'
-        firebase_version = '11.0.4'
+        firebase_version = '11.4.2'
     }
     repositories {
         jcenter()
@@ -30,6 +30,7 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
         classpath 'com.google.gms:google-services:3.1.2'
+        classpath 'com.google.firebase:firebase-plugins:1.1.2'
     }
 }
 
