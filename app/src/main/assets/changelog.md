@@ -12,6 +12,7 @@ body {
 #### v1.3
 ##### ?
 
+* Added Android Wear support
 * Add feedback functionality
 
 #### v1.2

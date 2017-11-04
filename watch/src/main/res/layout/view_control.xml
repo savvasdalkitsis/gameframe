@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?android:selectableItemBackground"
+    android:orientation="vertical"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/view_control_fab"
+        android:layout_marginLeft="64dp"
+        android:layout_marginRight="64dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="34dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:src="@drawable/ic_block_power"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/view_control_title"
+        tools:text="Power"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_weight="0"
+        android:layout_marginBottom="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

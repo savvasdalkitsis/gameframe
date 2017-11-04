@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Game Frame</string>
+    <string name="power">Power</string>
+    <string name="menu">Menu</string>
+    <string name="next">Next</string>
+</resources>

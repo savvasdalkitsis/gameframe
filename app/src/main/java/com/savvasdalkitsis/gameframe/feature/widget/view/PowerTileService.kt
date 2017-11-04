@@ -19,14 +19,15 @@ package com.savvasdalkitsis.gameframe.feature.widget.view
 import android.annotation.TargetApi
 import android.os.Build
 import android.service.quicksettings.TileService
-import com.github.andrewlord1990.snackbarbuilder.toastbuilder.ToastBuilder
 import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 
 @TargetApi(Build.VERSION_CODES.N)
 class PowerTileService : TileService(), WidgetView {
 
     private val presenter = PresenterInjector.widgetPresenter()
+    private val messageDisplay = MessageDisplayInjector.toastMessageDisplay()
 
     override fun onCreate() {
         super.onCreate()
@@ -43,8 +44,7 @@ class PowerTileService : TileService(), WidgetView {
         presenter.stop()
     }
 
-    override fun operationError() = ToastBuilder(this)
-                .message(R.string.error_communicating)
-                .build()
-                .show()
+    override fun operationError() {
+        messageDisplay.show(R.string.error_communicating)
+    }
 }

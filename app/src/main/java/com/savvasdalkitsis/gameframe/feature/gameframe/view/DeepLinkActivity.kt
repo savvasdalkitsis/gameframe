@@ -21,11 +21,13 @@ import android.os.Bundle
 import com.github.andrewlord1990.snackbarbuilder.toastbuilder.ToastBuilder
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.widget.view.WidgetView
+import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 
 class DeepLinkActivity : Activity(), WidgetView {
 
     private val presenter = PresenterInjector.widgetPresenter()
+    private val messageDisplay = MessageDisplayInjector.toastMessageDisplay()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +41,6 @@ class DeepLinkActivity : Activity(), WidgetView {
     }
 
     override fun operationError() {
-        ToastBuilder(this)
-                .message(R.string.error_communicating)
-                .build()
-                .show()
+        messageDisplay.show(R.string.error_communicating)
     }
 }
