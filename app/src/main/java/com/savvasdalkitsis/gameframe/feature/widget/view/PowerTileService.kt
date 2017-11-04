@@ -38,6 +38,11 @@ class PowerTileService : TileService(), WidgetView {
         presenter.power()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.stop()
+    }
+
     override fun operationError() = ToastBuilder(this)
                 .message(R.string.error_communicating)
                 .build()

@@ -16,6 +16,7 @@
  */
 package com.savvasdalkitsis.gameframe.feature.workspace.view
 
+import com.savvasdalkitsis.gameframe.base.BaseView
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
@@ -24,7 +25,7 @@ import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
 import com.savvasdalkitsis.gameframe.infra.kotlin.Action
 import com.savvasdalkitsis.gameframe.infra.kotlin.TypeAction
 
-interface WorkspaceView<in O> {
+interface WorkspaceView<in O>: BaseView {
 
     fun askForFileName(positiveText: Int, nameEntered: TypeAction<String>, cancelAction: Action)
     fun displayProgress()

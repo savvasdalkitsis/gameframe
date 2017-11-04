@@ -16,9 +16,10 @@
  */
 package com.savvasdalkitsis.gameframe.feature.control.view
 
+import com.savvasdalkitsis.gameframe.base.BaseView
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 
-interface ControlView {
+interface ControlView: BaseView {
 
     fun operationSuccess()
 

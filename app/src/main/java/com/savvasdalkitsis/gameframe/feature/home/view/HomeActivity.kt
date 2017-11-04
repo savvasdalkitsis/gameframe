@@ -24,16 +24,18 @@ import android.view.MenuItem
 import com.afollestad.materialdialogs.color.ColorChooserDialog
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.changelog.view.ChangeLogDialogFragment
+import com.savvasdalkitsis.gameframe.feature.home.presenter.HomePresenter
 import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 import kotlinx.android.synthetic.main.activity_home.*
 
-class HomeActivity : BaseActivity(), ColorChooserDialog.ColorCallback, HomeView {
+class HomeActivity : BaseActivity<HomeView, HomePresenter>(), ColorChooserDialog.ColorCallback, HomeView {
 
     private val navigator = NavigatorInjector.navigator()
-    private val presenter = PresenterInjector.homePresenter()
+    override val presenter = PresenterInjector.homePresenter()
+    override val view = this
 
     override val layoutId: Int
         get() = R.layout.activity_home
@@ -49,7 +51,6 @@ class HomeActivity : BaseActivity(), ColorChooserDialog.ColorCallback, HomeView 
             setDisplayUseLogoEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
-        presenter.bindView(this)
         presenter.start()
     }
 

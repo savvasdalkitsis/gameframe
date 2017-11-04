@@ -27,6 +27,7 @@ import butterknife.OnClick
 import butterknife.OnItemSelected
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.control.model.*
+import com.savvasdalkitsis.gameframe.feature.control.presenter.ControlPresenter
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.infra.android.BaseFragment
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
@@ -36,9 +37,10 @@ import com.savvasdalkitsis.gameframe.infra.kotlin.visible
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 import kotlinx.android.synthetic.main.fragment_control.*
 
-class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
+class ControlFragment : BaseFragment<ControlView, ControlPresenter>(), ControlView, FragmentSelectedListener {
 
-    private val presenter = PresenterInjector.controlPresenter()
+    override val presenter = PresenterInjector.controlPresenter()
+    override val view = this
     private lateinit var fab: FloatingActionButton
 
     override val layoutId: Int
@@ -56,7 +58,6 @@ class ControlFragment : BaseFragment(), ControlView, FragmentSelectedListener {
         view_cycle_interval.adapter = adapter(R.array.cycle_interval)
         view_display_mode.adapter = adapter(R.array.display_mode)
         view_clock_face.adapter = adapter(R.array.clock_face)
-        presenter.bindView(this)
     }
 
     override fun onResume() {

@@ -16,9 +16,10 @@
  */
 package com.savvasdalkitsis.gameframe.feature.ip.view
 
+import com.savvasdalkitsis.gameframe.base.BaseView
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 
-interface IpSetupView {
+interface IpSetupView: BaseView {
 
     fun displayIpAddress(ipAddress: IpAddress)
 

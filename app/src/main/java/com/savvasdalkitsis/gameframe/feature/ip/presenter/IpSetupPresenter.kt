@@ -16,6 +16,7 @@
  */
 package com.savvasdalkitsis.gameframe.feature.ip.presenter
 
+import com.savvasdalkitsis.gameframe.base.BasePresenter
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
@@ -26,53 +27,51 @@ import io.reactivex.disposables.CompositeDisposable
 
 class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,
                        private val ipRepository: IpRepository,
-                       private val ipDiscoveryUseCase: IpDiscoveryUseCase) {
-
-    private val disposables = CompositeDisposable()
-    private var ipSetupView: IpSetupView? = null
-
-    fun bindView(ipSetupView: IpSetupView) {
-        this.ipSetupView = ipSetupView
+                       private val ipDiscoveryUseCase: IpDiscoveryUseCase): BasePresenter<IpSetupView>() {
+    
+    fun start() {
         loadStoredIp()
-    }
-
-    fun unbind() {
-        disposables.clear()
     }
 
     fun setup(ipAddress: IpAddress) {
         ipRepository.saveIpAddress(ipAddress)
-        ipSetupView?.addressSaved(ipAddress)
+        view?.addressSaved(ipAddress)
     }
 
     fun discoverIp() {
-        ipSetupView?.displayDiscovering()
-        disposables.add(ipDiscoveryUseCase.monitoredIps()
-                .compose(RxTransformers.schedulersFlowable())
-                .subscribe( { ipSetupView?.tryingAddress(it) }, { }))
-        disposables.add(gameFrameUseCase.discoverGameFrameIp()
-                .compose(RxTransformers.schedulers<IpAddress>())
-                .doOnSuccess { ipSetupView?.displayIdleView() }
-                .subscribe(
-                        { ipSetupView?.ipAddressDiscovered(it) },
-                        { throwable ->
-                            ipSetupView?.errorDiscoveringIpAddress(throwable)
-                            loadStoredIp()
-                        }
-                ))
+        view?.displayDiscovering()
+        stream {
+            ipDiscoveryUseCase.monitoredIps()
+                    .compose(RxTransformers.schedulersFlowable())
+                    .subscribe( { view?.tryingAddress(it) }, { })
+        }
+        stream {
+            gameFrameUseCase.discoverGameFrameIp()
+                    .compose(RxTransformers.schedulers<IpAddress>())
+                    .doOnSuccess { view?.displayIdleView() }
+                    .subscribe(
+                            { view?.ipAddressDiscovered(it) },
+                            { throwable ->
+                                view?.errorDiscoveringIpAddress(throwable)
+                                loadStoredIp()
+                            }
+                    )
+        }
     }
 
     fun cancelDiscover() {
-        disposables.clear()
+        clearStreams()
         loadStoredIp()
     }
 
     private fun loadStoredIp() {
-        ipSetupView?.displayIdleView()
-        ipRepository.ipAddress
-                .subscribe(
-                        { ipSetupView?.displayIpAddress(it) },
-                        { ipSetupView?.displayIpAddress(IpAddress()) }
-                )
+        view?.displayIdleView()
+        stream {
+            ipRepository.ipAddress
+                    .subscribe(
+                            { view?.displayIpAddress(it) },
+                            { view?.displayIpAddress(IpAddress()) }
+                    )
+        }
     }
 }

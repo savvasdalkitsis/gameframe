@@ -17,6 +17,7 @@
 package com.savvasdalkitsis.gameframe.feature.workspace.presenter
 
 import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.base.BasePresenter
 import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGameFrameException
@@ -49,9 +50,8 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
                                                    private val stringUseCase: StringUseCase,
                                                    private val messageDisplay: MessageDisplay,
                                                    private val navigator: Navigator,
-                                                   private val bitmapFileUseCase: BitmapFileUseCase<BitmapSource>) : GridTouchedListener {
+                                                   private val bitmapFileUseCase: BitmapFileUseCase<BitmapSource>) : GridTouchedListener, BasePresenter<WorkspaceView<Options>>() {
 
-    private lateinit var view: WorkspaceView<Options>
     private lateinit var gridDisplay: GridDisplay
     private var tempName: String? = null
     private var project = Project(history = HistoryUseCase(WorkspaceModel()))
@@ -68,79 +68,86 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
     private val modified
         get() = present != savedState
 
-    fun bindView(view: WorkspaceView<Options>, gridDisplay: GridDisplay) {
-        this.view = view
+    fun bindGrid(gridDisplay: GridDisplay) {
         this.gridDisplay = gridDisplay
-        view.observe(history)
-        history.observe()
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    render(it.layers)
-                    view.bindPalette(it.selectedPalette)
-                    displayProjectName()
-                }
+        view?.observe(history)
+        stream {
+            history.observe()
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        render(it.layers)
+                        view?.bindPalette(it.selectedPalette)
+                        displayProjectName()
+                    }
+        }
     }
 
     fun saveWorkspace(successAction: Action? = null) {
-        view.displayProgress()
+        view?.displayProgress()
         project.name?.let { tempName = it }
         tempName?.let { name ->
             tempName = null
-            workspaceUseCase.saveProject(name, present)
-                    .compose(RxTransformers.schedulers<File>())
-                    .subscribe(
-                            {
-                                projectChangedSuccessfully(name)
-                                successAction?.invoke()
-                            },
-                            projectSaveFailed()
-                    )
-        } ?: view.askForFileName(R.string.save, {
+            stream {
+                workspaceUseCase.saveProject(name, present)
+                        .compose(RxTransformers.schedulers<File>())
+                        .subscribe(
+                                {
+                                    projectChangedSuccessfully(name)
+                                    successAction?.invoke()
+                                },
+                                projectSaveFailed()
+                        )
+            }
+        } ?: view?.askForFileName(R.string.save, {
             tempName = it
             saveWorkspace(successAction)
         }, {
-            view.stopProgress()
+            view?.stopProgress()
         })
     }
 
     fun loadProject(name: String? = null) {
-        view.displayProgress()
-        when {
-            name != null -> workspaceUseCase.load(name)
-                    .compose(RxTransformers.schedulers<WorkspaceModel>())
-                    .subscribe(projectLoaded(name), {
-                        view.operationFailed(it)
-                        if (it is UnsupportedProjectVersionException) {
-                            view.displayUnsupportedVersion()
-                        }
-                    })
-            else -> workspaceUseCase.savedProjects()
-                    .compose(RxTransformers.schedulers<List<String>>())
-                    .subscribe(savedProjectsLoaded {
-                        view.stopProgress()
-                        view.askForProjectToLoad(it)
-                    }, {
-                        view.operationFailed(it)
-                    })
+        view?.displayProgress()
+        stream {
+            when {
+                name != null -> workspaceUseCase.load(name)
+                        .compose(RxTransformers.schedulers<WorkspaceModel>())
+                        .subscribe(projectLoaded(name), {
+                            view?.operationFailed(it)
+                            if (it is UnsupportedProjectVersionException) {
+                                view?.displayUnsupportedVersion()
+                            }
+                        })
+                else -> workspaceUseCase.savedProjects()
+                        .compose(RxTransformers.schedulers<List<String>>())
+                        .subscribe(savedProjectsLoaded {
+                            view?.stopProgress()
+                            view?.askForProjectToLoad(it)
+                        }, {
+                            view?.operationFailed(it)
+                        })
+            }
         }
     }
 
     fun deleteProjects(names: List<String>? = null) {
-        view.displayProgress()
-        if (names?.isEmpty() == false) {
-            Flowable.fromIterable(names)
-                    .flatMapCompletable(workspaceUseCase::deleteProject)
-                    .compose(RxTransformers.schedulers())
-                    .subscribe(projectsDeleted(names), { view.operationFailed(it) })
-        } else {
-            workspaceUseCase.savedProjects()
-                    .compose(RxTransformers.schedulers<List<String>>())
-                    .subscribe(savedProjectsLoaded {
-                        view.stopProgress()
-                        view.askForProjectsToDelete(it)
-                    }, {
-                        view.operationFailed(it)
-                    })
+        view?.displayProgress()
+        stream {
+            if (names?.isEmpty() == false) {
+                Flowable.fromIterable(names)
+                        .flatMapCompletable(workspaceUseCase::deleteProject)
+                        .compose(RxTransformers.schedulers())
+                        .subscribe(projectsDeleted(names), { view?.operationFailed(it) })
+            } else {
+                workspaceUseCase.savedProjects()
+                        .compose(RxTransformers.schedulers<List<String>>())
+                        .subscribe(savedProjectsLoaded {
+                            view?.stopProgress()
+                            view?.askForProjectsToDelete(it)
+                        }, {
+                            view?.operationFailed(it)
+                        })
+            }
         }
     }
 
@@ -149,12 +156,12 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
             history.restartFrom(WorkspaceModel())
             projectModified(null)
         } else {
-            view.askForApprovalToDismissChanges()
+            view?.askForApprovalToDismissChanges()
         }
     }
 
     private fun projectsDeleted(names: List<String>) = {
-        view.showSuccess()
+        view?.showSuccess()
         if (names.contains(project.name)) {
             project.name = null
             displayProjectName()
@@ -163,7 +170,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
 
     private fun savedProjectsLoaded(onNonEmpty: (List<String>) -> Unit): (List<String>) -> Unit = {
         if (it.isEmpty()) {
-            view.displayNoSavedProjectsExist()
+            view?.displayNoSavedProjectsExist()
         } else {
             onNonEmpty(it)
         }
@@ -175,12 +182,12 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
     }
 
     private fun projectSaveFailed(): (Throwable) -> Unit = {
-        view.operationFailed(it)
+        view?.operationFailed(it)
         displayProjectName()
     }
 
     private fun projectChangedSuccessfully(name: String) {
-        view.showSuccess()
+        view?.showSuccess()
         projectModified(name)
     }
 
@@ -191,7 +198,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
     }
 
     private fun displayProjectName() {
-        view.displayProjectName("${project.name ?: stringUseCase.getString(R.string.untitled)}${if (modified) "*" else ""}")
+        view?.displayProjectName("${project.name ?: stringUseCase.getString(R.string.untitled)}${if (modified) "*" else ""}")
     }
 
     fun changeColor(currentColor: Int, newColor: Int, paletteIndex: Int) {
@@ -210,38 +217,42 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
     }
 
     override fun onGridTouch(startColumn: Int, startRow: Int, column: Int, row: Int) {
-        view.drawLayer(present.selectedLayer, startColumn, startRow, column, row)
+        view?.drawLayer(present.selectedLayer, startColumn, startRow, column, row)
         render(present.layers)
     }
 
     override fun onGridTouchFinished() {
-        view.finishStroke(present.selectedLayer)
+        view?.finishStroke(present.selectedLayer)
         history.collapsePresentWithPastIfTheSame()
     }
 
     fun prepareOptions(options: Options) {
-        history.hasPast()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { hasPast ->
-                    if (hasPast) {
-                        view.enableUndo(options)
-                    } else {
-                        view.disableUndo(options)
+        stream {
+            history.hasPast()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { hasPast ->
+                        if (hasPast) {
+                            view?.enableUndo(options)
+                        } else {
+                            view?.disableUndo(options)
+                        }
                     }
-                }
-        history.hasFuture()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { hasFuture ->
-                    if (hasFuture) {
-                        view.enableRedo(options)
-                    } else {
-                        view.disableRedo(options)
+        }
+        stream {
+            history.hasFuture()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { hasFuture ->
+                        if (hasFuture) {
+                            view?.enableRedo(options)
+                        } else {
+                            view?.disableRedo(options)
+                        }
                     }
-                }
+        }
         if (displayLayoutBorders) {
-            view.displayLayoutBordersEnabled(options)
+            view?.displayLayoutBordersEnabled(options)
         } else {
-            view.displayLayoutBordersDisabled(options)
+            view?.displayLayoutBordersDisabled(options)
         }
     }
 
@@ -265,10 +276,12 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
     }
 
     fun replaceDrawing(name: String, colorGrid: Grid) {
-        view.displayProgress()
-        gameFrameUseCase.removeFolder(name)
-                .compose(RxTransformers.schedulers())
-                .subscribe({ upload(colorGrid) }, { view.operationFailed(it) })
+        view?.displayProgress()
+        stream {
+            gameFrameUseCase.removeFolder(name)
+                    .compose(RxTransformers.schedulers())
+                    .subscribe({ upload(colorGrid) }, { view?.operationFailed(it) })
+        }
     }
 
     fun upload(grid: Grid) {
@@ -276,15 +289,17 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
             saveWorkspace { upload(grid) }
         } else {
             val name = project.name as String
-            gameFrameUseCase.uploadAndDisplay(name, grid)
-                    .compose(RxTransformers.schedulers())
-                    .subscribe({ view.showSuccess() }, { e ->
-                        if (e is AlreadyExistsOnGameFrameException) {
-                            view.drawingAlreadyExists(name, grid, e)
-                        } else {
-                            view.operationFailed(e)
-                        }
-                    })
+            stream {
+                gameFrameUseCase.uploadAndDisplay(name, grid)
+                        .compose(RxTransformers.schedulers())
+                        .subscribe({ view?.showSuccess() }, { e ->
+                            if (e is AlreadyExistsOnGameFrameException) {
+                                view?.drawingAlreadyExists(name, grid, e)
+                            } else {
+                                view?.operationFailed(e)
+                            }
+                        })
+            }
         }
     }
 
@@ -297,9 +312,11 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
             saveWorkspace { exportImage(bitmapSource) }
         } else {
             val name = project.name as String
-            bitmapFileUseCase.getFileFor(bitmapSource, name)
-                    .flatMapCompletable { navigator.navigateToShareImageFile(it, name) }
-                    .subscribe({}, { view.operationFailed(it) })
+            stream {
+                bitmapFileUseCase.getFileFor(bitmapSource, name)
+                        .flatMapCompletable { navigator.navigateToShareImageFile(it, name) }
+                        .subscribe({}, { view?.operationFailed(it) })
+            }
         }
     }
 
@@ -311,12 +328,12 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
 
         if (selected != null && displayLayoutBorders) {
             val colorGrid = selected.colorGrid
-            view.displayBoundaries(colorGrid.columnTranslation, colorGrid.rowTranslation)
+            view?.displayBoundaries(colorGrid.columnTranslation, colorGrid.rowTranslation)
         } else {
-            view.clearBoundaries()
+            view?.clearBoundaries()
         }
-        view.displaySelectedLayerName(selected?.layerSettings?.title.or(stringUseCase.getString(R.string.background)))
-        view.displaySelectedPalette(stringUseCase.getString(R.string.palette_name, present.selectedPalette.title))
-        view.rendered()
+        view?.displaySelectedLayerName(selected?.layerSettings?.title.or(stringUseCase.getString(R.string.background)))
+        view?.displaySelectedPalette(stringUseCase.getString(R.string.palette_name, present.selectedPalette.title))
+        view?.rendered()
     }
 }

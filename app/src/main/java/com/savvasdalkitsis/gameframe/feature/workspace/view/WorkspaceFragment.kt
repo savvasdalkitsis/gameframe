@@ -59,13 +59,15 @@ private const val GRAVITY_PALETTES = Gravity.LEFT
 @SuppressLint("RtlHardcoded")
 private const val GRAVITY_LAYERS = Gravity.RIGHT
 
-class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
+class WorkspaceFragment : BaseFragment<WorkspaceView<Menu>, WorkspacePresenter<Menu, View>>(),
+        FragmentSelectedListener,
         SwatchSelectedListener, WorkspaceView<Menu>,
         ColorChooserDialog.ColorCallback, ToolSelectedListener {
 
     private lateinit var fab: CustomFabSpeedDial
     private lateinit var drawer: DrawerLayout
-    private val presenter = workspacePresenter()
+    override val presenter = workspacePresenter()
+    override val view = this
     private var swatchToModify: SwatchView? = null
     private var selected: Boolean = false
     private var activeSwatch: SwatchView? = null
@@ -108,7 +110,7 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
         super.onViewCreated(view, savedInstanceState)
         drawer = view.findViewById(R.id.view_draw_drawer)
         view_draw_led_grid_view.setOnGridTouchedListener(presenter)
-        presenter.bindView(this, view_draw_led_grid_view)
+        presenter.bindGrid(view_draw_led_grid_view)
     }
 
     override fun onResume() {
@@ -263,16 +265,19 @@ class WorkspaceFragment : BaseFragment(), FragmentSelectedListener,
         view_draw_palette_name.text = paletteName
     }
 
+    @Suppress("unused")
     @OnClick(R.id.view_draw_open_layers)
     fun openLayers() {
         drawer.openDrawer(GRAVITY_LAYERS)
     }
 
+    @Suppress("unused")
     @OnClick(R.id.view_draw_open_palette)
     fun openPalette() {
         drawer.openDrawer(GRAVITY_PALETTES)
     }
 
+    @Suppress("unused")
     @OnClick(R.id.view_draw_tools_change, R.id.view_draw_tools_current)
     fun changeTool() {
         view_draw_sliding_up_panel.panelState = SlidingUpPanelLayout.PanelState.EXPANDED

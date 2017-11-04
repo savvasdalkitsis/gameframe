@@ -13,6 +13,7 @@ body {
 ##### ?
 
 * Make changelog dialog version dependant
+* Fix crash caused by not un registering view and stopping background process
 
 #### v1.1.1
 ##### 24 Oct 2017

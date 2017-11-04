@@ -28,13 +28,17 @@ import com.crashlytics.android.answers.Answers
 import com.savvasdalkitsis.gameframe.BuildConfig
 
 import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.base.BasePresenter
+import com.savvasdalkitsis.gameframe.base.BaseView
 import io.fabric.sdk.android.Fabric
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity<V: BaseView, out P: BasePresenter<V>> : AppCompatActivity() {
 
     abstract val layoutId: Int
+    abstract val presenter: P
+    abstract val view: V
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
         setContentView(layoutId)
         ButterKnife.bind(this)
+        presenter.bindView(view)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -52,6 +57,16 @@ abstract class BaseActivity : AppCompatActivity() {
             setSpan(AbsoluteSizeSpan(resources.getDimensionPixelSize(R.dimen.toolbar_text_size)),
                     0, length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        presenter.bindView(view)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        presenter.stop()
     }
 
     override fun attachBaseContext(newBase: Context) {

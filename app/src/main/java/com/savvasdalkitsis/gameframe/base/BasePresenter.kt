@@ -14,18 +14,31 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.home.presenter
+package com.savvasdalkitsis.gameframe.base
 
-import com.savvasdalkitsis.gameframe.base.BasePresenter
-import com.savvasdalkitsis.gameframe.feature.changelog.usecase.ChangeLogUseCase
-import com.savvasdalkitsis.gameframe.feature.home.view.HomeView
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
-class HomePresenter(private val changeLogUseCase: ChangeLogUseCase): BasePresenter<HomeView>() {
+open class BasePresenter<V: BaseView> {
 
-    fun start() {
-        if (!changeLogUseCase.hasSeenChangeLog()) {
-            changeLogUseCase.markChangeLogSeen()
-            view?.displayChangeLog()
-        }
+    protected var view: V? = null
+    private val streams = CompositeDisposable()
+
+    fun bindView(view: V) {
+        this.view = view
     }
+
+    protected fun stream(disposable: () -> Disposable) {
+        streams.add(disposable())
+    }
+
+    fun stop() {
+        view = null
+        clearStreams()
+    }
+
+    protected fun clearStreams() {
+        streams.clear()
+    }
+
 }

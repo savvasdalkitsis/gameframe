@@ -17,6 +17,7 @@
 package com.savvasdalkitsis.gameframe.feature.widget.presenter
 
 import android.util.Log
+import com.savvasdalkitsis.gameframe.base.BasePresenter
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
@@ -27,13 +28,7 @@ import io.reactivex.Completable
 
 class WidgetPresenter(private val gameFrameUseCase: GameFrameUseCase,
                       private val ipRepository: IpRepository,
-                      private val navigator: Navigator) {
-
-    private var widgetView: WidgetView? = null
-
-    fun bindView(widgetView: WidgetView) {
-        this.widgetView = widgetView
-    }
+                      private val navigator: Navigator): BasePresenter<WidgetView>() {
 
     fun menu() = perform(gameFrameUseCase.menu())
 
@@ -41,7 +36,7 @@ class WidgetPresenter(private val gameFrameUseCase: GameFrameUseCase,
 
     fun power() = perform(gameFrameUseCase.togglePower())
 
-    private fun perform(operation: Completable) {
+    private fun perform(operation: Completable) = stream {
         ipRepository.ipAddress
                 .doOnError {
                     Log.e(PowerTileService::class.java.name, "IP address not found", it)
@@ -51,7 +46,7 @@ class WidgetPresenter(private val gameFrameUseCase: GameFrameUseCase,
                 .compose(RxTransformers.schedulers())
                 .subscribe({ }, {
                     Log.e(PowerTileService::class.java.name, "Error communicating with the GameFrame", it)
-                    widgetView?.operationError()
+                    view?.operationError()
                 })
     }
 }

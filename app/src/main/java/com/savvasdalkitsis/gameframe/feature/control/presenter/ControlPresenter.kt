@@ -23,22 +23,17 @@ import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
+import com.savvasdalkitsis.gameframe.base.BasePresenter
 import io.reactivex.Completable
 
 class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase,
                        private val ipRepository: IpRepository,
-                       private val navigator: Navigator) {
+                       private val navigator: Navigator): BasePresenter<ControlView>() {
 
-    private lateinit var controlView: ControlView
-
-    fun bindView(controlView: ControlView) {
-        this.controlView = controlView
-    }
-
-    fun loadIpAddress() {
+    fun loadIpAddress() = stream {
         ipRepository.ipAddress
                 .compose<IpAddress>(RxTransformers.schedulers<IpAddress>())
-                .subscribe({ controlView.ipAddressLoaded(it) }, { controlView.ipCouldNotBeFound(it) })
+                .subscribe({ view?.ipAddressLoaded(it) }, { view?.ipCouldNotBeFound(it) })
     }
 
     fun togglePower() = runCommandAndNotifyView(gameFrameUseCase.togglePower())
@@ -63,11 +58,11 @@ class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase,
             command.compose(RxTransformers.interceptIpMissingException())
                     .compose(RxTransformers.schedulers())
 
-    private fun runCommandAndNotifyView(command: Completable) {
-        runCommand(command).subscribe({ controlView.operationSuccess() }, { e -> controlView.operationFailure(e) })
+    private fun runCommandAndNotifyView(command: Completable) = stream {
+        runCommand(command).subscribe({ view?.operationSuccess() }, { e -> view?.operationFailure(e) })
     }
 
-    private fun runCommandAndIgnoreResult(command: Completable) {
+    private fun runCommandAndIgnoreResult(command: Completable) = stream {
         runCommand(command).subscribe({ }, { })
     }
 }

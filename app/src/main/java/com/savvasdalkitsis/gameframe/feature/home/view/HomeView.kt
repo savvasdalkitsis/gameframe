@@ -16,6 +16,8 @@
  */
 package com.savvasdalkitsis.gameframe.feature.home.view
 
-interface HomeView {
+import com.savvasdalkitsis.gameframe.base.BaseView
+
+interface HomeView: BaseView {
     fun displayChangeLog()
 }

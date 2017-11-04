@@ -16,7 +16,9 @@
  */
 package com.savvasdalkitsis.gameframe.feature.widget.view
 
-interface WidgetView {
+import com.savvasdalkitsis.gameframe.base.BaseView
+
+interface WidgetView: BaseView {
 
     fun operationError()
 }

@@ -14,18 +14,6 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.home.presenter
+package com.savvasdalkitsis.gameframe.base
 
-import com.savvasdalkitsis.gameframe.base.BasePresenter
-import com.savvasdalkitsis.gameframe.feature.changelog.usecase.ChangeLogUseCase
-import com.savvasdalkitsis.gameframe.feature.home.view.HomeView
-
-class HomePresenter(private val changeLogUseCase: ChangeLogUseCase): BasePresenter<HomeView>() {
-
-    fun start() {
-        if (!changeLogUseCase.hasSeenChangeLog()) {
-            changeLogUseCase.markChangeLogSeen()
-            view?.displayChangeLog()
-        }
-    }
-}
+interface BaseView
