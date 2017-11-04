@@ -24,6 +24,8 @@ import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGame
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.history.model.MomentList
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
+import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
+import com.savvasdalkitsis.gameframe.feature.ip.model.IpNotFoundException
 import com.savvasdalkitsis.gameframe.feature.message.MessageDisplay
 import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
@@ -292,13 +294,14 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
             stream {
                 gameFrameUseCase.uploadAndDisplay(name, grid)
                         .compose(RxTransformers.schedulers())
-                        .subscribe({ view?.showSuccess() }, { e ->
-                            if (e is AlreadyExistsOnGameFrameException) {
-                                view?.drawingAlreadyExists(name, grid, e)
-                            } else {
+                        .subscribe({ view?.showSuccess() }, { e -> when (e) {
+                            is AlreadyExistsOnGameFrameException -> view?.drawingAlreadyExists(name, grid, e)
+                            is IpBaseHostMissingException -> {
                                 view?.operationFailed(e)
+                                navigator.navigateToIpSetup()
                             }
-                        })
+                            else -> view?.operationFailed(e)
+                        } })
             }
         }
     }

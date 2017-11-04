@@ -27,8 +27,10 @@ import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpNotFoundException
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BmpUseCase
+import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
+import com.savvasdalkitsis.gameframe.injector.feature.ip.repository.IpRepositoryInjector
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
@@ -44,7 +46,8 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
                        private val gameFrameApi: GameFrameApi,
                        private val ipDiscoveryUseCase: IpDiscoveryUseCase,
                        private val fileUseCase: FileUseCase,
-                       private val bmpUseCase: BmpUseCase) {
+                       private val bmpUseCase: BmpUseCase,
+                       private val ipRepository: IpRepository) {
 
     fun togglePower() = issueCommand("power")
 
@@ -136,7 +139,8 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
     }
 
     private fun issueCommand(key: String, value: String = ""): Completable =
-            gameFrameApi.command(param(key, value)).to(mapResponse())
+            ipRepository.ipAddress
+                    .flatMapCompletable { gameFrameApi.command(param(key, value)).to(mapResponse()) }
 
     private fun setParam(key: String): Completable = gameFrameApi.set(param(key))
 

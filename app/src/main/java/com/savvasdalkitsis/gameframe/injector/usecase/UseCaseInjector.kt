@@ -27,6 +27,8 @@ import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
 import com.savvasdalkitsis.gameframe.injector.ApplicationInjector.application
 import com.savvasdalkitsis.gameframe.injector.feature.gameframe.api.GameFrameApiInjector.gameFrameApi
+import com.savvasdalkitsis.gameframe.injector.feature.ip.repository.IpRepositoryInjector
+import com.savvasdalkitsis.gameframe.injector.feature.ip.repository.IpRepositoryInjector.ipRepository
 import com.savvasdalkitsis.gameframe.injector.infra.android.AndroidInjector.wifiManager
 import com.savvasdalkitsis.gameframe.injector.infra.network.OkHttpClientInjector.okHttpClient
 import com.savvasdalkitsis.gameframe.injector.infra.parsing.GsonInjector.gson
@@ -42,7 +44,8 @@ object UseCaseInjector {
             gameFrameApi(),
             ipDiscoveryUseCase(),
             fileUseCase(),
-            bmpUseCase()
+            bmpUseCase(),
+            ipRepository()
     )
 
     fun ipDiscoveryUseCase() = IP_DISCOVERY_USE_CASE
