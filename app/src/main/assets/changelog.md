@@ -14,6 +14,7 @@ body {
 
 * Moved to Firebase from fabric
 * Navigating to ip setup if missing when uploading to Game Frame
+* Changing the navigation bar color to the same color as the status bar on lollipop and later devices
 
 #### v1.1.2
 ##### 04 Nov 2017
