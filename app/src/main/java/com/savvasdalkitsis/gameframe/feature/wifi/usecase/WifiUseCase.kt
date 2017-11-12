@@ -14,26 +14,17 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.ip.view
+package com.savvasdalkitsis.gameframe.feature.wifi.usecase
 
-import com.savvasdalkitsis.gameframe.base.BaseView
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
+import android.content.Context
+import android.net.wifi.WifiManager
+import io.reactivex.Single
 
-interface IpSetupView: BaseView {
+class WifiUseCase(val context: Context) {
 
-    fun displayIpAddress(ipAddress: IpAddress)
+    private val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
-    fun errorDiscoveringIpAddress(throwable: Throwable)
+    fun isWifiEnabled(): Single<Boolean> = Single.just(wifiManager.isWifiEnabled)
 
-    fun addressSaved(ipAddress: IpAddress)
-
-    fun displayDiscovering()
-
-    fun ipAddressDiscovered(ipAddress: IpAddress)
-
-    fun tryingAddress(ipAddress: IpAddress)
-
-    fun displayIdleView()
-
-    fun displayWifiNotEnabled()
+    fun enableWifi() = wifiManager.setWifiEnabled(true)
 }

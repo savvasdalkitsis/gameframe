@@ -32,20 +32,22 @@ import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.changeLogU
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.gameFrameUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.ipDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.stringUseCase
+import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.wifiUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.workspaceUseCase
 
 object PresenterInjector {
 
     fun ipSetupPresenter() =
-            IpSetupPresenter(gameFrameUseCase(), ipRepository(), ipDiscoveryUseCase())
+            IpSetupPresenter(gameFrameUseCase(), ipRepository(), ipDiscoveryUseCase(), wifiUseCase())
 
-    fun controlPresenter() = ControlPresenter(gameFrameUseCase(), ipRepository(), navigator())
+    fun controlPresenter() = ControlPresenter(gameFrameUseCase(), ipRepository(), navigator(), wifiUseCase())
 
     fun widgetPresenter() =
             WidgetPresenter(gameFrameUseCase(), ipRepository(), navigator())
 
     fun workspacePresenter() = WorkspacePresenter<Menu, View>(gameFrameUseCase(),
-            blendUseCase(), workspaceUseCase(), stringUseCase(), messageDisplay(), navigator(), bitmapFileUseCase())
+            blendUseCase(), workspaceUseCase(), stringUseCase(), messageDisplay(), navigator(),
+            bitmapFileUseCase(), wifiUseCase())
 
     fun homePresenter() = HomePresenter(changeLogUseCase())
 }

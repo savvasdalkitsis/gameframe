@@ -42,6 +42,7 @@ class ControlFragment : BaseFragment<ControlView, ControlPresenter>(), ControlVi
     override val presenter = PresenterInjector.controlPresenter()
     override val view = this
     private lateinit var fab: FloatingActionButton
+    private val coordinator: View get() = activity!!.findViewById(R.id.view_coordinator)
 
     override val layoutId: Int
         get() = R.layout.fragment_control
@@ -120,11 +121,18 @@ class ControlFragment : BaseFragment<ControlView, ControlPresenter>(), ControlVi
         presenter.changeClockFace(ClockFace.from(position))
     }
 
-    override fun operationSuccess() = Snackbars.success(activity!!.findViewById(R.id.view_coordinator), R.string.success)
+    override fun operationSuccess() = Snackbars.success(coordinator, R.string.success)
 
     override fun operationFailure(e: Throwable) {
         Log.e(ControlFragment::class.java.name, "Operation failure", e)
-        Snackbars.error(activity!!.findViewById(R.id.view_coordinator), R.string.operation_failed)
+        Snackbars.error(coordinator, R.string.operation_failed)
+    }
+
+    override fun wifiNotEnabledError(e: Throwable) {
+        Log.e(ControlFragment::class.java.name, "Operation failure", e)
+        Snackbars.actionError(coordinator, R.string.wifi_not_enabled, R.string.enable) {
+            presenter.enableWifi()
+        }
     }
 
     override fun ipAddressLoaded(ipAddress: IpAddress) {

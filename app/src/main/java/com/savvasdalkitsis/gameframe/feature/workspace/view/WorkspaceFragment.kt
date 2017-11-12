@@ -113,6 +113,12 @@ class WorkspaceFragment : BaseFragment<WorkspaceView<Menu>, WorkspacePresenter<M
         presenter.bindGrid(view_draw_led_grid_view)
     }
 
+    override fun wifiNotEnabledError(e: Throwable) {
+        Snackbars.actionError(coordinator(), R.string.wifi_not_enabled, R.string.enable) {
+            presenter.enableWifi()
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         setFabState()

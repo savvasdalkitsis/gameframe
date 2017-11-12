@@ -14,8 +14,6 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.gameframe.usecase
+package com.savvasdalkitsis.gameframe.feature.wifi.model
 
-import com.savvasdalkitsis.gameframe.feature.gameframe.api.CommandResponse
-
-internal class GameFrameCommandError(msg: String, val response: CommandResponse) : Throwable(msg)
+class WifiNotEnabledException: Exception()

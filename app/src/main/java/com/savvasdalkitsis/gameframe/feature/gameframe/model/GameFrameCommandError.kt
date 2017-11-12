@@ -14,26 +14,8 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.ip.view
+package com.savvasdalkitsis.gameframe.feature.gameframe.model
 
-import com.savvasdalkitsis.gameframe.base.BaseView
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
+import com.savvasdalkitsis.gameframe.feature.gameframe.api.CommandResponse
 
-interface IpSetupView: BaseView {
-
-    fun displayIpAddress(ipAddress: IpAddress)
-
-    fun errorDiscoveringIpAddress(throwable: Throwable)
-
-    fun addressSaved(ipAddress: IpAddress)
-
-    fun displayDiscovering()
-
-    fun ipAddressDiscovered(ipAddress: IpAddress)
-
-    fun tryingAddress(ipAddress: IpAddress)
-
-    fun displayIdleView()
-
-    fun displayWifiNotEnabled()
-}
+internal class GameFrameCommandError(msg: String, val response: CommandResponse) : Throwable(msg)

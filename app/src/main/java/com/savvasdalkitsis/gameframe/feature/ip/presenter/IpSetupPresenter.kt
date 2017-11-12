@@ -22,15 +22,21 @@ import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.view.IpSetupView
+import com.savvasdalkitsis.gameframe.feature.wifi.usecase.WifiUseCase
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
-import io.reactivex.disposables.CompositeDisposable
 
 class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,
                        private val ipRepository: IpRepository,
-                       private val ipDiscoveryUseCase: IpDiscoveryUseCase): BasePresenter<IpSetupView>() {
+                       private val ipDiscoveryUseCase: IpDiscoveryUseCase,
+                       private val wifiUseCase: WifiUseCase): BasePresenter<IpSetupView>() {
     
     fun start() {
         loadStoredIp()
+        stream {
+            wifiUseCase.isWifiEnabled()
+                    .filter { !it }
+                    .subscribe( { view?.displayWifiNotEnabled() } )
+        }
     }
 
     fun setup(ipAddress: IpAddress) {
@@ -73,5 +79,9 @@ class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,
                             { view?.displayIpAddress(IpAddress()) }
                     )
         }
+    }
+
+    fun enableWifi() {
+        wifiUseCase.enableWifi()
     }
 }

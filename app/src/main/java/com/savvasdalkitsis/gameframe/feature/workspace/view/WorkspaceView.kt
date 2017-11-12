@@ -54,4 +54,5 @@ interface WorkspaceView<in O>: BaseView {
     fun displaySelectedLayerName(layerName: String)
     fun displaySelectedPalette(paletteName: String)
     fun displayUnsupportedVersion()
+    fun wifiNotEnabledError(e: Throwable)
 }

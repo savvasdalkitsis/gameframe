@@ -23,11 +23,11 @@ import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BmpUseCase
 import com.savvasdalkitsis.gameframe.feature.changelog.usecase.ChangeLogUseCase
 import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
+import com.savvasdalkitsis.gameframe.feature.wifi.usecase.WifiUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
 import com.savvasdalkitsis.gameframe.injector.ApplicationInjector.application
 import com.savvasdalkitsis.gameframe.injector.feature.gameframe.api.GameFrameApiInjector.gameFrameApi
-import com.savvasdalkitsis.gameframe.injector.feature.ip.repository.IpRepositoryInjector
 import com.savvasdalkitsis.gameframe.injector.feature.ip.repository.IpRepositoryInjector.ipRepository
 import com.savvasdalkitsis.gameframe.injector.infra.android.AndroidInjector.wifiManager
 import com.savvasdalkitsis.gameframe.injector.infra.network.OkHttpClientInjector.okHttpClient
@@ -45,7 +45,8 @@ object UseCaseInjector {
             ipDiscoveryUseCase(),
             fileUseCase(),
             bmpUseCase(),
-            ipRepository()
+            ipRepository(),
+            wifiUseCase()
     )
 
     fun ipDiscoveryUseCase() = IP_DISCOVERY_USE_CASE
@@ -63,4 +64,6 @@ object UseCaseInjector {
     fun bitmapFileUseCase() = AndroidViewBitmapFileUseCase(application())
 
     fun changeLogUseCase() = ChangeLogUseCase(rxSharedPreferences())
+
+    fun wifiUseCase() = WifiUseCase(application())
 }

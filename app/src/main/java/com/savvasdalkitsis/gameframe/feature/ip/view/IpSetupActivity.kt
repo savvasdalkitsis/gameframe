@@ -56,6 +56,12 @@ class IpSetupActivity : BaseActivity<IpSetupView, IpSetupPresenter>(), IpSetupVi
         presenter.start()
     }
 
+    override fun displayWifiNotEnabled() {
+        Snackbars.actionError(findViewById(R.id.view_setup_content), R.string.wifi_not_enabled, R.string.enable) {
+            presenter.enableWifi()
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {

@@ -27,10 +27,12 @@ import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpNotFoundException
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BmpUseCase
+import com.savvasdalkitsis.gameframe.feature.gameframe.model.GameFrameCommandError
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
+import com.savvasdalkitsis.gameframe.feature.wifi.model.WifiNotEnabledException
+import com.savvasdalkitsis.gameframe.feature.wifi.usecase.WifiUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
-import com.savvasdalkitsis.gameframe.injector.feature.ip.repository.IpRepositoryInjector
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Maybe
@@ -47,7 +49,8 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
                        private val ipDiscoveryUseCase: IpDiscoveryUseCase,
                        private val fileUseCase: FileUseCase,
                        private val bmpUseCase: BmpUseCase,
-                       private val ipRepository: IpRepository) {
+                       private val ipRepository: IpRepository,
+                       private val wifiUseCase: WifiUseCase) {
 
     fun togglePower() = issueCommand("power")
 
@@ -104,7 +107,13 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
     private fun uploadFile(file: File): Completable {
         val requestFile = RequestBody.create(MediaType.parse("image/bmp"), file)
         val filePart = MultipartBody.Part.createFormData("my_file[]", "0.bmp", requestFile)
-        return gameFrameApi.upload(filePart).to(mapResponse())
+        return gameFrameApi.upload(filePart)
+                .to(mapResponse())
+                .onErrorResumeNext { error -> wifiUseCase.isWifiEnabled()
+                        .flatMapCompletable { enabled ->
+                            if (!enabled) Completable.error(WifiNotEnabledException())
+                            else Completable.error(error)
+                        } }
     }
 
     private fun play(name: String) = issueCommand("play", name)
@@ -141,6 +150,14 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
     private fun issueCommand(key: String, value: String = ""): Completable =
             ipRepository.ipAddress
                     .flatMapCompletable { gameFrameApi.command(param(key, value)).to(mapResponse()) }
+                    .onErrorResumeNext(changeErrorToWifiIfNotEnabled())
+
+    private fun changeErrorToWifiIfNotEnabled(): (Throwable) -> Completable = { error ->
+        wifiUseCase.isWifiEnabled().flatMapCompletable { enabled ->
+            if (!enabled) Completable.error(WifiNotEnabledException())
+            else Completable.error(error)
+        }
+    }
 
     private fun setParam(key: String): Completable = gameFrameApi.set(param(key))
 

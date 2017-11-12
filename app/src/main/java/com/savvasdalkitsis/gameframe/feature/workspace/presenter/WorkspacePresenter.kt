@@ -25,9 +25,10 @@ import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.history.model.MomentList
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpNotFoundException
 import com.savvasdalkitsis.gameframe.feature.message.MessageDisplay
 import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
+import com.savvasdalkitsis.gameframe.feature.wifi.model.WifiNotEnabledException
+import com.savvasdalkitsis.gameframe.feature.wifi.usecase.WifiUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.GridDisplay
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.GridTouchedListener
@@ -52,7 +53,8 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
                                                    private val stringUseCase: StringUseCase,
                                                    private val messageDisplay: MessageDisplay,
                                                    private val navigator: Navigator,
-                                                   private val bitmapFileUseCase: BitmapFileUseCase<BitmapSource>) : GridTouchedListener, BasePresenter<WorkspaceView<Options>>() {
+                                                   private val bitmapFileUseCase: BitmapFileUseCase<BitmapSource>,
+                                                   private val wifiUseCase: WifiUseCase) : GridTouchedListener, BasePresenter<WorkspaceView<Options>>() {
 
     private lateinit var gridDisplay: GridDisplay
     private var tempName: String? = null
@@ -300,6 +302,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
                                 view?.operationFailed(e)
                                 navigator.navigateToIpSetup()
                             }
+                            is WifiNotEnabledException -> view?.wifiNotEnabledError(e)
                             else -> view?.operationFailed(e)
                         } })
             }
@@ -338,5 +341,9 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
         view?.displaySelectedLayerName(selected?.layerSettings?.title.or(stringUseCase.getString(R.string.background)))
         view?.displaySelectedPalette(stringUseCase.getString(R.string.palette_name, present.selectedPalette.title))
         view?.rendered()
+    }
+
+    fun enableWifi() {
+        wifiUseCase.enableWifi()
     }
 }

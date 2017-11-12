@@ -28,4 +28,6 @@ interface ControlView: BaseView {
     fun ipAddressLoaded(ipAddress: IpAddress)
 
     fun ipCouldNotBeFound(throwable: Throwable)
+
+    fun wifiNotEnabledError(e: Throwable)
 }
