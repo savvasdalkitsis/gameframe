@@ -10,7 +10,7 @@ body {
 </style>
 
 #### v1.2
-##### ?
+##### 12 Nov 2017
 
 * Moved to Firebase from fabric
 * Navigating to ip setup if missing when uploading to Game Frame

@@ -21,8 +21,8 @@ android {
         applicationId "com.savvasdalkitsis.gameframe"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 4
-        versionName "1.1.2"
+        versionCode 5
+        versionName "1.2"
         manifestPlaceholders = [fabric_api_key: FABRIC_API_KEY]
     }
     buildTypes {
