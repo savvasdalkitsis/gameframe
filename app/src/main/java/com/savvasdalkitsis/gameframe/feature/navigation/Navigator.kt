@@ -24,4 +24,5 @@ interface Navigator {
     fun navigateToIpSetup()
     fun navigateToPlayStore()
     fun navigateToShareImageFile(file: File, name: String): Completable
+    fun navigateToFeedback()
 }

@@ -70,6 +70,9 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), ColorChooserDialog
                 notifyAllFragmentsUnselected()
                 return true
             }
+            R.id.action_feedback -> {
+                navigator.navigateToFeedback()
+            }
             R.id.action_manage -> {
                 if (fragment_switcher.displayedChild != 0) {
                     fragment_switcher.displayedChild = 0

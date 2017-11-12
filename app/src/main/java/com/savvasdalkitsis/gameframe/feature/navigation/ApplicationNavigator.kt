@@ -23,10 +23,13 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v4.content.FileProvider
 import android.util.Log
+import android.widget.Toast
 import com.savvasdalkitsis.gameframe.GameFrameApplication
+import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.ip.view.IpSetupActivity
 import com.savvasdalkitsis.gameframe.infra.TopActivityProvider
 import io.reactivex.Completable
+import org.rm3l.maoni.Maoni
 import java.io.File
 
 class ApplicationNavigator(private val topActivityProvider: TopActivityProvider, private val application: GameFrameApplication) : Navigator {
@@ -56,6 +59,20 @@ class ApplicationNavigator(private val topActivityProvider: TopActivityProvider,
         } catch (e: android.content.ActivityNotFoundException) {
             Log.w(ApplicationNavigator::class.java.name, "Could not share image", e)
             emitter.onError(e)
+        }
+    }
+
+    override fun navigateToFeedback() {
+        context.let {
+            if (it is Activity) {
+                Maoni.Builder(it, "$it.fileProvider")
+                        .withDefaultToEmailAddress("feedback.gameframe@gmail.com")
+                        .withHeader(R.drawable.feedback_header)
+                        .build()
+                        .start(it)
+            } else {
+                Toast.makeText(it, R.string.unknown_error, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

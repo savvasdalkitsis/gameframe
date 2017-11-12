@@ -67,6 +67,9 @@ dependencies {
             "us.feras.mdv:markdownview:$markdownview_version",
     )
     compile "com.google.firebase:firebase-perf:$firebase_version"
+    compile ("org.rm3l:maoni:$maoni_version@aar") {
+        transitive = true
+    }
     kapt "com.jakewharton:butterknife-compiler:$butterknife_version"
 }
 
