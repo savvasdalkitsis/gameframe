@@ -40,7 +40,6 @@ object UseCaseInjector {
 
     fun gameFrameUseCase() = GameFrameUseCase(
             okHttpClient(1).build(),
-            wifiManager(),
             gameFrameApi(),
             ipDiscoveryUseCase(),
             fileUseCase(),
@@ -65,5 +64,5 @@ object UseCaseInjector {
 
     fun changeLogUseCase() = ChangeLogUseCase(rxSharedPreferences())
 
-    fun wifiUseCase() = WifiUseCase(application())
+    fun wifiUseCase() = WifiUseCase(wifiManager())
 }

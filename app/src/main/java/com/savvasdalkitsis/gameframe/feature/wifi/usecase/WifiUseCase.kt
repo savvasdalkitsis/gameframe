@@ -16,15 +16,20 @@
  */
 package com.savvasdalkitsis.gameframe.feature.wifi.usecase
 
-import android.content.Context
 import android.net.wifi.WifiManager
+import android.text.format.Formatter
+import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import io.reactivex.Single
 
-class WifiUseCase(val context: Context) {
-
-    private val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+class WifiUseCase(private val wifiManager: WifiManager) {
 
     fun isWifiEnabled(): Single<Boolean> = Single.just(wifiManager.isWifiEnabled)
 
     fun enableWifi() = wifiManager.setWifiEnabled(true)
+
+    @Suppress("DEPRECATION")
+    fun getDeviceIp(): Single<IpAddress> = Single.defer {
+        val ip = Formatter.formatIpAddress(wifiManager.connectionInfo.ipAddress)
+        Single.just(IpAddress.parse(ip))
+    }
 }

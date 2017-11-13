@@ -16,19 +16,17 @@
  */
 package com.savvasdalkitsis.gameframe.feature.gameframe.usecase
 
-import android.net.wifi.WifiManager
-import android.text.format.Formatter
 import android.util.Log
+import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BmpUseCase
 import com.savvasdalkitsis.gameframe.feature.control.model.*
 import com.savvasdalkitsis.gameframe.feature.gameframe.api.CommandResponse
 import com.savvasdalkitsis.gameframe.feature.gameframe.api.GameFrameApi
 import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGameFrameException
+import com.savvasdalkitsis.gameframe.feature.gameframe.model.GameFrameCommandError
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpNotFoundException
-import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
-import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BmpUseCase
-import com.savvasdalkitsis.gameframe.feature.gameframe.model.GameFrameCommandError
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
+import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
 import com.savvasdalkitsis.gameframe.feature.wifi.model.WifiNotEnabledException
 import com.savvasdalkitsis.gameframe.feature.wifi.usecase.WifiUseCase
@@ -44,7 +42,6 @@ import java.io.IOException
 import java.util.Collections.singletonMap
 
 class GameFrameUseCase(private val okHttpClient: OkHttpClient,
-                       private val wifiManager: WifiManager,
                        private val gameFrameApi: GameFrameApi,
                        private val ipDiscoveryUseCase: IpDiscoveryUseCase,
                        private val fileUseCase: FileUseCase,
@@ -70,7 +67,7 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
 
     fun removeFolder(name: String) = issueCommand("rmdir", name)
 
-    fun discoverGameFrameIp(): Single<IpAddress> = Single.defer(this::deviceIp)
+    fun discoverGameFrameIp(): Single<IpAddress> = wifiUseCase.getDeviceIp()
             .flattenAsFlowable(wholePart4Subrange())
             .concatMap { ip ->
                 ipDiscoveryUseCase.emitMonitoredAddress(ip)
@@ -119,12 +116,6 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
     private fun play(name: String) = issueCommand("play", name)
     private fun wholePart4Subrange() = { ip: IpAddress ->
         (0..255).map { it.toString() }.map { ip.copy(part4 = it) }
-    }
-
-    @Suppress("DEPRECATION")
-    private fun deviceIp(): Single<IpAddress> {
-        val ip = Formatter.formatIpAddress(wifiManager.connectionInfo.ipAddress)
-        return Single.defer { Single.just(IpAddress.parse(ip)) }
     }
 
     private fun isFromGameFrame(response: Response) =
