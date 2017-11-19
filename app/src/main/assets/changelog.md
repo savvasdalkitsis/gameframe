@@ -14,6 +14,7 @@ body {
 
 * Added Android Wear support
 * Add feedback functionality
+* Support for adaptive and round icons
 
 #### v1.2
 ##### 12 Nov 2017
