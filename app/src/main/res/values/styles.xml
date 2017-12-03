@@ -9,7 +9,7 @@
         <item name="android:buttonStyle">@style/AppTheme.ButtonStyle</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:navigationBarColor" tools:targetApi="21">@color/colorPrimaryDark</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
