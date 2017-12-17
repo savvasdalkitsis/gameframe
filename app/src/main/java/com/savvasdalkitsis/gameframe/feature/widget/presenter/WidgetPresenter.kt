@@ -18,6 +18,7 @@ package com.savvasdalkitsis.gameframe.feature.widget.presenter
 
 import android.util.Log
 import com.savvasdalkitsis.gameframe.base.BasePresenter
+import com.savvasdalkitsis.gameframe.base.plusAssign
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
@@ -36,8 +37,8 @@ class WidgetPresenter(private val gameFrameUseCase: GameFrameUseCase,
 
     fun power() = perform(gameFrameUseCase.togglePower())
 
-    private fun perform(operation: Completable) = stream {
-        ipRepository.ipAddress
+    private fun perform(operation: Completable) {
+        managedStreams += ipRepository.ipAddress
                 .doOnError {
                     Log.e(PowerTileService::class.java.name, "IP address not found", it)
                     navigator.navigateToIpSetup()

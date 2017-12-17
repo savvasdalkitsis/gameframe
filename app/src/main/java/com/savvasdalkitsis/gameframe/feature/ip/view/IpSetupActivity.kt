@@ -18,7 +18,7 @@ package com.savvasdalkitsis.gameframe.feature.ip.view
 
 import android.os.Bundle
 import android.util.Log
-import android.view.MenuItem
+import android.view.Menu
 import android.view.View
 import android.view.ViewPropertyAnimator
 import butterknife.OnClick
@@ -35,9 +35,7 @@ class IpSetupActivity : BaseActivity<IpSetupView, IpSetupPresenter>(), IpSetupVi
 
     override val presenter = ipSetupPresenter()
     override val view = this
-
-    override val layoutId: Int
-        get() = R.layout.activity_ip_setup
+    override val layoutId = R.layout.activity_ip_setup
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,14 +60,9 @@ class IpSetupActivity : BaseActivity<IpSetupView, IpSetupPresenter>(), IpSetupVi
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                return true
-            }
-        }
-        return false
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_setup_ip, menu)
+        return true
     }
 
     override fun displayIpAddress(ipAddress: IpAddress) {

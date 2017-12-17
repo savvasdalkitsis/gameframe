@@ -59,6 +59,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:label="@string/account"
+            android:name=".feature.account.view.AccountActivity" />
+
         <service
             android:name=".feature.widget.view.PowerTileService"
             android:icon="@drawable/ic_block_power"

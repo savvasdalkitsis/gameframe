@@ -16,6 +16,7 @@
  */
 package com.savvasdalkitsis.gameframe.injector.usecase
 
+import com.savvasdalkitsis.gameframe.feature.account.usecase.FirebaseAuthenticationCase
 import com.savvasdalkitsis.gameframe.feature.bmp.usecase.AndroidViewBitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
@@ -29,6 +30,7 @@ import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
 import com.savvasdalkitsis.gameframe.injector.ApplicationInjector.application
 import com.savvasdalkitsis.gameframe.injector.feature.gameframe.api.GameFrameApiInjector.gameFrameApi
 import com.savvasdalkitsis.gameframe.injector.feature.ip.repository.IpRepositoryInjector.ipRepository
+import com.savvasdalkitsis.gameframe.injector.infra.TopActivityProviderInjector.topActivityProvider
 import com.savvasdalkitsis.gameframe.injector.infra.android.AndroidInjector.wifiManager
 import com.savvasdalkitsis.gameframe.injector.infra.network.OkHttpClientInjector.okHttpClient
 import com.savvasdalkitsis.gameframe.injector.infra.parsing.GsonInjector.gson
@@ -65,4 +67,6 @@ object UseCaseInjector {
     fun changeLogUseCase() = ChangeLogUseCase(rxSharedPreferences())
 
     fun wifiUseCase() = WifiUseCase(wifiManager())
+
+    fun authenticationUseCase() = FirebaseAuthenticationCase(topActivityProvider())
 }

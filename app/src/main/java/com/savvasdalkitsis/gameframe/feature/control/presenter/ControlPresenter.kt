@@ -24,6 +24,7 @@ import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import com.savvasdalkitsis.gameframe.base.BasePresenter
+import com.savvasdalkitsis.gameframe.base.plusAssign
 import com.savvasdalkitsis.gameframe.feature.wifi.model.WifiNotEnabledException
 import com.savvasdalkitsis.gameframe.feature.wifi.usecase.WifiUseCase
 import io.reactivex.Completable
@@ -33,8 +34,8 @@ class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase,
                        private val navigator: Navigator,
                        private val wifiUseCase: WifiUseCase): BasePresenter<ControlView>() {
 
-    fun loadIpAddress() = stream {
-        ipRepository.ipAddress
+    fun loadIpAddress() {
+        managedStreams += ipRepository.ipAddress
                 .compose<IpAddress>(RxTransformers.schedulers<IpAddress>())
                 .subscribe({ view?.ipAddressLoaded(it) }, { view?.ipCouldNotBeFound(it) })
     }
@@ -61,8 +62,8 @@ class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase,
             command.compose(RxTransformers.interceptIpMissingException())
                     .compose(RxTransformers.schedulers())
 
-    private fun runCommandAndNotifyView(command: Completable) = stream {
-        runCommand(command).subscribe({ view?.operationSuccess() }, { e ->
+    private fun runCommandAndNotifyView(command: Completable) {
+        managedStreams += runCommand(command).subscribe({ view?.operationSuccess() }, { e ->
             when (e) {
                 is WifiNotEnabledException -> view?.wifiNotEnabledError(e)
                 else -> view?.operationFailure(e)
@@ -70,8 +71,8 @@ class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase,
         })
     }
 
-    private fun runCommandAndIgnoreResult(command: Completable) = stream {
-        runCommand(command).subscribe({ }, { })
+    private fun runCommandAndIgnoreResult(command: Completable) {
+        managedStreams += runCommand(command).subscribe({ }, { })
     }
 
     fun enableWifi() {

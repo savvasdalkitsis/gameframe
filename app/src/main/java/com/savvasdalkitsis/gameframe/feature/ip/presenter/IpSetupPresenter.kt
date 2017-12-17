@@ -17,6 +17,7 @@
 package com.savvasdalkitsis.gameframe.feature.ip.presenter
 
 import com.savvasdalkitsis.gameframe.base.BasePresenter
+import com.savvasdalkitsis.gameframe.base.plusAssign
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
@@ -32,11 +33,9 @@ class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,
     
     fun start() {
         loadStoredIp()
-        stream {
-            wifiUseCase.isWifiEnabled()
-                    .filter { !it }
-                    .subscribe( { view?.displayWifiNotEnabled() } )
-        }
+        managedStreams += wifiUseCase.isWifiEnabled()
+                .filter { !it }
+                .subscribe( { view?.displayWifiNotEnabled() } )
     }
 
     fun setup(ipAddress: IpAddress) {
@@ -46,23 +45,19 @@ class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,
 
     fun discoverIp() {
         view?.displayDiscovering()
-        stream {
-            ipDiscoveryUseCase.monitoredIps()
-                    .compose(RxTransformers.schedulersFlowable())
-                    .subscribe( { view?.tryingAddress(it) }, { })
-        }
-        stream {
-            gameFrameUseCase.discoverGameFrameIp()
-                    .compose(RxTransformers.schedulers<IpAddress>())
-                    .doOnSuccess { view?.displayIdleView() }
-                    .subscribe(
-                            { view?.ipAddressDiscovered(it) },
-                            { throwable ->
-                                view?.errorDiscoveringIpAddress(throwable)
-                                loadStoredIp()
-                            }
-                    )
-        }
+        managedStreams += ipDiscoveryUseCase.monitoredIps()
+                .compose(RxTransformers.schedulersFlowable())
+                .subscribe( { view?.tryingAddress(it) }, { })
+        managedStreams += gameFrameUseCase.discoverGameFrameIp()
+                .compose(RxTransformers.schedulers<IpAddress>())
+                .doOnSuccess { view?.displayIdleView() }
+                .subscribe(
+                        { view?.ipAddressDiscovered(it) },
+                        { throwable ->
+                            view?.errorDiscoveringIpAddress(throwable)
+                            loadStoredIp()
+                        }
+                )
     }
 
     fun cancelDiscover() {
@@ -72,13 +67,11 @@ class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,
 
     private fun loadStoredIp() {
         view?.displayIdleView()
-        stream {
-            ipRepository.ipAddress
-                    .subscribe(
-                            { view?.displayIpAddress(it) },
-                            { view?.displayIpAddress(IpAddress()) }
-                    )
-        }
+        managedStreams += ipRepository.ipAddress
+                .subscribe(
+                        { view?.displayIpAddress(it) },
+                        { view?.displayIpAddress(IpAddress()) }
+                )
     }
 
     fun enableWifi() {

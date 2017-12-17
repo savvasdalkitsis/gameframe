@@ -22,10 +22,12 @@ import android.support.v7.app.AppCompatActivity
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
+import android.view.MenuItem
 import butterknife.ButterKnife
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.base.BasePresenter
 import com.savvasdalkitsis.gameframe.base.BaseView
+import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 abstract class BaseActivity<V: BaseView, out P: BasePresenter<V>> : AppCompatActivity() {
@@ -33,6 +35,8 @@ abstract class BaseActivity<V: BaseView, out P: BasePresenter<V>> : AppCompatAct
     abstract val layoutId: Int
     abstract val presenter: P
     abstract val view: V
+
+    private val navigator = NavigatorInjector.navigator()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +57,20 @@ abstract class BaseActivity<V: BaseView, out P: BasePresenter<V>> : AppCompatAct
     override fun onStart() {
         super.onStart()
         presenter.bindView(view)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                true
+            }
+            R.id.action_feedback -> {
+                navigator.navigateToFeedback()
+                true
+            }
+            else -> false
+        }
     }
 
     override fun onStop() {

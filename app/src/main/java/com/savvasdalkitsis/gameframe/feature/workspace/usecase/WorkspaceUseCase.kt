@@ -42,9 +42,9 @@ class WorkspaceUseCase(private val gson: Gson,
 
     fun load(name: String): Single<WorkspaceModel> =
             fileUseCase.readFile(SAVED_PROJECTS_DIR, withExtension(name))
-                    .map(this::reusable)
-                    .flatMap(this::versionCheck)
-                    .map(this::deserializeWorkspace)
+                    .map(::reusable)
+                    .flatMap(::versionCheck)
+                    .map(::deserializeWorkspace)
 
     fun deleteProject(name: String): Completable = fileUseCase.deleteFile(SAVED_PROJECTS_DIR, withExtension(name))
 

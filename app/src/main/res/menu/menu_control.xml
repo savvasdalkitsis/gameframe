@@ -10,8 +10,15 @@
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/action_feedback"
+        android:id="@+id/action_account"
         android:orderInCategory="4"
+        android:icon="@drawable/ic_account_circle_white_48px"
+        android:title="@string/account"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_feedback"
+        android:orderInCategory="5"
         android:icon="@drawable/ic_feedback_white_48px"
         android:title="@string/feedback"
         app:showAsAction="ifRoom"/>

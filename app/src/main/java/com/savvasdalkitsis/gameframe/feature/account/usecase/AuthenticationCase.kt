@@ -14,31 +14,16 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.base
+package com.savvasdalkitsis.gameframe.feature.account.usecase
 
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import com.savvasdalkitsis.gameframe.feature.account.model.Account
+import io.reactivex.Flowable
 
-open class BasePresenter<V: BaseView> {
+interface AuthenticationCase<in AuthenticationData> {
 
-    protected var view: V? = null
-    protected val managedStreams = CompositeDisposable()
-
-    fun bindView(view: V) {
-        this.view = view
-    }
-
-    fun stop() {
-        view = null
-        clearStreams()
-    }
-
-    protected fun clearStreams() {
-        managedStreams.clear()
-    }
-
-}
-
-operator fun CompositeDisposable.plusAssign(disposable: Disposable) {
-    add(disposable)
+    fun accountState(): Flowable<Account>
+    fun signIn()
+    fun signOut()
+    fun deleteAccount()
+    fun handleResult(requestCode: Int, resultCode: Int, authenticationData: AuthenticationData?)
 }

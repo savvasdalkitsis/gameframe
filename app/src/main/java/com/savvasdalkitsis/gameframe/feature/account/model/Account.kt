@@ -14,31 +14,12 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.base
+package com.savvasdalkitsis.gameframe.feature.account.model
 
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
+import android.net.Uri
 
-open class BasePresenter<V: BaseView> {
+sealed class Account
 
-    protected var view: V? = null
-    protected val managedStreams = CompositeDisposable()
-
-    fun bindView(view: V) {
-        this.view = view
-    }
-
-    fun stop() {
-        view = null
-        clearStreams()
-    }
-
-    protected fun clearStreams() {
-        managedStreams.clear()
-    }
-
-}
-
-operator fun CompositeDisposable.plusAssign(disposable: Disposable) {
-    add(disposable)
-}
+data class SignedInAccount(val name: String?, val image: Uri?): Account()
+class SignedOutAccount: Account()
+class AccountStateError: Account()

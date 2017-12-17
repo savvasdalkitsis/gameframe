@@ -25,4 +25,5 @@ interface Navigator {
     fun navigateToPlayStore()
     fun navigateToShareImageFile(file: File, name: String): Completable
     fun navigateToFeedback()
+    fun navigateToAccount()
 }

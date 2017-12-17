@@ -26,16 +26,18 @@ import android.util.Log
 import android.widget.Toast
 import com.savvasdalkitsis.gameframe.GameFrameApplication
 import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.feature.account.view.AccountActivity
 import com.savvasdalkitsis.gameframe.feature.ip.view.IpSetupActivity
 import com.savvasdalkitsis.gameframe.infra.TopActivityProvider
 import io.reactivex.Completable
 import org.rm3l.maoni.Maoni
 import java.io.File
+import kotlin.reflect.KClass
 
 class ApplicationNavigator(private val topActivityProvider: TopActivityProvider, private val application: GameFrameApplication) : Navigator {
 
     override fun navigateToIpSetup() {
-        context.startActivity(wrap(intentForClass()))
+        context.startActivity(wrap(intentForClass(IpSetupActivity::class)))
     }
 
     override fun navigateToPlayStore() {
@@ -76,9 +78,13 @@ class ApplicationNavigator(private val topActivityProvider: TopActivityProvider,
         }
     }
 
+    override fun navigateToAccount() {
+        context.startActivity(wrap(intentForClass(AccountActivity::class)))
+    }
+
     private fun intentForUrl(uri: String) = wrap(Intent(Intent.ACTION_VIEW, Uri.parse(uri)))
 
-    private fun intentForClass() = Intent(context, IpSetupActivity::class.java)
+    private fun <T : Activity> intentForClass(clazz: KClass<T>) = Intent(context, clazz.java)
 
     private fun wrap(intent: Intent) = intent.apply {
         val context = context

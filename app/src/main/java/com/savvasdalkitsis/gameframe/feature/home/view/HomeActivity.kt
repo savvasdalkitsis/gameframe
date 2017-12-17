@@ -42,7 +42,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), ColorChooserDialog
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        bottom_navigation.setOnNavigationItemSelectedListener(this::onOptionsItemSelected)
+        bottom_navigation.setOnNavigationItemSelectedListener(::onOptionsItemSelected)
         notifyFragmentSelected(R.id.fragment_manage)
         val actionBar = supportActionBar
         actionBar?.run {
@@ -64,33 +64,35 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), ColorChooserDialog
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        if (super.onOptionsItemSelected(item)) return true
+        return when (item.itemId) {
             R.id.action_setup_ip -> {
                 navigator.navigateToIpSetup()
                 notifyAllFragmentsUnselected()
-                return true
+                true
             }
-            R.id.action_feedback -> {
-                navigator.navigateToFeedback()
+            R.id.action_account -> {
+                navigator.navigateToAccount()
+                true
             }
             R.id.action_manage -> {
                 if (fragment_switcher.displayedChild != 0) {
                     fragment_switcher.displayedChild = 0
                     notifyFragmentUnselected(R.id.fragment_workspace)
                     notifyFragmentSelected(R.id.fragment_manage)
-                    return true
                 }
+                true
             }
             R.id.action_draw -> {
                 if (fragment_switcher.displayedChild != 1) {
                     fragment_switcher.displayedChild = 1
                     notifyFragmentUnselected(R.id.fragment_manage)
                     notifyFragmentSelected(R.id.fragment_workspace)
-                    return true
                 }
+                true
             }
+            else -> false
         }
-        return false
     }
 
     @SuppressLint("RestrictedApi")

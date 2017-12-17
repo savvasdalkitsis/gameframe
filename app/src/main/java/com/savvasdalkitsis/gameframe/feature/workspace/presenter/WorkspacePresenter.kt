@@ -18,6 +18,7 @@ package com.savvasdalkitsis.gameframe.feature.workspace.presenter
 
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.base.BasePresenter
+import com.savvasdalkitsis.gameframe.base.plusAssign
 import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGameFrameException
@@ -75,15 +76,13 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
     fun bindGrid(gridDisplay: GridDisplay) {
         this.gridDisplay = gridDisplay
         view?.observe(history)
-        stream {
-            history.observe()
-                    .subscribeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        render(it.layers)
-                        view?.bindPalette(it.selectedPalette)
-                        displayProjectName()
-                    }
-        }
+        managedStreams += history.observe()
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    render(it.layers)
+                    view?.bindPalette(it.selectedPalette)
+                    displayProjectName()
+                }
     }
 
     fun saveWorkspace(successAction: Action? = null) {
@@ -91,17 +90,15 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
         project.name?.let { tempName = it }
         tempName?.let { name ->
             tempName = null
-            stream {
-                workspaceUseCase.saveProject(name, present)
-                        .compose(RxTransformers.schedulers<File>())
-                        .subscribe(
-                                {
-                                    projectChangedSuccessfully(name)
-                                    successAction?.invoke()
-                                },
-                                projectSaveFailed()
-                        )
-            }
+            managedStreams += workspaceUseCase.saveProject(name, present)
+                    .compose(RxTransformers.schedulers<File>())
+                    .subscribe(
+                            {
+                                projectChangedSuccessfully(name)
+                                successAction?.invoke()
+                            },
+                            projectSaveFailed()
+                    )
         } ?: view?.askForFileName(R.string.save, {
             tempName = it
             saveWorkspace(successAction)
@@ -112,46 +109,42 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
 
     fun loadProject(name: String? = null) {
         view?.displayProgress()
-        stream {
-            when {
-                name != null -> workspaceUseCase.load(name)
-                        .compose(RxTransformers.schedulers<WorkspaceModel>())
-                        .subscribe(projectLoaded(name), {
-                            view?.operationFailed(it)
-                            if (it is UnsupportedProjectVersionException) {
-                                view?.displayUnsupportedVersion()
-                            }
-                        })
-                else -> workspaceUseCase.savedProjects()
-                        .compose(RxTransformers.schedulers<List<String>>())
-                        .subscribe(savedProjectsLoaded {
-                            view?.stopProgress()
-                            view?.askForProjectToLoad(it)
-                        }, {
-                            view?.operationFailed(it)
-                        })
-            }
+        managedStreams += when (name) {
+            null -> workspaceUseCase.savedProjects()
+                    .compose(RxTransformers.schedulers<List<String>>())
+                    .subscribe(savedProjectsLoaded {
+                        view?.stopProgress()
+                        view?.askForProjectToLoad(it)
+                    }, {
+                        view?.operationFailed(it)
+                    })
+            else -> workspaceUseCase.load(name)
+                    .compose(RxTransformers.schedulers<WorkspaceModel>())
+                    .subscribe(projectLoaded(name), {
+                        view?.operationFailed(it)
+                        if (it is UnsupportedProjectVersionException) {
+                            view?.displayUnsupportedVersion()
+                        }
+                    })
         }
     }
 
     fun deleteProjects(names: List<String>? = null) {
         view?.displayProgress()
-        stream {
-            if (names?.isEmpty() == false) {
-                Flowable.fromIterable(names)
-                        .flatMapCompletable(workspaceUseCase::deleteProject)
-                        .compose(RxTransformers.schedulers())
-                        .subscribe(projectsDeleted(names), { view?.operationFailed(it) })
-            } else {
-                workspaceUseCase.savedProjects()
-                        .compose(RxTransformers.schedulers<List<String>>())
-                        .subscribe(savedProjectsLoaded {
-                            view?.stopProgress()
-                            view?.askForProjectsToDelete(it)
-                        }, {
-                            view?.operationFailed(it)
-                        })
-            }
+        managedStreams += if (names?.isEmpty() == false) {
+            Flowable.fromIterable(names)
+                    .flatMapCompletable(workspaceUseCase::deleteProject)
+                    .compose(RxTransformers.schedulers())
+                    .subscribe(projectsDeleted(names), { view?.operationFailed(it) })
+        } else {
+            workspaceUseCase.savedProjects()
+                    .compose(RxTransformers.schedulers<List<String>>())
+                    .subscribe(savedProjectsLoaded {
+                        view?.stopProgress()
+                        view?.askForProjectsToDelete(it)
+                    }, {
+                        view?.operationFailed(it)
+                    })
         }
     }
 
@@ -231,28 +224,24 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
     }
 
     fun prepareOptions(options: Options) {
-        stream {
-            history.hasPast()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { hasPast ->
-                        if (hasPast) {
-                            view?.enableUndo(options)
-                        } else {
-                            view?.disableUndo(options)
-                        }
+        managedStreams += history.hasPast()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { hasPast ->
+                    if (hasPast) {
+                        view?.enableUndo(options)
+                    } else {
+                        view?.disableUndo(options)
                     }
-        }
-        stream {
-            history.hasFuture()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { hasFuture ->
-                        if (hasFuture) {
-                            view?.enableRedo(options)
-                        } else {
-                            view?.disableRedo(options)
-                        }
+                }
+        managedStreams += history.hasFuture()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { hasFuture ->
+                    if (hasFuture) {
+                        view?.enableRedo(options)
+                    } else {
+                        view?.disableRedo(options)
                     }
-        }
+                }
         if (displayLayoutBorders) {
             view?.displayLayoutBordersEnabled(options)
         } else {
@@ -281,11 +270,9 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
 
     fun replaceDrawing(name: String, colorGrid: Grid) {
         view?.displayProgress()
-        stream {
-            gameFrameUseCase.removeFolder(name)
-                    .compose(RxTransformers.schedulers())
-                    .subscribe({ upload(colorGrid) }, { view?.operationFailed(it) })
-        }
+        managedStreams += gameFrameUseCase.removeFolder(name)
+                .compose(RxTransformers.schedulers())
+                .subscribe({ upload(colorGrid) }, { view?.operationFailed(it) })
     }
 
     fun upload(grid: Grid) {
@@ -293,7 +280,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
             saveWorkspace { upload(grid) }
         } else {
             val name = project.name as String
-            stream {
+            managedStreams +=
                 gameFrameUseCase.uploadAndDisplay(name, grid)
                         .compose(RxTransformers.schedulers())
                         .subscribe({ view?.showSuccess() }, { e -> when (e) {
@@ -302,10 +289,9 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
                                 view?.operationFailed(e)
                                 navigator.navigateToIpSetup()
                             }
-                            is WifiNotEnabledException -> view?.wifiNotEnabledError(e)
-                            else -> view?.operationFailed(e)
+                            is WifiNotEnabledException -> view?.wifiNotEnabledError(e)else -> view?.operationFailed(e)
                         } })
-            }
+
         }
     }
 
@@ -318,11 +304,9 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
             saveWorkspace { exportImage(bitmapSource) }
         } else {
             val name = project.name as String
-            stream {
-                bitmapFileUseCase.getFileFor(bitmapSource, name)
-                        .flatMapCompletable { navigator.navigateToShareImageFile(it, name) }
-                        .subscribe({}, { view?.operationFailed(it) })
-            }
+            managedStreams += bitmapFileUseCase.getFileFor(bitmapSource, name)
+                    .flatMapCompletable { navigator.navigateToShareImageFile(it, name) }
+                    .subscribe({}, { view?.operationFailed(it) })
         }
     }
 

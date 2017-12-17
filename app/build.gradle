@@ -24,6 +24,11 @@ android {
         versionCode app_version_code
         versionName app_version
         manifestPlaceholders = [fabric_api_key: FABRIC_API_KEY]
+        resValue "string", "facebook_application_id", FACEBOOK_APPLICATION_ID
+        resValue "string", "facebook_login_protocol_scheme", FACEBOOK_LOGIN_PROTOCOL_SCHEME
+        resValue "string", "twitter_consumer_key", TWITTER_CONSUMER_KEY
+        resValue "string", "twitter_consumer_secret", TWITTER_CONSUMER_SECRET
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -45,6 +50,10 @@ dependencies {
     wearApp project(':watch')
     implementation (
             "com.google.firebase:firebase-crash:$gms_version",
+            "com.google.firebase:firebase-auth:$firebase_version",
+            "com.google.android.gms:play-services-auth:$firebase_version",
+            "com.google.gms:google-services:$google_services_version",
+            "com.firebaseui:firebase-ui-auth:3.1.0",
             "com.android.support:appcompat-v7:$support_version",
             "com.android.support:design:$support_version",
             "com.android.support:cardview-v7:$support_version",
@@ -67,11 +76,17 @@ dependencies {
             "io.github.yavski:fab-speed-dial:$fab_speed_dial_version",
             "com.androidadvance:topsnackbar:$topsnackbar_version",
             "us.feras.mdv:markdownview:$markdownview_version",
+            "com.android.support:multidex:$multidex_version",
+            "com.facebook.fresco:fresco:$fresco_version",
+            "com.android.support.constraint:constraint-layout:$constraint_layout_version",
+            "com.jakewharton.rxbinding2:rxbinding-kotlin:$rx_binding_version"
     )
-    compile "com.google.firebase:firebase-perf:$gms_version"
-    compile ("org.rm3l:maoni:$maoni_version@aar") {
-        transitive = true
+    implementation ("com.facebook.android:facebook-android-sdk:4.27.0") {
+        exclude group: 'com.facebook.fresco', module: 'drawee'
     }
+    implementation("com.twitter.sdk.android:twitter-core:3.0.0@aar") { transitive = true }
+    compile "com.google.firebase:firebase-perf:$gms_version"
+    implementation ("org.rm3l:maoni:$maoni_version@aar") { transitive = true }
     kapt "com.jakewharton:butterknife-compiler:$butterknife_version"
 }
 

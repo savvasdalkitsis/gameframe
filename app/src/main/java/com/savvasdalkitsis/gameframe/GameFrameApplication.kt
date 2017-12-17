@@ -16,16 +16,13 @@
  */
 package com.savvasdalkitsis.gameframe
 
-import android.app.Application
-
-import com.savvasdalkitsis.gameframe.infra.ApplicationTopActivityProvider
+import android.support.multidex.MultiDexApplication
+import com.facebook.drawee.backends.pipeline.Fresco
 import com.savvasdalkitsis.gameframe.injector.ApplicationInjector
-
+import com.savvasdalkitsis.gameframe.injector.infra.TopActivityProviderInjector.applicationTopActivityProvider
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 
-import com.savvasdalkitsis.gameframe.injector.infra.TopActivityProviderInjector.applicationTopActivityProvider
-
-class GameFrameApplication : Application() {
+class GameFrameApplication : MultiDexApplication() {
 
     private val topActivityProvider = applicationTopActivityProvider()
 
@@ -36,6 +33,8 @@ class GameFrameApplication : Application() {
                 .setDefaultFontPath("fonts/PressStart2P.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build())
+        Fresco.initialize(this)
+
         registerActivityLifecycleCallbacks(topActivityProvider)
     }
 }
