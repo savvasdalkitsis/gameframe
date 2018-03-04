@@ -13,6 +13,7 @@ body {
 ##### ?
 
 * Added Android Wear support
+* Online sync functionality. You can now create an online account so you never lose your drawings
 * Add feedback functionality
 * Support for adaptive and round icons
 
