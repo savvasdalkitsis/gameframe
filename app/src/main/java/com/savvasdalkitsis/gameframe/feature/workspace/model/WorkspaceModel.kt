@@ -25,7 +25,6 @@ import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.element.palette.model.Palette
 import com.savvasdalkitsis.gameframe.feature.workspace.element.palette.model.Palettes
 
-
 class WorkspaceModel constructor(val layers: MomentList<Layer> = newLayers(),
                                  val palettes: MomentList<Palette> = newPalettes()) : Moment<WorkspaceModel> {
 

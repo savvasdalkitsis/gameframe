@@ -18,17 +18,14 @@ package com.savvasdalkitsis.gameframe.feature.account.view
 
 import com.savvasdalkitsis.gameframe.base.BaseView
 import com.savvasdalkitsis.gameframe.feature.account.model.SignedInAccount
-import io.reactivex.Observable
+import com.savvasdalkitsis.gameframe.infra.kotlin.Action
 
 interface AccountView : BaseView {
-
-    val logIn: Observable<Unit>
-    val logOut: Observable<Unit>
-    val deleteAccount: Observable<Unit>
 
     fun displayLoading()
     fun displaySignedInAccount(account: SignedInAccount)
     fun displaySignedOut()
     fun displayErrorLoadingAccount()
-    fun askUserToVerifyAccountDeletion(onVerified: () -> Unit)
+    fun askUserToVerifyAccountDeletion(onVerified: Action)
+    fun askUserToUploadSavedProjects(onUpload: Action)
 }

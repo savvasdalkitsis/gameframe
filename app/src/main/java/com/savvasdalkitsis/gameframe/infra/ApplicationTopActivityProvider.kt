@@ -24,24 +24,30 @@ import java.lang.ref.WeakReference
 
 class ApplicationTopActivityProvider : TopActivityProvider, Application.ActivityLifecycleCallbacks {
 
-    private var activity: WeakReference<Activity>? = null
+    private var activity: WeakReference<Activity?> = WeakReference(null)
 
     override val topActivity: Activity?
-        get() =  activity?.get()
+        get() =  activity.get()
 
     override fun onActivityStarted(activity: Activity) {
-        this.activity = WeakReference(activity)
+        keep(activity)
     }
 
     override fun onActivityStopped(activity: Activity) {}
 
     override fun onActivityCreated(activity: Activity, bundle: Bundle?) {}
 
-    override fun onActivityResumed(activity: Activity) {}
+    override fun onActivityResumed(activity: Activity) {
+        keep(activity)
+    }
 
     override fun onActivityPaused(activity: Activity) {}
 
     override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) {}
 
     override fun onActivityDestroyed(activity: Activity) {}
+
+    private fun keep(activity: Activity) {
+        this.activity = WeakReference(activity)
+    }
 }

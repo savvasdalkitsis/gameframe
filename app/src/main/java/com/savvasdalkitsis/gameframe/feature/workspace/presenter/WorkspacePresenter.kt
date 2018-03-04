@@ -45,8 +45,7 @@ import com.savvasdalkitsis.gameframe.infra.kotlin.or
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import java.io.File
-
+import io.reactivex.disposables.CompositeDisposable
 
 class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase: GameFrameUseCase,
                                                    private val blendUseCase: BlendUseCase,
@@ -72,11 +71,12 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
     private var savedState: WorkspaceModel? = present
     private val modified
         get() = present != savedState
+    private val historyStream = CompositeDisposable()
 
     fun bindGrid(gridDisplay: GridDisplay) {
         this.gridDisplay = gridDisplay
         view?.observe(history)
-        managedStreams += history.observe()
+        historyStream += history.observe()
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     render(it.layers)
@@ -91,7 +91,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
         tempName?.let { name ->
             tempName = null
             managedStreams += workspaceUseCase.saveProject(name, present)
-                    .compose(RxTransformers.schedulers<File>())
+                    .compose(RxTransformers.schedulers())
                     .subscribe(
                             {
                                 projectChangedSuccessfully(name)
@@ -110,7 +110,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
     fun loadProject(name: String? = null) {
         view?.displayProgress()
         managedStreams += when (name) {
-            null -> workspaceUseCase.savedProjects()
+            null -> workspaceUseCase.savedProjectNames()
                     .compose(RxTransformers.schedulers<List<String>>())
                     .subscribe(savedProjectsLoaded {
                         view?.stopProgress()
@@ -137,7 +137,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
                     .compose(RxTransformers.schedulers())
                     .subscribe(projectsDeleted(names), { view?.operationFailed(it) })
         } else {
-            workspaceUseCase.savedProjects()
+            workspaceUseCase.savedProjectNames()
                     .compose(RxTransformers.schedulers<List<String>>())
                     .subscribe(savedProjectsLoaded {
                         view?.stopProgress()
@@ -329,5 +329,9 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
 
     fun enableWifi() {
         wifiUseCase.enableWifi()
+    }
+
+    fun paused() {
+        historyStream.clear()
     }
 }

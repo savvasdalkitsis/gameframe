@@ -14,20 +14,6 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.workspace.element.palette.model
+package com.savvasdalkitsis.gameframe.feature.storage.model
 
-import com.savvasdalkitsis.gameframe.feature.history.model.Moment
-
-data class Palette(
-        var title: String,
-        var isSelected: Boolean = false,
-        val colors: MutableList<Int>) : Moment<Palette> {
-
-    fun changeColor(index: Int, color: Int) {
-        colors[index] = color
-    }
-
-    override fun replicateMoment() = this.copy(colors = colors.toMutableList())
-
-    override fun isIdenticalTo(moment: Palette) = this == moment
-}
+class FileAlreadyExistsException(msg: String) : Exception(msg)

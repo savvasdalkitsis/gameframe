@@ -14,17 +14,17 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.saves.usecase
+package com.savvasdalkitsis.gameframe.feature.storage.usecase
 
 import com.savvasdalkitsis.gameframe.GameFrameApplication
-import com.savvasdalkitsis.gameframe.feature.saves.model.FileAlreadyExistsException
+import com.savvasdalkitsis.gameframe.feature.storage.model.FileAlreadyExistsException
 import com.savvasdalkitsis.gameframe.infra.kotlin.InputStreamProvider
 import io.reactivex.Completable
 import io.reactivex.Single
 import org.apache.commons.io.FileUtils
 import java.io.*
 
-class FileUseCase(private val application: GameFrameApplication) {
+class LocalStorageUseCase(private val application: GameFrameApplication) {
 
     fun saveFile(dirName: String, fileName: String,
                  fileContentsProvider: InputStreamProvider,

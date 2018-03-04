@@ -14,6 +14,17 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.saves.model
+package com.savvasdalkitsis.gameframe.feature.workspace.storage
 
-class FileAlreadyExistsException(msg: String) : Exception(msg)
+import com.savvasdalkitsis.gameframe.feature.workspace.model.SaveContainer
+import io.reactivex.Completable
+import io.reactivex.Single
+import java.io.Reader
+
+interface WorkspaceStorage {
+
+    fun saveWorkspace(name: String, workspaceModel: SaveContainer): Completable
+    fun listProjectNames(): Single<List<String>>
+    fun readWorkspace(name: String): Single<Reader>
+    fun deleteWorkspace(name: String): Completable
+}

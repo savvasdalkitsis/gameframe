@@ -27,7 +27,7 @@ import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpNotFoundException
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
-import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
+import com.savvasdalkitsis.gameframe.feature.storage.usecase.LocalStorageUseCase
 import com.savvasdalkitsis.gameframe.feature.wifi.model.WifiNotEnabledException
 import com.savvasdalkitsis.gameframe.feature.wifi.usecase.WifiUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
@@ -44,7 +44,7 @@ import java.util.Collections.singletonMap
 class GameFrameUseCase(private val okHttpClient: OkHttpClient,
                        private val gameFrameApi: GameFrameApi,
                        private val ipDiscoveryUseCase: IpDiscoveryUseCase,
-                       private val fileUseCase: FileUseCase,
+                       private val localStorageUseCase: LocalStorageUseCase,
                        private val bmpUseCase: BmpUseCase,
                        private val ipRepository: IpRepository,
                        private val wifiUseCase: WifiUseCase) {
@@ -85,7 +85,7 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
             .onErrorResumeNext { e -> Single.error<IpAddress>(IpNotFoundException("Game Frame IP not found", e)) }
 
     fun uploadAndDisplay(name: String, colorGrid: Grid): Completable =
-            fileUseCase.saveFile(dirName = "bmp/$name", fileName = "0.bmp",
+            localStorageUseCase.saveFile(dirName = "bmp/$name", fileName = "0.bmp",
                     fileContentsProvider = { bmpUseCase.rasterizeToBmp(colorGrid) },
                     overwriteFile = true)
                     .flatMap<File> { file -> createFolder(name).toSingleDefault<File>(file) }

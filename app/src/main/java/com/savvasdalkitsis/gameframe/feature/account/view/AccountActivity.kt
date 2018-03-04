@@ -21,11 +21,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
-import com.jakewharton.rxbinding2.view.clicks
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.account.model.SignedInAccount
 import com.savvasdalkitsis.gameframe.feature.account.presenter.AccountPresenter
 import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
+import com.savvasdalkitsis.gameframe.infra.kotlin.Action
 import com.savvasdalkitsis.gameframe.infra.kotlin.gone
 import com.savvasdalkitsis.gameframe.infra.kotlin.visible
 import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector
@@ -40,15 +40,15 @@ class AccountActivity : BaseActivity<AccountView, AccountPresenter<Intent>>(), A
     override val presenter: AccountPresenter<Intent> = PresenterInjector.accountPresenter()
     override val view = this
 
-    override val logIn get() = view_account_log_in.clicks()
-    override val logOut get() = view_account_log_out.clicks()
-    override val deleteAccount get() = view_account_delete_account.clicks()
-
     private val messageDisplay = MessageDisplayInjector.messageDisplay()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        view_account_log_in.setOnClickListener { presenter.logIn() }
+        view_account_log_out.setOnClickListener { presenter.logOut() }
+        view_account_re_upload.setOnClickListener { presenter.reUpload() }
+        view_account_delete_account.setOnClickListener { presenter.deleteAccount() }
     }
 
     public override fun onStart() {
@@ -89,6 +89,16 @@ class AccountActivity : BaseActivity<AccountView, AccountPresenter<Intent>>(), A
                 .positiveText(R.string.delete)
                 .negativeText(R.string.cancel)
                 .onPositive { _, _ -> onVerified() }
+                .show()
+    }
+
+    override fun askUserToUploadSavedProjects(onUpload: Action) {
+        MaterialDialog.Builder(this)
+                .title(R.string.upload_saved_projects)
+                .content(R.string.upload_saved_projects_description)
+                .positiveText(R.string.upload)
+                .negativeText(R.string.skip)
+                .onPositive { _, _ -> onUpload() }
                 .show()
     }
 

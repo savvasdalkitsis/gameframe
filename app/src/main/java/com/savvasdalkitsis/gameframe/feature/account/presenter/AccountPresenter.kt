@@ -17,53 +17,98 @@
 package com.savvasdalkitsis.gameframe.feature.account.presenter
 
 import android.util.Log
+import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.base.BasePresenter
 import com.savvasdalkitsis.gameframe.base.plusAssign
 import com.savvasdalkitsis.gameframe.feature.account.model.Account
 import com.savvasdalkitsis.gameframe.feature.account.model.SignedInAccount
-import com.savvasdalkitsis.gameframe.feature.account.usecase.AuthenticationCase
+import com.savvasdalkitsis.gameframe.feature.account.usecase.AuthenticationUseCase
 import com.savvasdalkitsis.gameframe.feature.account.view.AccountView
+import com.savvasdalkitsis.gameframe.feature.message.MessageDisplay
+import com.savvasdalkitsis.gameframe.feature.workspace.model.SaveContainer
+import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceItem
+import com.savvasdalkitsis.gameframe.feature.workspace.storage.WorkspaceStorage
+import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import java.util.concurrent.TimeUnit
 
-class AccountPresenter<in AuthenticationData>(private val authenticationCase: AuthenticationCase<AuthenticationData>) : BasePresenter<AccountView>() {
+private val TAG = AccountPresenter<*>::javaClass.name
+
+class AccountPresenter<in AuthenticationData>(private val authenticationUseCase: AuthenticationUseCase<AuthenticationData>,
+                                              private val workspaceUseCase: WorkspaceUseCase,
+                                              private val remoteWorkspaceStorage: WorkspaceStorage,
+                                              private val messageDisplay: MessageDisplay) : BasePresenter<AccountView>() {
 
     fun start() {
         view?.displayLoading()
-        view?.let { bindEvents(it) }
-        managedStreams += authenticationCase.accountState()
+        managedStreams += authenticationUseCase.accountState()
                 .compose(RxTransformers.schedulersFlowable<Account>())
                 .subscribe(::accountRetrieved, ::accountRetrieveFailed)
     }
 
-    private fun bindEvents(view: AccountView) {
-        managedStreams += view.logIn.apply(::throttle).subscribe { authenticationCase.signIn() }
-        managedStreams += view.logOut.apply(::throttle).subscribe { authenticationCase.signOut() }
-        managedStreams += view.deleteAccount.apply(::throttle).subscribe {
-            view.askUserToVerifyAccountDeletion {
-                authenticationCase.deleteAccount()
-            }
+    fun logIn() {
+        authenticationUseCase.signIn()
+    }
+
+    fun logOut() {
+        authenticationUseCase.signOut()
+    }
+
+    fun reUpload() {
+        uploadLocallySavedProjects()
+    }
+
+    fun deleteAccount() {
+        view?.askUserToVerifyAccountDeletion {
+            authenticationUseCase.deleteAccount()
         }
     }
 
     private fun accountRetrieved(account: Account) {
         when (account) {
-            is SignedInAccount -> view?.displaySignedInAccount(account)
+            is SignedInAccount -> {
+                view?.displaySignedInAccount(account)
+                uploadLocallySavedProjects()
+            }
             else -> view?.displaySignedOut()
         }
     }
 
     private fun accountRetrieveFailed(error: Throwable) {
-        Log.w(AccountPresenter<*>::javaClass.name, "Could not load account details", error)
+        Log.w(TAG, "Could not load account details", error)
         view?.displayErrorLoadingAccount()
     }
 
-    fun handleResultForLoginRequest(requestCode: Int, resultCode: Int, authenticationData: AuthenticationData?) {
-        authenticationCase.handleResult(requestCode, resultCode, authenticationData)
+    private fun uploadLocallySavedProjects() {
+        workspaceUseCase.locallySavedProjects()
+                .compose(RxTransformers.schedulers<List<WorkspaceItem>>())
+                .subscribe(::savedProjectsLoaded, {})
     }
 
-    private fun throttle(stream: Observable<Unit>) {
-        stream.throttleFirst(200, TimeUnit.MILLISECONDS)
+    private fun savedProjectsLoaded(projects: List<WorkspaceItem>) {
+        if (!projects.isEmpty()) {
+            view?.askUserToUploadSavedProjects {
+                messageDisplay.show(R.string.projects_upload_started)
+                Flowable.fromIterable(projects)
+                        .flatMapCompletable { (name, model) ->
+                            remoteWorkspaceStorage.saveWorkspace(name, SaveContainer(model))
+                        }
+                        .compose(RxTransformers.schedulers())
+                        .subscribe({
+                            messageDisplay.show(R.string.projects_upload_finished)
+                        }, {
+                            Log.w(TAG, "Failed to upload some projects", it)
+                            messageDisplay.show(R.string.projects_failed_to_upload)
+                        })
+            }
+        } else {
+            messageDisplay.show(R.string.no_projects_to_upload)
+        }
+    }
+
+    fun handleResultForLoginRequest(requestCode: Int, resultCode: Int, authenticationData: AuthenticationData?) {
+        authenticationUseCase.handleResult(requestCode, resultCode, authenticationData)
     }
 }

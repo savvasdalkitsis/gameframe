@@ -20,6 +20,6 @@ import android.net.Uri
 
 sealed class Account
 
-data class SignedInAccount(val name: String?, val image: Uri?): Account()
+data class SignedInAccount(val name: String?, val id: String, val image: Uri?): Account()
 class SignedOutAccount: Account()
 class AccountStateError: Account()

@@ -17,36 +17,44 @@
 package com.savvasdalkitsis.gameframe.feature.workspace.usecase
 
 import com.google.gson.Gson
-import com.savvasdalkitsis.gameframe.feature.saves.usecase.FileUseCase
-import com.savvasdalkitsis.gameframe.feature.workspace.model.SaveContainer
-import com.savvasdalkitsis.gameframe.feature.workspace.model.VersionContainer
-import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
+import com.savvasdalkitsis.gameframe.feature.workspace.model.*
+import com.savvasdalkitsis.gameframe.feature.workspace.storage.WorkspaceStorage
 import io.reactivex.Completable
+import io.reactivex.Flowable
 import io.reactivex.Single
-import java.io.*
+import java.io.Reader
+import java.io.StringReader
 import kotlin.reflect.KClass
-import com.savvasdalkitsis.gameframe.feature.workspace.model.CURRENT_VERSION
 
 class WorkspaceUseCase(private val gson: Gson,
-                       private val fileUseCase: FileUseCase) {
+                       private val workspaceStorage: WorkspaceStorage,
+                       private val localWorkspaceStorage: WorkspaceStorage) {
 
     fun saveProject(name: String, workspaceModel: WorkspaceModel) =
-            fileUseCase.saveFile(SAVED_PROJECTS_DIR, withExtension(name), { serialize(workspaceModel) }, true)
+            workspaceStorage.saveWorkspace(name, SaveContainer(workspaceModel))
 
-    fun savedProjects(): Single<List<String>> = fileUseCase.listFilesIn(SAVED_PROJECTS_DIR)
-            .flattenAsFlowable { it }
-            .map { it.name }
-            .filter { it.endsWith(SAVED_EXTENSION) }
-            .map { it.removeSuffix(SAVED_EXTENSION) }
+    fun savedProjectNames(): Single<List<String>> = workspaceStorage.listProjectNames()
+
+    fun savedProjects(): Single<List<WorkspaceItem>> = projectsFrom(savedProjectNames())
+
+    fun locallySavedProjects(): Single<List<WorkspaceItem>> = projectsFrom(localWorkspaceStorage.listProjectNames(), localWorkspaceStorage)
+
+    private fun projectsFrom(names: Single<List<String>>, workspaceStorage: WorkspaceStorage = this.workspaceStorage) = names
+            .toFlowable()
+            .flatMap { Flowable.fromIterable(it) }
+            .flatMapSingle { name -> loadWith(name, workspaceStorage).map { WorkspaceItem(name ,it) } }
             .toList()
 
-    fun load(name: String): Single<WorkspaceModel> =
-            fileUseCase.readFile(SAVED_PROJECTS_DIR, withExtension(name))
+    fun load(name: String): Single<WorkspaceModel> = loadWith(name)
+
+    private fun loadWith(name: String, workspaceStorage: WorkspaceStorage = this.workspaceStorage): Single<WorkspaceModel> =
+            workspaceStorage.readWorkspace(name)
                     .map(::reusable)
                     .flatMap(::versionCheck)
                     .map(::deserializeWorkspace)
 
-    fun deleteProject(name: String): Completable = fileUseCase.deleteFile(SAVED_PROJECTS_DIR, withExtension(name))
+    fun deleteProject(name: String): Completable =
+            workspaceStorage.deleteWorkspace(name)
 
     private fun reusable(reader: Reader) = StringReader(reader.readText())
 
@@ -63,13 +71,4 @@ class WorkspaceUseCase(private val gson: Gson,
     private fun deserializeWorkspace(reader: StringReader) = deserialize(reader, SaveContainer::class).workspaceModel
 
     private fun <T: Any> deserialize(reader: Reader, type: KClass<T>): T = gson.fromJson(reader, type.java)
-
-    private fun serialize(model: WorkspaceModel): InputStream = gson.toJson(SaveContainer(model)).byteInputStream()
-
-    private fun withExtension(name: String) = "$name$SAVED_EXTENSION"
-
-    companion object {
-        private val SAVED_PROJECTS_DIR = "saved_projects"
-        private val SAVED_EXTENSION = ".gameframe"
-    }
 }

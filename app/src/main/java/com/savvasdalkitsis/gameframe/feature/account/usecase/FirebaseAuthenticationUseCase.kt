@@ -25,18 +25,15 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.feature.account.model.Account
-import com.savvasdalkitsis.gameframe.feature.account.model.AccountStateError
-import com.savvasdalkitsis.gameframe.feature.account.model.SignedInAccount
-import com.savvasdalkitsis.gameframe.feature.account.model.SignedOutAccount
+import com.savvasdalkitsis.gameframe.feature.account.model.*
 import com.savvasdalkitsis.gameframe.infra.TopActivityProvider
 import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.processors.BehaviorProcessor
 
 const val SIGN_IN = 123
 
-class FirebaseAuthenticationCase(private val topActivityProvider: TopActivityProvider) : AuthenticationCase<Intent> {
-
+class FirebaseAuthenticationUseCase(private val topActivityProvider: TopActivityProvider) : AuthenticationUseCase<Intent> {
     private var firebaseAuth = FirebaseAuth.getInstance()
 
     init {
@@ -44,7 +41,7 @@ class FirebaseAuthenticationCase(private val topActivityProvider: TopActivityPro
             val user = it.currentUser
             accountStates.offer(when (user) {
                 null -> SignedOutAccount()
-                else -> SignedInAccount(name = user.displayName, image = user.photoUrl)
+                else -> SignedInAccount(name = user.displayName, id = user.uid, image = user.photoUrl)
             })
         }
     }
@@ -64,6 +61,15 @@ class FirebaseAuthenticationCase(private val topActivityProvider: TopActivityPro
             AuthUI.FACEBOOK_PROVIDER,
             AuthUI.TWITTER_PROVIDER)
             .map { AuthUI.IdpConfig.Builder(it).build() }
+
+    override fun userId(): Single<String> = accountStates.firstOrError()
+            .flatMap {
+                when (it) {
+                    is SignedInAccount -> Single.just(it.id)
+                    else -> Single.error(IllegalStateException("User state was not logged in"))
+                }
+            }
+            .onErrorResumeNext(Single.error(UserNotLoggedInException("Could not retrieve user id from firebase authentication")))
 
     private val accountStates = BehaviorProcessor.create<Account>()
 
@@ -101,7 +107,7 @@ class FirebaseAuthenticationCase(private val topActivityProvider: TopActivityPro
     override fun handleResult(requestCode: Int, resultCode: Int, authenticationData: Intent?) {
         if (requestCode == SIGN_IN && resultCode != Activity.RESULT_OK) {
             val response = IdpResponse.fromResultIntent(authenticationData)
-            Log.w(FirebaseAuthenticationCase::class.java.name, "Error logging in ${response?.errorCode}")
+            Log.w(FirebaseAuthenticationUseCase::class.java.name, "Error logging in ${response?.errorCode}")
             accountStates.offer(AccountStateError())
         }
     }

@@ -110,7 +110,6 @@ class WorkspaceFragment : BaseFragment<WorkspaceView<Menu>, WorkspacePresenter<M
         super.onViewCreated(view, savedInstanceState)
         drawer = view.findViewById(R.id.view_draw_drawer)
         view_draw_led_grid_view.setOnGridTouchedListener(presenter)
-        presenter.bindGrid(view_draw_led_grid_view)
     }
 
     override fun wifiNotEnabledError(e: Throwable) {
@@ -122,6 +121,12 @@ class WorkspaceFragment : BaseFragment<WorkspaceView<Menu>, WorkspacePresenter<M
     override fun onResume() {
         super.onResume()
         setFabState()
+        presenter.bindGrid(view_draw_led_grid_view)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        presenter.paused()
     }
 
     override fun bindPalette(selectedPalette: Palette) {

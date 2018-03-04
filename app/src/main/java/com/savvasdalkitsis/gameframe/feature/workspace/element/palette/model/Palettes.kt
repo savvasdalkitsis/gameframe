@@ -46,5 +46,5 @@ object Palettes {
     internal fun emptyPalette() = preLoaded()[EMPTY_INDEX].replicateMoment()
 
     private fun palette(title: String, @ArrayRes resource: Int) =
-            Palette(title = title, colors = resources.getIntArray(resource))
+            Palette(title = title, colors = resources.getIntArray(resource).toMutableList())
 }

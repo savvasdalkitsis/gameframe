@@ -29,6 +29,7 @@ android {
         resValue "string", "twitter_consumer_key", TWITTER_CONSUMER_KEY
         resValue "string", "twitter_consumer_secret", TWITTER_CONSUMER_SECRET
         multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -79,7 +80,8 @@ dependencies {
             "com.android.support:multidex:$multidex_version",
             "com.facebook.fresco:fresco:$fresco_version",
             "com.android.support.constraint:constraint-layout:$constraint_layout_version",
-            "com.jakewharton.rxbinding2:rxbinding-kotlin:$rx_binding_version"
+            "com.jakewharton.rxbinding2:rxbinding-kotlin:$rx_binding_version",
+            "com.google.firebase:firebase-firestore:$firebase_version"
     )
     implementation ("com.facebook.android:facebook-android-sdk:4.27.0") {
         exclude group: 'com.facebook.fresco', module: 'drawee'

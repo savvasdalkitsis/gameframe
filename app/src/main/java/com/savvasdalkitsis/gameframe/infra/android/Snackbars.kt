@@ -28,6 +28,7 @@ import com.androidadvance.topsnackbar.TSnackbar
 import com.github.andrewlord1990.snackbarbuilder.SnackbarBuilder
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.infra.kotlin.ViewAction
+import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector
 import com.savvasdalkitsis.gameframe.injector.infra.TopActivityProviderInjector
 
 
@@ -35,6 +36,7 @@ object Snackbars {
 
     private var overridden = false
     private val topActivity get() = TopActivityProviderInjector.topActivityProvider().topActivity
+    private val toastMessageDisplay = MessageDisplayInjector.toastMessageDisplay()
 
     fun success(view: View, @StringRes message: Int) = snack(view, message) {
         backgroundColorRes(R.color.success)
@@ -51,13 +53,18 @@ object Snackbars {
                         .backgroundColorRes(R.color.error)
             }
 
-    fun topInfo(@StringRes message: Int) = topActivity?.let { activity ->
-        TSnackbar.make(activity.findViewById(R.id.view_coordinator), message, TSnackbar.LENGTH_SHORT).apply {
-            val view = view
-            view.setBackgroundResource(R.color.colorAccent)
-            val textView = view.findViewById<TextView>(com.androidadvance.topsnackbar.R.id.snackbar_text)
-            textView.setTextColor(Color.WHITE)
-        }.show()
+    fun topInfo(@StringRes message: Int) {
+        val view = topActivity?.findViewById<View>(R.id.view_coordinator)
+        if (view != null) {
+            TSnackbar.make(view, message, TSnackbar.LENGTH_SHORT).apply {
+                val content = this.view
+                content.setBackgroundResource(R.color.colorAccent)
+                val textView = content.findViewById<TextView>(com.androidadvance.topsnackbar.R.id.snackbar_text)
+                textView.setTextColor(Color.WHITE)
+            }.show()
+        } else {
+            toastMessageDisplay.show(message)
+        }
     }
 
     private fun snack(view: View, message: Int, build: SnackbarBuilder.() -> SnackbarBuilder) {

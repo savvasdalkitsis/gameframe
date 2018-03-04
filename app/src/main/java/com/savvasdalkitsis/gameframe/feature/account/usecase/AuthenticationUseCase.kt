@@ -18,10 +18,12 @@ package com.savvasdalkitsis.gameframe.feature.account.usecase
 
 import com.savvasdalkitsis.gameframe.feature.account.model.Account
 import io.reactivex.Flowable
+import io.reactivex.Single
 
-interface AuthenticationCase<in AuthenticationData> {
+interface AuthenticationUseCase<in AuthenticationData> {
 
     fun accountState(): Flowable<Account>
+    fun userId(): Single<String>
     fun signIn()
     fun signOut()
     fun deleteAccount()
