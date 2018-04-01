@@ -16,7 +16,7 @@
  */
 package com.savvasdalkitsis.gameframe.feature.widget.view
 
-import com.savvasdalkitsis.gameframe.base.BaseView
+import com.savvasdalkitsis.gameframe.infra.base.BaseView
 
 interface WidgetView: BaseView {
 

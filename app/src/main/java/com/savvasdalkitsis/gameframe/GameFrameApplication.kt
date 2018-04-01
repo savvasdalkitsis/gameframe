@@ -18,8 +18,8 @@ package com.savvasdalkitsis.gameframe
 
 import android.support.multidex.MultiDexApplication
 import com.facebook.drawee.backends.pipeline.Fresco
-import com.savvasdalkitsis.gameframe.injector.ApplicationInjector
-import com.savvasdalkitsis.gameframe.injector.infra.TopActivityProviderInjector.applicationTopActivityProvider
+import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector
+import com.savvasdalkitsis.gameframe.feature.message.injector.TopActivityProviderInjector.applicationTopActivityProvider
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 
 class GameFrameApplication : MultiDexApplication() {

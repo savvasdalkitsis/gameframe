@@ -16,7 +16,7 @@
  */
 package com.savvasdalkitsis.gameframe.feature.home.presenter
 
-import com.savvasdalkitsis.gameframe.base.BasePresenter
+import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
 import com.savvasdalkitsis.gameframe.feature.changelog.usecase.ChangeLogUseCase
 import com.savvasdalkitsis.gameframe.feature.home.view.HomeView
 

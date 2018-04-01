@@ -20,7 +20,7 @@ import android.graphics.Color
 import android.support.annotation.ColorInt
 import com.savvasdalkitsis.gameframe.feature.composition.model.AvailableBlendMode
 import com.savvasdalkitsis.gameframe.feature.composition.model.AvailablePorterDuffOperator
-import com.savvasdalkitsis.gameframe.infra.kotlin.clip
+import com.savvasdalkitsis.gameframe.kotlin.clip
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector
 
 class ColorGrid : Grid {

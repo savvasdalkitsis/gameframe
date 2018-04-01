@@ -22,7 +22,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.workspace.element.tools.model.Tools
-import com.savvasdalkitsis.gameframe.infra.kotlin.ViewAction
+import com.savvasdalkitsis.gameframe.kotlin.ViewAction
 
 class ToolsViewHolder internal constructor(parent: ViewGroup) : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_tool_entry, parent, false)) {
 

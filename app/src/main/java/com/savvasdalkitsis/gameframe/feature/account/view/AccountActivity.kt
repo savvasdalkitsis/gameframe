@@ -25,10 +25,10 @@ import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.account.model.SignedInAccount
 import com.savvasdalkitsis.gameframe.feature.account.presenter.AccountPresenter
 import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
-import com.savvasdalkitsis.gameframe.infra.kotlin.Action
-import com.savvasdalkitsis.gameframe.infra.kotlin.gone
-import com.savvasdalkitsis.gameframe.infra.kotlin.visible
-import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector
+import com.savvasdalkitsis.gameframe.kotlin.Action
+import com.savvasdalkitsis.gameframe.kotlin.gone
+import com.savvasdalkitsis.gameframe.kotlin.visible
+import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.activity_account_logged_in.*

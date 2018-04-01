@@ -17,26 +17,22 @@
 package com.savvasdalkitsis.gameframe.injector.usecase
 
 import com.savvasdalkitsis.gameframe.feature.account.usecase.FirebaseAuthenticationUseCase
-import com.savvasdalkitsis.gameframe.feature.bmp.usecase.AndroidViewBitmapFileUseCase
-import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BmpUseCase
-import com.savvasdalkitsis.gameframe.feature.changelog.usecase.ChangeLogUseCase
+import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector.bmpUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
-import com.savvasdalkitsis.gameframe.feature.storage.usecase.LocalStorageUseCase
-import com.savvasdalkitsis.gameframe.feature.wifi.usecase.WifiUseCase
+import com.savvasdalkitsis.gameframe.feature.message.injector.TopActivityProviderInjector.topActivityProvider
+import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector.wifiUseCase
+import com.savvasdalkitsis.gameframe.feature.storage.injector.StorageInjector
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
-import com.savvasdalkitsis.gameframe.injector.ApplicationInjector.application
+import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector.application
 import com.savvasdalkitsis.gameframe.injector.feature.gameframe.api.GameFrameApiInjector.gameFrameApi
 import com.savvasdalkitsis.gameframe.injector.feature.ip.repository.IpRepositoryInjector.ipRepository
 import com.savvasdalkitsis.gameframe.injector.feature.workspace.WorkspaceStorageInjector.localWorkspaceStorage
 import com.savvasdalkitsis.gameframe.injector.feature.workspace.WorkspaceStorageInjector.workspaceStorage
-import com.savvasdalkitsis.gameframe.injector.infra.TopActivityProviderInjector.topActivityProvider
-import com.savvasdalkitsis.gameframe.injector.infra.android.AndroidInjector.wifiManager
 import com.savvasdalkitsis.gameframe.injector.infra.network.OkHttpClientInjector.okHttpClient
 import com.savvasdalkitsis.gameframe.injector.infra.parsing.GsonInjector.gson
-import com.savvasdalkitsis.gameframe.injector.infra.rx.RxSharedPreferencesInjector.rxSharedPreferences
 
 object UseCaseInjector {
 
@@ -46,7 +42,7 @@ object UseCaseInjector {
             okHttpClient(1).build(),
             gameFrameApi(),
             ipDiscoveryUseCase(),
-            localStorageUseCase(),
+            StorageInjector.localStorageUseCase(),
             bmpUseCase(),
             ipRepository(),
             wifiUseCase()
@@ -59,16 +55,6 @@ object UseCaseInjector {
     fun workspaceUseCase() = WorkspaceUseCase(gson(), workspaceStorage(), localWorkspaceStorage())
 
     fun stringUseCase() = StringUseCase(application())
-
-    private fun bmpUseCase() = BmpUseCase()
-
-    fun localStorageUseCase() = LocalStorageUseCase(application())
-
-    fun bitmapFileUseCase() = AndroidViewBitmapFileUseCase(application())
-
-    fun changeLogUseCase() = ChangeLogUseCase(rxSharedPreferences())
-
-    fun wifiUseCase() = WifiUseCase(wifiManager())
 
     fun authenticationUseCase() = FirebaseAuthenticationUseCase(topActivityProvider())
 }

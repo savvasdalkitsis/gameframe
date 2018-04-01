@@ -22,9 +22,9 @@ import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.LayerSettings
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
-import com.savvasdalkitsis.gameframe.infra.kotlin.Action
-import com.savvasdalkitsis.gameframe.infra.kotlin.TypeAction
-import com.savvasdalkitsis.gameframe.infra.kotlin.findIndexOrThrow
+import com.savvasdalkitsis.gameframe.kotlin.Action
+import com.savvasdalkitsis.gameframe.kotlin.TypeAction
+import com.savvasdalkitsis.gameframe.kotlin.findIndexOrThrow
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.util.*
 

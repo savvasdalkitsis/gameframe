@@ -16,7 +16,7 @@
  */
 package com.savvasdalkitsis.gameframe.feature.ip.usecase
 
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
+import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
 

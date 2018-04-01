@@ -4,7 +4,7 @@ import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.WearableListenerService
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.widget.view.WidgetView
-import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector
+import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 
 class WatchMessagingService: WearableListenerService(), WidgetView {

@@ -19,14 +19,14 @@ package com.savvasdalkitsis.gameframe.feature.control.presenter
 import com.savvasdalkitsis.gameframe.feature.control.model.*
 import com.savvasdalkitsis.gameframe.feature.control.view.ControlView
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
+import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
+import com.savvasdalkitsis.gameframe.feature.networking.model.WifiNotEnabledException
+import com.savvasdalkitsis.gameframe.feature.networking.usecase.WifiUseCase
+import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
+import com.savvasdalkitsis.gameframe.infra.base.plusAssign
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
-import com.savvasdalkitsis.gameframe.base.BasePresenter
-import com.savvasdalkitsis.gameframe.base.plusAssign
-import com.savvasdalkitsis.gameframe.feature.wifi.model.WifiNotEnabledException
-import com.savvasdalkitsis.gameframe.feature.wifi.usecase.WifiUseCase
 import io.reactivex.Completable
 
 class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase,

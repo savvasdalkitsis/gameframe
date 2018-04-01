@@ -39,7 +39,7 @@ class FirebaseAuthenticationUseCase(private val topActivityProvider: TopActivity
     init {
         firebaseAuth.addAuthStateListener {
             val user = it.currentUser
-            accountStates.offer(when (user) {
+            accountStates.onNext(when (user) {
                 null -> SignedOutAccount()
                 else -> SignedInAccount(name = user.displayName, id = user.uid, image = user.photoUrl)
             })
@@ -99,7 +99,7 @@ class FirebaseAuthenticationUseCase(private val topActivityProvider: TopActivity
             val success = AuthUI.getInstance()
                     .run { task(Pair(this, fragmentActivity)) }.isSuccessful
             if (!success) {
-                accountStates.offer(AccountStateError())
+                accountStates.onNext(AccountStateError())
             }
         }
     }
@@ -108,7 +108,7 @@ class FirebaseAuthenticationUseCase(private val topActivityProvider: TopActivity
         if (requestCode == SIGN_IN && resultCode != Activity.RESULT_OK) {
             val response = IdpResponse.fromResultIntent(authenticationData)
             Log.w(FirebaseAuthenticationUseCase::class.java.name, "Error logging in ${response?.errorCode}")
-            accountStates.offer(AccountStateError())
+            accountStates.onNext(AccountStateError())
         }
     }
 }

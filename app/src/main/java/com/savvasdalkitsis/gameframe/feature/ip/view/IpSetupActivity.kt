@@ -24,9 +24,9 @@ import android.view.ViewPropertyAnimator
 import butterknife.OnClick
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
-import com.savvasdalkitsis.gameframe.infra.android.Snackbars
+import com.savvasdalkitsis.gameframe.feature.message.Snackbars
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.ipSetupPresenter
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
+import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.presenter.IpSetupPresenter
 import kotlinx.android.synthetic.main.activity_ip_setup.*
 import kotlinx.android.synthetic.main.view_ip_text_view.*

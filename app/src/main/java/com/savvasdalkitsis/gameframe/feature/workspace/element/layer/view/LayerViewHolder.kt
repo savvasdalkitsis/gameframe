@@ -24,7 +24,7 @@ import android.widget.TextView
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.LedGridView
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
-import com.savvasdalkitsis.gameframe.infra.kotlin.*
+import com.savvasdalkitsis.gameframe.kotlin.*
 
 internal class LayerViewHolder(parent: ViewGroup) :
         RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_layer_view, parent, false)) {

@@ -17,9 +17,8 @@
 package com.savvasdalkitsis.gameframe.feature.workspace.presenter
 
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.base.BasePresenter
-import com.savvasdalkitsis.gameframe.base.plusAssign
-import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BitmapFileUseCase
+import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
+import com.savvasdalkitsis.gameframe.feature.bitmap.usecase.BitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGameFrameException
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
@@ -28,8 +27,8 @@ import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
 import com.savvasdalkitsis.gameframe.feature.message.MessageDisplay
 import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
-import com.savvasdalkitsis.gameframe.feature.wifi.model.WifiNotEnabledException
-import com.savvasdalkitsis.gameframe.feature.wifi.usecase.WifiUseCase
+import com.savvasdalkitsis.gameframe.feature.networking.model.WifiNotEnabledException
+import com.savvasdalkitsis.gameframe.feature.networking.usecase.WifiUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.GridDisplay
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.GridTouchedListener
@@ -40,8 +39,9 @@ import com.savvasdalkitsis.gameframe.feature.workspace.usecase.UnsupportedProjec
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.view.WorkspaceView
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
-import com.savvasdalkitsis.gameframe.infra.kotlin.Action
-import com.savvasdalkitsis.gameframe.infra.kotlin.or
+import com.savvasdalkitsis.gameframe.infra.base.plusAssign
+import com.savvasdalkitsis.gameframe.kotlin.Action
+import com.savvasdalkitsis.gameframe.kotlin.or
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers

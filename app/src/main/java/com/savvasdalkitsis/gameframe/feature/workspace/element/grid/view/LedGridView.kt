@@ -29,7 +29,7 @@ import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.ColorGrid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.GridDisplay
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
-import com.savvasdalkitsis.gameframe.infra.kotlin.clip
+import com.savvasdalkitsis.gameframe.kotlin.clip
 
 class LedGridView : View, GridDisplay {
 

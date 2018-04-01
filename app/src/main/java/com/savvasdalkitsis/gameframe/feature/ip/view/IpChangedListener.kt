@@ -16,7 +16,7 @@
  */
 package com.savvasdalkitsis.gameframe.feature.ip.view
 
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
+import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
 
 interface IpChangedListener {
 

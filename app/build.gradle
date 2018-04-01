@@ -5,8 +5,8 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
 
     signingConfigs {
         release {
@@ -19,8 +19,8 @@ android {
 
     defaultConfig {
         applicationId "com.savvasdalkitsis.gameframe"
-        minSdkVersion 16
-        targetSdkVersion 26
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
         versionCode app_version_code
         versionName app_version
         manifestPlaceholders = [fabric_api_key: FABRIC_API_KEY]
@@ -49,6 +49,14 @@ repositories {
 
 dependencies {
     wearApp project(':watch')
+    implementation project(':infra')
+    implementation project(':message')
+    implementation project(':storage')
+    implementation project(':networking')
+    implementation project(':history')
+    implementation project(':changelog')
+    implementation project(':styles')
+    implementation project(':bitmap')
     implementation (
             "com.google.firebase:firebase-crash:$gms_version",
             "com.google.firebase:firebase-auth:$firebase_version",
@@ -62,21 +70,14 @@ dependencies {
             "com.google.android.gms:play-services-wearable:$gms_version",
             "com.jakewharton:butterknife:$butterknife_version",
             "com.squareup.retrofit2:retrofit:$retrofit_version",
-            "io.reactivex.rxjava2:rxandroid:$rxandroid_version",
-            "io.reactivex.rxjava2:rxjava:$rxjava_version",
             "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version",
             "com.squareup.retrofit2:converter-gson:$retrofit_version",
             "com.squareup.okhttp3:logging-interceptor:$okhttp_version",
-            "com.github.andrewlord1990:snackbarbuilder:$snackbarbuilder_version",
             "uk.co.chrisjenx:calligraphy:$calligraphy_version",
             "com.afollestad.material-dialogs:core:$material_dialogs_version",
             "com.afollestad.material-dialogs:commons:$material_dialogs_version",
-            "commons-io:commons-io:$commons_io_version",
             "com.sothree.slidinguppanel:library:$slidinguppanel_version",
-            "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
             "io.github.yavski:fab-speed-dial:$fab_speed_dial_version",
-            "com.androidadvance:topsnackbar:$topsnackbar_version",
-            "us.feras.mdv:markdownview:$markdownview_version",
             "com.android.support:multidex:$multidex_version",
             "com.facebook.fresco:fresco:$fresco_version",
             "com.android.support.constraint:constraint-layout:$constraint_layout_version",

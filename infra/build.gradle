@@ -1,0 +1,45 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
+
+    defaultConfig {
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+        versionCode app_version_code
+        versionName app_version
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    api project(":kotlin")
+    implementation project(":styles")
+    implementation(
+            "com.android.support:appcompat-v7:$support_version",
+            "com.android.support:design:$support_version",
+            "com.github.andrewlord1990:snackbarbuilder:$snackbarbuilder_version",
+            "com.androidadvance:topsnackbar:$topsnackbar_version",
+            "io.github.yavski:fab-speed-dial:$fab_speed_dial_version",
+            "com.jakewharton:butterknife:$butterknife_version",
+    )
+    api(
+            "io.reactivex.rxjava2:rxandroid:$rxandroid_version",
+            "io.reactivex.rxjava2:rxjava:$rxjava_version",
+    )
+}
+repositories {
+    mavenCentral()
+}

@@ -18,8 +18,8 @@ package com.savvasdalkitsis.gameframe.injector.feature.navigation
 
 import com.savvasdalkitsis.gameframe.feature.navigation.ApplicationNavigator
 import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
-import com.savvasdalkitsis.gameframe.injector.ApplicationInjector
-import com.savvasdalkitsis.gameframe.injector.infra.TopActivityProviderInjector
+import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector
+import com.savvasdalkitsis.gameframe.feature.message.injector.TopActivityProviderInjector
 
 object NavigatorInjector {
 

@@ -20,7 +20,7 @@ import android.annotation.TargetApi
 import android.os.Build
 import android.service.quicksettings.TileService
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector
+import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 
 @TargetApi(Build.VERSION_CODES.N)

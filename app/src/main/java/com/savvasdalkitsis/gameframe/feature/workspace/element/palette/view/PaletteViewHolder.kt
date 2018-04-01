@@ -24,8 +24,8 @@ import android.widget.TextView
 
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.workspace.element.palette.model.Palette
-import com.savvasdalkitsis.gameframe.infra.kotlin.Action
-import com.savvasdalkitsis.gameframe.infra.kotlin.visibleOrGone
+import com.savvasdalkitsis.gameframe.kotlin.Action
+import com.savvasdalkitsis.gameframe.kotlin.visibleOrGone
 
 internal class PaletteViewHolder(parent: ViewGroup, editable: Boolean) : RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.view_palette_view, parent, false)) {
 

@@ -18,7 +18,7 @@ package com.savvasdalkitsis.gameframe.feature.workspace.element.palette.model
 
 import android.support.annotation.ArrayRes
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.injector.ApplicationInjector
+import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector
 
 object Palettes {
 

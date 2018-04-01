@@ -17,6 +17,7 @@
 package com.savvasdalkitsis.gameframe.feature.navigation
 
 import android.app.Activity
+import android.app.Application
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -34,7 +35,7 @@ import org.rm3l.maoni.Maoni
 import java.io.File
 import kotlin.reflect.KClass
 
-class ApplicationNavigator(private val topActivityProvider: TopActivityProvider, private val application: GameFrameApplication) : Navigator {
+class ApplicationNavigator(private val topActivityProvider: TopActivityProvider, private val application: Application) : Navigator {
 
     override fun navigateToIpSetup() {
         context.startActivity(wrap(intentForClass(IpSetupActivity::class)))

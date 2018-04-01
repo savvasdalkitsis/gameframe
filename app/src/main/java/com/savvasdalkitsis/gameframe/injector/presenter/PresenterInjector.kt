@@ -19,23 +19,24 @@ package com.savvasdalkitsis.gameframe.injector.presenter
 import android.view.Menu
 import android.view.View
 import com.savvasdalkitsis.gameframe.feature.account.presenter.AccountPresenter
+import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector
+import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector.bitmapFileUseCase
+import com.savvasdalkitsis.gameframe.feature.changelog.injector.ChangelogInjector.changeLogUseCase
 import com.savvasdalkitsis.gameframe.feature.control.presenter.ControlPresenter
 import com.savvasdalkitsis.gameframe.feature.home.presenter.HomePresenter
 import com.savvasdalkitsis.gameframe.feature.ip.presenter.IpSetupPresenter
 import com.savvasdalkitsis.gameframe.feature.widget.presenter.WidgetPresenter
 import com.savvasdalkitsis.gameframe.feature.workspace.presenter.WorkspacePresenter
 import com.savvasdalkitsis.gameframe.injector.feature.ip.repository.IpRepositoryInjector.ipRepository
-import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector.messageDisplay
+import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector.messageDisplay
+import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector.wifiUseCase
 import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector.navigator
 import com.savvasdalkitsis.gameframe.injector.feature.workspace.WorkspaceStorageInjector.firebaseWorkspaceStorage
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.authenticationUseCase
-import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.bitmapFileUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.blendUseCase
-import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.changeLogUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.gameFrameUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.ipDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.stringUseCase
-import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.wifiUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.workspaceUseCase
 
 object PresenterInjector {

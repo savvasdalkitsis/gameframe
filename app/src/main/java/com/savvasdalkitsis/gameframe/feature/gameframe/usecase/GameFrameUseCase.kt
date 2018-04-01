@@ -17,19 +17,21 @@
 package com.savvasdalkitsis.gameframe.feature.gameframe.usecase
 
 import android.util.Log
-import com.savvasdalkitsis.gameframe.feature.bmp.usecase.BmpUseCase
+import com.savvasdalkitsis.gameframe.feature.bitmap.model.Bitmap
+import com.savvasdalkitsis.gameframe.feature.bitmap.usecase.BmpUseCase
 import com.savvasdalkitsis.gameframe.feature.control.model.*
 import com.savvasdalkitsis.gameframe.feature.gameframe.api.CommandResponse
 import com.savvasdalkitsis.gameframe.feature.gameframe.api.GameFrameApi
 import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGameFrameException
 import com.savvasdalkitsis.gameframe.feature.gameframe.model.GameFrameCommandError
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
+import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpNotFoundException
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.feature.storage.usecase.LocalStorageUseCase
-import com.savvasdalkitsis.gameframe.feature.wifi.model.WifiNotEnabledException
-import com.savvasdalkitsis.gameframe.feature.wifi.usecase.WifiUseCase
+import com.savvasdalkitsis.gameframe.feature.networking.model.WifiNotEnabledException
+import com.savvasdalkitsis.gameframe.feature.networking.usecase.WifiUseCase
+import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.ColorGrid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -86,7 +88,7 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
 
     fun uploadAndDisplay(name: String, colorGrid: Grid): Completable =
             localStorageUseCase.saveFile(dirName = "bmp/$name", fileName = "0.bmp",
-                    fileContentsProvider = { bmpUseCase.rasterizeToBmp(colorGrid) },
+                    fileContentsProvider = { bmpUseCase.rasterizeToBmp(colorGrid.toBitmap()) },
                     overwriteFile = true)
                     .flatMap<File> { file -> createFolder(name).toSingleDefault<File>(file) }
                     .flatMapCompletable { uploadFile(it) }
@@ -156,4 +158,11 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
             GameFrameCommandError("Command was not successful. response: $response", response)
 
     private fun isSuccess(response: CommandResponse?) = "success" == response?.status
+
+    private fun Grid.toBitmap(): Bitmap {
+        return object : Bitmap {
+            override val dimensions = Pair(ColorGrid.SIDE, ColorGrid.SIDE)
+            override fun getPixelAt(col: Int, row: Int) = getColor(col, row)
+        }
+    }
 }

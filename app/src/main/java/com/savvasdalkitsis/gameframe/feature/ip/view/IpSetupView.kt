@@ -16,8 +16,8 @@
  */
 package com.savvasdalkitsis.gameframe.feature.ip.view
 
-import com.savvasdalkitsis.gameframe.base.BaseView
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
+import com.savvasdalkitsis.gameframe.infra.base.BaseView
+import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
 
 interface IpSetupView: BaseView {
 

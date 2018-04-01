@@ -16,14 +16,14 @@
  */
 package com.savvasdalkitsis.gameframe.feature.ip.presenter
 
-import com.savvasdalkitsis.gameframe.base.BasePresenter
-import com.savvasdalkitsis.gameframe.base.plusAssign
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.view.IpSetupView
-import com.savvasdalkitsis.gameframe.feature.wifi.usecase.WifiUseCase
+import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
+import com.savvasdalkitsis.gameframe.feature.networking.usecase.WifiUseCase
+import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
+import com.savvasdalkitsis.gameframe.infra.base.plusAssign
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 
 class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,

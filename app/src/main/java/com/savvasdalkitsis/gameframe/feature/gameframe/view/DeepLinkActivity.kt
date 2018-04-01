@@ -18,10 +18,9 @@ package com.savvasdalkitsis.gameframe.feature.gameframe.view
 
 import android.app.Activity
 import android.os.Bundle
-import com.github.andrewlord1990.snackbarbuilder.toastbuilder.ToastBuilder
 import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
 import com.savvasdalkitsis.gameframe.feature.widget.view.WidgetView
-import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 
 class DeepLinkActivity : Activity(), WidgetView {

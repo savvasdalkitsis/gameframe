@@ -43,11 +43,11 @@ import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
 import com.savvasdalkitsis.gameframe.feature.workspace.presenter.WorkspacePresenter
 import com.savvasdalkitsis.gameframe.infra.android.BaseFragment
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
-import com.savvasdalkitsis.gameframe.infra.android.Snackbars
-import com.savvasdalkitsis.gameframe.infra.kotlin.Action
-import com.savvasdalkitsis.gameframe.infra.kotlin.TypeAction
-import com.savvasdalkitsis.gameframe.infra.kotlin.gone
-import com.savvasdalkitsis.gameframe.infra.kotlin.visible
+import com.savvasdalkitsis.gameframe.feature.message.Snackbars
+import com.savvasdalkitsis.gameframe.kotlin.Action
+import com.savvasdalkitsis.gameframe.kotlin.TypeAction
+import com.savvasdalkitsis.gameframe.kotlin.gone
+import com.savvasdalkitsis.gameframe.kotlin.visible
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.workspacePresenter
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import io.github.yavski.fabspeeddial.CustomFabSpeedDial

@@ -28,12 +28,12 @@ import butterknife.OnItemSelected
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.control.model.*
 import com.savvasdalkitsis.gameframe.feature.control.presenter.ControlPresenter
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
+import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
 import com.savvasdalkitsis.gameframe.infra.android.BaseFragment
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
-import com.savvasdalkitsis.gameframe.infra.android.Snackbars
-import com.savvasdalkitsis.gameframe.infra.kotlin.gone
-import com.savvasdalkitsis.gameframe.infra.kotlin.visible
+import com.savvasdalkitsis.gameframe.feature.message.Snackbars
+import com.savvasdalkitsis.gameframe.kotlin.gone
+import com.savvasdalkitsis.gameframe.kotlin.visible
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 import kotlinx.android.synthetic.main.fragment_control.*
 

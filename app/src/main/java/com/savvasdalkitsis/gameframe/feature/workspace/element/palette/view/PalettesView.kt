@@ -23,7 +23,7 @@ import android.util.AttributeSet
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.palette.model.Palette
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
-import com.savvasdalkitsis.gameframe.infra.kotlin.Action
+import com.savvasdalkitsis.gameframe.kotlin.Action
 
 class PalettesView : RecyclerView {
 

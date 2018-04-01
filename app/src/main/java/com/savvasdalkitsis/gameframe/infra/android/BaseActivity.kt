@@ -25,8 +25,8 @@ import android.text.style.AbsoluteSizeSpan
 import android.view.MenuItem
 import butterknife.ButterKnife
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.base.BasePresenter
-import com.savvasdalkitsis.gameframe.base.BaseView
+import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
+import com.savvasdalkitsis.gameframe.infra.base.BaseView
 import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
@@ -59,18 +59,16 @@ abstract class BaseActivity<V: BaseView, out P: BasePresenter<V>> : AppCompatAct
         presenter.bindView(view)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                true
-            }
-            R.id.action_feedback -> {
-                navigator.navigateToFeedback()
-                true
-            }
-            else -> false
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
+        android.R.id.home -> {
+            finish()
+            true
         }
+        R.id.action_feedback -> {
+            navigator.navigateToFeedback()
+            true
+        }
+        else -> false
     }
 
     override fun onStop() {

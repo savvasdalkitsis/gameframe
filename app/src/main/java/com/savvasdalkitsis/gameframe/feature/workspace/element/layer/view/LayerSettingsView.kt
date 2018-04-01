@@ -20,7 +20,6 @@ import android.content.Context
 import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.savvasdalkitsis.gameframe.R
@@ -28,7 +27,7 @@ import com.savvasdalkitsis.gameframe.feature.composition.model.AvailableBlendMod
 import com.savvasdalkitsis.gameframe.feature.composition.model.AvailablePorterDuffOperator
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.LayerSettings
-import com.savvasdalkitsis.gameframe.infra.kotlin.visible
+import com.savvasdalkitsis.gameframe.kotlin.visible
 
 class LayerSettingsView : LinearLayout {
 

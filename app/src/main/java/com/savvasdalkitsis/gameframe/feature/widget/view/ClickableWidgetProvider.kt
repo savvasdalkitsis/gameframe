@@ -25,7 +25,7 @@ import android.content.Intent
 import android.support.annotation.LayoutRes
 import android.widget.RemoteViews
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector
+import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 
 abstract class ClickableWidgetProvider : AppWidgetProvider(), WidgetView {

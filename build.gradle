@@ -2,13 +2,17 @@
 
 buildscript {
     ext{
+        compile_sdk_version = 27
+        build_tools_version = '27.0.3'
+        min_sdk_version = 16
+        target_sdk_version = 27
         app_version = '1.2'
         app_version_code = 5
-        kotlin_version = '1.2.10'
+        kotlin_version = '1.2.31'
         support_version = '27.0.0'
         retrofit_version = '2.3.0'
-        rxjava_version = '2.1.5'
-        rxandroid_version = '2.0.1'
+        rxjava_version = '2.1.12'
+        rxandroid_version = '2.0.0'
         butterknife_version = '8.8.1'
         okhttp_version = '3.9.0'
         snackbarbuilder_version = '0.9.0'
@@ -34,7 +38,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.android.tools.build:gradle:3.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -46,6 +50,7 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenLocal()
         jcenter()
         mavenCentral()
         google()

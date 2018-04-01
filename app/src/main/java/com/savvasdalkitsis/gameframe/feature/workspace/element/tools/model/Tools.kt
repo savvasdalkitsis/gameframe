@@ -19,7 +19,7 @@ package com.savvasdalkitsis.gameframe.feature.workspace.element.tools.model
 import android.support.annotation.DrawableRes
 
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.injector.feature.message.MessageDisplayInjector
+import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
 
 enum class Tools(val tool: DrawingTool, val label: String,
                  @param:DrawableRes val icon: Int,

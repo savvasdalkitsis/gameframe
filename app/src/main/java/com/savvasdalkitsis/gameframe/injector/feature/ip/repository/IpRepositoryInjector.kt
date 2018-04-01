@@ -18,7 +18,7 @@ package com.savvasdalkitsis.gameframe.injector.feature.ip.repository
 
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.ip.repository.PreferenceIpRepository
-import com.savvasdalkitsis.gameframe.injector.infra.rx.RxSharedPreferencesInjector.rxSharedPreferences
+import com.savvasdalkitsis.gameframe.infra.injector.RxSharedPreferencesInjector.rxSharedPreferences
 
 object IpRepositoryInjector {
 

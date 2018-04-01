@@ -26,7 +26,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
+import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
 
 class IpTextView : LinearLayout {
 

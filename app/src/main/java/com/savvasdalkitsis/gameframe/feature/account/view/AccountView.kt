@@ -16,9 +16,9 @@
  */
 package com.savvasdalkitsis.gameframe.feature.account.view
 
-import com.savvasdalkitsis.gameframe.base.BaseView
+import com.savvasdalkitsis.gameframe.infra.base.BaseView
 import com.savvasdalkitsis.gameframe.feature.account.model.SignedInAccount
-import com.savvasdalkitsis.gameframe.infra.kotlin.Action
+import com.savvasdalkitsis.gameframe.kotlin.Action
 
 interface AccountView : BaseView {
 

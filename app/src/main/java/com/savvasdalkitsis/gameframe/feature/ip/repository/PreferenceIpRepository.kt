@@ -16,7 +16,7 @@
  */
 package com.savvasdalkitsis.gameframe.feature.ip.repository
 
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
+import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
 import com.savvasdalkitsis.gameframe.infra.preferences.RxSharedPreferences
 import io.reactivex.Single

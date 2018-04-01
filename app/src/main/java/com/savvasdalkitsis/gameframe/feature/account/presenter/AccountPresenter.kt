@@ -18,8 +18,6 @@ package com.savvasdalkitsis.gameframe.feature.account.presenter
 
 import android.util.Log
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.base.BasePresenter
-import com.savvasdalkitsis.gameframe.base.plusAssign
 import com.savvasdalkitsis.gameframe.feature.account.model.Account
 import com.savvasdalkitsis.gameframe.feature.account.model.SignedInAccount
 import com.savvasdalkitsis.gameframe.feature.account.usecase.AuthenticationUseCase
@@ -29,10 +27,10 @@ import com.savvasdalkitsis.gameframe.feature.workspace.model.SaveContainer
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceItem
 import com.savvasdalkitsis.gameframe.feature.workspace.storage.WorkspaceStorage
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
+import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
+import com.savvasdalkitsis.gameframe.infra.base.plusAssign
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import io.reactivex.Flowable
-import io.reactivex.Observable
-import java.util.concurrent.TimeUnit
 
 private val TAG = AccountPresenter<*>::javaClass.name
 
