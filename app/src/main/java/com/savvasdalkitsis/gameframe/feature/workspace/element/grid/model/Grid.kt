@@ -18,6 +18,7 @@ package com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model
 
 import android.graphics.Color
 import android.support.annotation.ColorInt
+import com.savvasdalkitsis.gameframe.feature.bitmap.model.Bitmap
 
 import com.savvasdalkitsis.gameframe.feature.history.model.Moment
 
@@ -31,4 +32,13 @@ interface Grid : Moment<Grid> {
 
     @ColorInt
     fun getColor(column: Int, row: Int): Int
+
+    companion object {
+        const val SIDE = 16
+    }
+}
+
+fun Grid.asBitmap() = object : Bitmap {
+    override val dimensions = Pair(Grid.SIDE, Grid.SIDE)
+    override fun getPixelAt(col: Int, row: Int) = getColor(col + 1, row + 1)
 }

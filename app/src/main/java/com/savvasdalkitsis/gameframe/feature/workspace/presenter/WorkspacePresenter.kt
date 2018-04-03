@@ -29,8 +29,10 @@ import com.savvasdalkitsis.gameframe.feature.message.MessageDisplay
 import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
 import com.savvasdalkitsis.gameframe.feature.networking.model.WifiNotEnabledException
 import com.savvasdalkitsis.gameframe.feature.networking.usecase.WifiUseCase
+import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.ColorGrid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.GridDisplay
+import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.asBitmap
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.GridTouchedListener
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.model.Project
@@ -313,7 +315,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
     private fun needsSave() = modified || project.name == null
 
     private fun render(layers: MomentList<Layer>) {
-        layers.forEach { blendUseCase.renderOn(it, gridDisplay) }
+        layers.forEach { renderOn(it, gridDisplay) }
         val selected = layers.firstOrNull { it.isSelected }
 
         if (selected != null && displayLayoutBorders) {
@@ -334,4 +336,14 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
     fun paused() {
         historyStream.clear()
     }
+
+    private fun renderOn(layer: Layer, gridDisplay: GridDisplay) { with(layer) {
+        when { isVisible ->
+            gridDisplay.display(if (isBackground) {
+                colorGrid
+            } else {
+                ColorGrid.from(blendUseCase.compose(gridDisplay.current().asBitmap(), colorGrid.asBitmap(), layerSettings.blendMode, layerSettings.porterDuffOperator, layerSettings.alpha))
+            })
+        }
+    } }
 }

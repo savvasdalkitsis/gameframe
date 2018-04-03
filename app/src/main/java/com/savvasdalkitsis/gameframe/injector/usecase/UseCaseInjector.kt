@@ -18,7 +18,6 @@ package com.savvasdalkitsis.gameframe.injector.usecase
 
 import com.savvasdalkitsis.gameframe.feature.account.usecase.FirebaseAuthenticationUseCase
 import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector.bmpUseCase
-import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.feature.message.injector.TopActivityProviderInjector.topActivityProvider
@@ -49,8 +48,6 @@ object UseCaseInjector {
     )
 
     fun ipDiscoveryUseCase() = IP_DISCOVERY_USE_CASE
-
-    fun blendUseCase() = BlendUseCase()
 
     fun workspaceUseCase() = WorkspaceUseCase(gson(), workspaceStorage(), localWorkspaceStorage())
 

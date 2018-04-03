@@ -57,6 +57,7 @@ dependencies {
     implementation project(':changelog')
     implementation project(':styles')
     implementation project(':bitmap')
+    implementation project(':composition')
     implementation (
             "com.google.firebase:firebase-crash:$gms_version",
             "com.google.firebase:firebase-auth:$firebase_version",

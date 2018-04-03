@@ -59,7 +59,7 @@ class LedGridView : View, GridDisplay {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        tileSide = measuredWidth / ColorGrid.SIDE.toFloat()
+        tileSide = measuredWidth / Grid.SIDE.toFloat()
         setMeasuredDimension(measuredWidth, measuredWidth)
     }
 
@@ -94,8 +94,8 @@ class LedGridView : View, GridDisplay {
             setBounds(0, 0, gridSide, gridSide)
             draw(canvas)
         }
-        for (column in 1..ColorGrid.SIDE) {
-            for (row in 1..ColorGrid.SIDE) {
+        for (column in 1..Grid.SIDE) {
+            for (row in 1..Grid.SIDE) {
                 val left = toPx(column - 1)
                 val top = toPx(row - 1)
                 paint.color = colorGrid.getColor(column, row)
@@ -103,7 +103,7 @@ class LedGridView : View, GridDisplay {
             }
         }
         paint.color = Color.BLACK
-        for (i in 0..ColorGrid.SIDE) {
+        for (i in 0..Grid.SIDE) {
             drawRow(i, 0, canvas)
             drawColumn(i, 0, canvas)
         }
@@ -111,20 +111,20 @@ class LedGridView : View, GridDisplay {
             paint.color = Color.LTGRAY
 
             drawRow(rowTranslation, columnTranslation, canvas)
-            drawRow(ColorGrid.SIDE + rowTranslation, columnTranslation, canvas)
+            drawRow(Grid.SIDE + rowTranslation, columnTranslation, canvas)
             drawColumn(columnTranslation, rowTranslation, canvas)
-            drawColumn(ColorGrid.SIDE + columnTranslation, rowTranslation, canvas)
+            drawColumn(Grid.SIDE + columnTranslation, rowTranslation, canvas)
         }
     }
 
     private fun drawColumn(column: Int, verticalOffset: Int, canvas: Canvas) {
-        if (column >= 0 && column <= ColorGrid.SIDE) {
+        if (column >= 0 && column <= Grid.SIDE) {
             canvas.drawLine(toPx(column), toPx(verticalOffset), toPx(column), measuredWidth + toPx(verticalOffset), paint)
         }
     }
 
     private fun drawRow(row: Int, horizontalOffset: Int, canvas: Canvas) {
-        if (row >= 0 && row <= ColorGrid.SIDE) {
+        if (row >= 0 && row <= Grid.SIDE) {
             canvas.drawLine(toPx(horizontalOffset), toPx(row), measuredWidth + toPx(horizontalOffset), toPx(row), paint)
         }
     }
@@ -139,7 +139,7 @@ class LedGridView : View, GridDisplay {
         if (!isEnabled) {
             return@OnTouchListener false
         }
-        val block = width / ColorGrid.SIDE
+        val block = width / Grid.SIDE
         val x: Float
         val y: Float
         when (event.actionMasked) {
@@ -175,6 +175,6 @@ class LedGridView : View, GridDisplay {
 
     private fun blockCoordinate(block: Int, coordinate: Float): Int {
         val c = (coordinate / block).toInt() + 1
-        return c.clip(1, ColorGrid.SIDE)
+        return c.clip(1, Grid.SIDE)
     }
 }
