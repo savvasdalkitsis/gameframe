@@ -35,6 +35,7 @@ dependencies {
             "io.github.yavski:fab-speed-dial:$fab_speed_dial_version",
             "com.jakewharton:butterknife:$butterknife_version",
     )
+    implementation ("org.rm3l:maoni:$maoni_version@aar") { transitive = true }
     api(
             "io.reactivex.rxjava2:rxandroid:$rxandroid_version",
             "io.reactivex.rxjava2:rxjava:$rxjava_version",

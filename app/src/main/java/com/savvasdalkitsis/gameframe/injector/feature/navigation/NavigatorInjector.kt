@@ -16,14 +16,12 @@
  */
 package com.savvasdalkitsis.gameframe.injector.feature.navigation
 
-import com.savvasdalkitsis.gameframe.feature.navigation.ApplicationNavigator
-import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
-import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector
-import com.savvasdalkitsis.gameframe.feature.message.injector.TopActivityProviderInjector
+import com.savvasdalkitsis.gameframe.infra.injector.TopActivityProviderInjector.topActivityProvider
+import com.savvasdalkitsis.gameframe.infra.navigation.FeedbackNavigator
+import com.savvasdalkitsis.gameframe.infra.navigation.Navigator
+import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector.application
 
 object NavigatorInjector {
 
-    fun navigator(): Navigator =
-            ApplicationNavigator(TopActivityProviderInjector.topActivityProvider(),
-                    ApplicationInjector.application())
+    fun feedbackNavigator(): Navigator = FeedbackNavigator(topActivityProvider(), application())
 }

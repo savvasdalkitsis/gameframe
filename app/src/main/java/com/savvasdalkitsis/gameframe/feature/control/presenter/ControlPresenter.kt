@@ -19,8 +19,8 @@ package com.savvasdalkitsis.gameframe.feature.control.presenter
 import com.savvasdalkitsis.gameframe.feature.control.model.*
 import com.savvasdalkitsis.gameframe.feature.control.view.ControlView
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
+import com.savvasdalkitsis.gameframe.feature.ip.navigation.IpNavigator
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
-import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
 import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.networking.model.WifiNotEnabledException
 import com.savvasdalkitsis.gameframe.feature.networking.usecase.WifiUseCase
@@ -31,7 +31,7 @@ import io.reactivex.Completable
 
 class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase,
                        private val ipRepository: IpRepository,
-                       private val navigator: Navigator,
+                       private val navigator: IpNavigator,
                        private val wifiUseCase: WifiUseCase): BasePresenter<ControlView>() {
 
     fun loadIpAddress() {

@@ -29,7 +29,7 @@ import com.github.andrewlord1990.snackbarbuilder.SnackbarBuilder
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
 import com.savvasdalkitsis.gameframe.infra.R
 import com.savvasdalkitsis.gameframe.kotlin.ViewAction
-import com.savvasdalkitsis.gameframe.feature.message.injector.TopActivityProviderInjector
+import com.savvasdalkitsis.gameframe.infra.injector.TopActivityProviderInjector
 
 
 object Snackbars {

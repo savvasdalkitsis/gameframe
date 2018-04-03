@@ -14,16 +14,16 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.navigation
+package com.savvasdalkitsis.gameframe.infra.injector
 
-import io.reactivex.Completable
-import java.io.File
+import com.savvasdalkitsis.gameframe.infra.ApplicationTopActivityProvider
+import com.savvasdalkitsis.gameframe.infra.TopActivityProvider
 
-interface Navigator {
+object TopActivityProviderInjector {
 
-    fun navigateToIpSetup()
-    fun navigateToPlayStore()
-    fun navigateToShareImageFile(file: File, name: String): Completable
-    fun navigateToFeedback()
-    fun navigateToAccount()
+    private val topActivityProvider = ApplicationTopActivityProvider()
+
+    fun topActivityProvider(): TopActivityProvider = topActivityProvider
+
+    fun applicationTopActivityProvider(): ApplicationTopActivityProvider = topActivityProvider
 }

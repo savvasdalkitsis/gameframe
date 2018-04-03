@@ -17,7 +17,7 @@
 package com.savvasdalkitsis.gameframe.infra.rx
 
 import android.util.Log
-import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector
+import com.savvasdalkitsis.gameframe.feature.ip.IpInjector
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
 import io.reactivex.CompletableTransformer
 import io.reactivex.FlowableTransformer
@@ -27,7 +27,7 @@ import io.reactivex.schedulers.Schedulers
 
 object RxTransformers {
 
-    private val navigator = NavigatorInjector.navigator()
+    private val navigator = IpInjector.ipNavigator()
 
     fun interceptIpMissingException() = CompletableTransformer { c ->
         c.doOnError {

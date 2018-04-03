@@ -14,16 +14,9 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.message.injector
+package com.savvasdalkitsis.gameframe.infra.navigation
 
-import com.savvasdalkitsis.gameframe.infra.ApplicationTopActivityProvider
-import com.savvasdalkitsis.gameframe.infra.TopActivityProvider
+interface Navigator {
 
-object TopActivityProviderInjector {
-
-    private val topActivityProvider = ApplicationTopActivityProvider()
-
-    fun topActivityProvider(): TopActivityProvider = topActivityProvider
-
-    fun applicationTopActivityProvider(): ApplicationTopActivityProvider = topActivityProvider
+    fun navigateToFeedback()
 }

@@ -17,7 +17,6 @@
 package com.savvasdalkitsis.gameframe.feature.workspace.presenter
 
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
 import com.savvasdalkitsis.gameframe.feature.bitmap.usecase.BitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGameFrameException
@@ -25,8 +24,8 @@ import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.history.model.MomentList
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
+import com.savvasdalkitsis.gameframe.feature.ip.navigation.IpNavigator
 import com.savvasdalkitsis.gameframe.feature.message.MessageDisplay
-import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
 import com.savvasdalkitsis.gameframe.feature.networking.model.WifiNotEnabledException
 import com.savvasdalkitsis.gameframe.feature.networking.usecase.WifiUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.ColorGrid
@@ -37,14 +36,16 @@ import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.GridTou
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.model.Project
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
+import com.savvasdalkitsis.gameframe.feature.workspace.navigation.WorkspaceNavigator
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.UnsupportedProjectVersionException
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.view.WorkspaceView
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
+import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
 import com.savvasdalkitsis.gameframe.infra.base.plusAssign
+import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import com.savvasdalkitsis.gameframe.kotlin.Action
 import com.savvasdalkitsis.gameframe.kotlin.or
-import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -54,7 +55,8 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
                                                    private val workspaceUseCase: WorkspaceUseCase,
                                                    private val stringUseCase: StringUseCase,
                                                    private val messageDisplay: MessageDisplay,
-                                                   private val navigator: Navigator,
+                                                   private val navigator: WorkspaceNavigator,
+                                                   private val ipNavigator: IpNavigator,
                                                    private val bitmapFileUseCase: BitmapFileUseCase<BitmapSource>,
                                                    private val wifiUseCase: WifiUseCase) : GridTouchedListener, BasePresenter<WorkspaceView<Options>>() {
 
@@ -289,7 +291,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
                             is AlreadyExistsOnGameFrameException -> view?.drawingAlreadyExists(name, grid, e)
                             is IpBaseHostMissingException -> {
                                 view?.operationFailed(e)
-                                navigator.navigateToIpSetup()
+                                ipNavigator.navigateToIpSetup()
                             }
                             is WifiNotEnabledException -> view?.wifiNotEnabledError(e)else -> view?.operationFailed(e)
                         } })

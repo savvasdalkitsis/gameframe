@@ -90,7 +90,6 @@ dependencies {
     }
     implementation("com.twitter.sdk.android:twitter-core:3.0.0@aar") { transitive = true }
     compile "com.google.firebase:firebase-perf:$gms_version"
-    implementation ("org.rm3l:maoni:$maoni_version@aar") { transitive = true }
     kapt "com.jakewharton:butterknife-compiler:$butterknife_version"
 }
 

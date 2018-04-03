@@ -20,7 +20,7 @@ import com.savvasdalkitsis.gameframe.feature.account.usecase.FirebaseAuthenticat
 import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector.bmpUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
-import com.savvasdalkitsis.gameframe.feature.message.injector.TopActivityProviderInjector.topActivityProvider
+import com.savvasdalkitsis.gameframe.infra.injector.TopActivityProviderInjector.topActivityProvider
 import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector.wifiUseCase
 import com.savvasdalkitsis.gameframe.feature.storage.injector.StorageInjector
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase

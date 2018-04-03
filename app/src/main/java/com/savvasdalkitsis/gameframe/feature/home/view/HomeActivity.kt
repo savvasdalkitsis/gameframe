@@ -23,17 +23,19 @@ import android.view.Menu
 import android.view.MenuItem
 import com.afollestad.materialdialogs.color.ColorChooserDialog
 import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.feature.account.injector.AccountInjector
 import com.savvasdalkitsis.gameframe.feature.changelog.view.ChangeLogDialogFragment
 import com.savvasdalkitsis.gameframe.feature.home.presenter.HomePresenter
+import com.savvasdalkitsis.gameframe.feature.ip.IpInjector
 import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
-import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity<HomeView, HomePresenter>(), ColorChooserDialog.ColorCallback, HomeView {
 
-    private val navigator = NavigatorInjector.navigator()
+    private val accountNavigator = AccountInjector.accountNavigator()
+    private val ipNavigator = IpInjector.ipNavigator()
     override val presenter = PresenterInjector.homePresenter()
     override val view = this
 
@@ -67,12 +69,12 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), ColorChooserDialog
         if (super.onOptionsItemSelected(item)) return true
         return when (item.itemId) {
             R.id.action_setup_ip -> {
-                navigator.navigateToIpSetup()
+                ipNavigator.navigateToIpSetup()
                 notifyAllFragmentsUnselected()
                 true
             }
             R.id.action_account -> {
-                navigator.navigateToAccount()
+                accountNavigator.navigateToAccount()
                 true
             }
             R.id.action_manage -> {

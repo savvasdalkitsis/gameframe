@@ -18,8 +18,8 @@ package com.savvasdalkitsis.gameframe.feature.widget.presenter
 
 import android.util.Log
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
+import com.savvasdalkitsis.gameframe.feature.ip.navigation.IpNavigator
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
-import com.savvasdalkitsis.gameframe.feature.navigation.Navigator
 import com.savvasdalkitsis.gameframe.feature.widget.view.PowerTileService
 import com.savvasdalkitsis.gameframe.feature.widget.view.WidgetView
 import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
@@ -29,7 +29,7 @@ import io.reactivex.Completable
 
 class WidgetPresenter(private val gameFrameUseCase: GameFrameUseCase,
                       private val ipRepository: IpRepository,
-                      private val navigator: Navigator): BasePresenter<WidgetView>() {
+                      private val navigator: IpNavigator): BasePresenter<WidgetView>() {
 
     fun menu() = perform(gameFrameUseCase.menu())
 
