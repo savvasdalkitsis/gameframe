@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -25,23 +26,13 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    api project(":kotlin")
-    implementation project(":styles")
+    implementation project(":infra")
+    implementation project(":message")
+    implementation project(":networking")
     implementation(
-            "com.android.support:appcompat-v7:$support_version",
             "com.android.support:design:$support_version",
-            "uk.co.chrisjenx:calligraphy:$calligraphy_version",
-            "com.github.andrewlord1990:snackbarbuilder:$snackbarbuilder_version",
-            "com.androidadvance:topsnackbar:$topsnackbar_version",
-            "io.github.yavski:fab-speed-dial:$fab_speed_dial_version",
             "com.jakewharton:butterknife:$butterknife_version",
-    )
-    implementation ("org.rm3l:maoni:$maoni_version@aar") { transitive = true }
-    api(
-            "io.reactivex.rxjava2:rxandroid:$rxandroid_version",
             "io.reactivex.rxjava2:rxjava:$rxjava_version",
     )
-}
-repositories {
-    mavenCentral()
+    kapt "com.jakewharton:butterknife-compiler:$butterknife_version"
 }

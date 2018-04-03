@@ -16,9 +16,11 @@
  */
 package com.savvasdalkitsis.gameframe.feature.control.presenter
 
+import android.util.Log
 import com.savvasdalkitsis.gameframe.feature.control.model.*
 import com.savvasdalkitsis.gameframe.feature.control.view.ControlView
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
+import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
 import com.savvasdalkitsis.gameframe.feature.ip.navigation.IpNavigator
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
@@ -28,6 +30,7 @@ import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
 import com.savvasdalkitsis.gameframe.infra.base.plusAssign
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import io.reactivex.Completable
+import io.reactivex.CompletableTransformer
 
 class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase,
                        private val ipRepository: IpRepository,
@@ -59,7 +62,7 @@ class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase,
     fun setup() = navigator.navigateToIpSetup()
 
     private fun runCommand(command: Completable) =
-            command.compose(RxTransformers.interceptIpMissingException())
+            command.compose(interceptIpMissingException())
                     .compose(RxTransformers.schedulers())
 
     private fun runCommandAndNotifyView(command: Completable) {
@@ -78,4 +81,14 @@ class ControlPresenter(private val gameFrameUseCase: GameFrameUseCase,
     fun enableWifi() {
         wifiUseCase.enableWifi()
     }
+
+    private fun interceptIpMissingException() = CompletableTransformer { c ->
+        c.doOnError {
+            if (it is IpBaseHostMissingException) {
+                Log.e(RxTransformers::class.java.name, "Error: ", it)
+                navigator.navigateToIpSetup()
+            }
+        }
+    }
+
 }

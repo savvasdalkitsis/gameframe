@@ -24,25 +24,20 @@ import com.savvasdalkitsis.gameframe.feature.changelog.injector.ChangelogInjecto
 import com.savvasdalkitsis.gameframe.feature.composition.CompositionInjector.blendUseCase
 import com.savvasdalkitsis.gameframe.feature.control.presenter.ControlPresenter
 import com.savvasdalkitsis.gameframe.feature.home.presenter.HomePresenter
-import com.savvasdalkitsis.gameframe.feature.ip.IpInjector.ipNavigator
-import com.savvasdalkitsis.gameframe.feature.ip.presenter.IpSetupPresenter
+import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipNavigator
+import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipRepository
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector.messageDisplay
 import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector.wifiUseCase
 import com.savvasdalkitsis.gameframe.feature.widget.presenter.WidgetPresenter
 import com.savvasdalkitsis.gameframe.feature.workspace.injector.WorkspaceInjector.workspaceNavigator
 import com.savvasdalkitsis.gameframe.feature.workspace.presenter.WorkspacePresenter
-import com.savvasdalkitsis.gameframe.injector.feature.ip.repository.IpRepositoryInjector.ipRepository
 import com.savvasdalkitsis.gameframe.injector.feature.workspace.WorkspaceStorageInjector.firebaseWorkspaceStorage
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.authenticationUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.gameFrameUseCase
-import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.ipDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.stringUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.workspaceUseCase
 
 object PresenterInjector {
-
-    fun ipSetupPresenter() =
-            IpSetupPresenter(gameFrameUseCase(), ipRepository(), ipDiscoveryUseCase(), wifiUseCase())
 
     fun controlPresenter() = ControlPresenter(gameFrameUseCase(), ipRepository(), ipNavigator(), wifiUseCase())
 

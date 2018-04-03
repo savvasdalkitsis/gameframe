@@ -6,7 +6,7 @@ import android.content.Intent
 import android.support.v4.content.FileProvider
 import android.util.Log
 import com.savvasdalkitsis.gameframe.infra.navigation.AndroidNavigator
-import com.savvasdalkitsis.gameframe.infra.navigation.FeedbackNavigator
+import com.savvasdalkitsis.gameframe.infra.navigation.AndroidFeedbackNavigator
 import com.savvasdalkitsis.gameframe.infra.TopActivityProvider
 import io.reactivex.Completable
 import java.io.File
@@ -32,7 +32,7 @@ class AndroidWorkspaceNavigator(topActivityProvider: TopActivityProvider, applic
             context.startActivity(Intent.createChooser(intent, name))
             emitter.onComplete()
         } catch (e: android.content.ActivityNotFoundException) {
-            Log.w(FeedbackNavigator::class.java.name, "Could not share image", e)
+            Log.w(AndroidFeedbackNavigator::class.java.name, "Could not share image", e)
             emitter.onError(e)
         }
     }

@@ -1,22 +1,16 @@
 <resources>
     <string name="app_name">Game Frame</string>
     <string name="setup">Setup</string>
-    <string name="ip_separator">.</string>
-    <string name="enter_ip_address">Enter IP address</string>
-    <string name="setup_ip_address">Setup IP address</string>
     <string name="success">Success</string>
-    <string name="operation_failed">Operation failed</string>
     <string name="power">Power</string>
     <string name="game_frame_power">Game Frame Power</string>
     <string name="menu">Menu</string>
     <string name="next">Next</string>
     <string name="discover_game_frame_ip">Discover Game Frame IP</string>
-    <string name="game_frame_ip_found">Game Frame IP found</string>
     <string name="playback_mode">Playback Mode</string>
     <string name="cycle_interval">Cycle Interval</string>
     <string name="display_mode">Display Mode</string>
     <string name="clock_face">Clock Face</string>
-    <string name="trying_to_find_game_frame">Trying to find the Game Frame on your local network</string>
     <string name="game_frame_ip_not_found">Game Frame IP not found.\nSet it up now?</string>
     <string name="manage">Manage</string>
     <string name="draw">Draw</string>
@@ -66,9 +60,6 @@
     <string name="play_store">Play Store</string>
     <string name="cancel">Cancel</string>
     <string name="export_image">Export image</string>
-    <string name="wifi_not_enabled">Wifi is not enabled</string>
-    <string name="enable">Enable</string>
-    <string name="feedback">Feedback</string>
     <string name="account">Account</string>
     <string name="select_login_provider">Select one of the providers to log in</string>
     <string name="google">Google</string>

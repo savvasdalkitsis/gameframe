@@ -8,6 +8,7 @@
 
     <EditText
         android:id="@+id/view_ip_text_view_part_1"
+        android:hint="@string/ip_address_part_1"
         android:minHeight="48dp"
         android:inputType="phone"
         android:digits="0123456789"
@@ -26,6 +27,7 @@
 
     <EditText
         android:id="@+id/view_ip_text_view_part_2"
+        android:hint="@string/ip_address_part_2"
         android:minHeight="48dp"
         android:inputType="phone"
         android:digits="0123456789"
@@ -44,6 +46,7 @@
 
     <EditText
         android:id="@+id/view_ip_text_view_part_3"
+        android:hint="@string/ip_address_part_3"
         android:minHeight="48dp"
         android:inputType="phone"
         android:digits="0123456789"
@@ -62,6 +65,7 @@
 
     <EditText
         android:id="@+id/view_ip_text_view_part_4"
+        android:hint="@string/ip_address_part_4"
         android:minHeight="48dp"
         android:inputType="phone"
         android:digits="0123456789"

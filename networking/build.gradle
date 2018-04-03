@@ -28,5 +28,7 @@ dependencies {
     implementation project(':infra')
     implementation(
             "io.reactivex.rxjava2:rxjava:$rxjava_version",
+            "com.squareup.okhttp3:logging-interceptor:$okhttp_version",
     )
+    api "com.squareup.okhttp3:okhttp:$okhttp_version"
 }

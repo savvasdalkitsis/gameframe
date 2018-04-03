@@ -26,7 +26,7 @@ import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.account.injector.AccountInjector
 import com.savvasdalkitsis.gameframe.feature.changelog.view.ChangeLogDialogFragment
 import com.savvasdalkitsis.gameframe.feature.home.presenter.HomePresenter
-import com.savvasdalkitsis.gameframe.feature.ip.IpInjector
+import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector
 import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector

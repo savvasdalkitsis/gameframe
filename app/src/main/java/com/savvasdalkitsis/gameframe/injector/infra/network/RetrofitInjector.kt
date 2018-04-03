@@ -16,8 +16,8 @@
  */
 package com.savvasdalkitsis.gameframe.injector.infra.network
 
+import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector.okHttpClient
 import com.savvasdalkitsis.gameframe.injector.infra.network.InterceptorInjector.ipBaseHostInterceptor
-import com.savvasdalkitsis.gameframe.injector.infra.network.OkHttpClientInjector.okHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory

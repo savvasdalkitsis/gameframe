@@ -16,26 +16,7 @@
  */
 package com.savvasdalkitsis.gameframe.infra.navigation
 
-import android.app.Activity
-import android.app.Application
-import android.widget.Toast
-import com.savvasdalkitsis.gameframe.infra.R
-import com.savvasdalkitsis.gameframe.infra.TopActivityProvider
-import org.rm3l.maoni.Maoni
+interface FeedbackNavigator {
 
-class FeedbackNavigator(topActivityProvider: TopActivityProvider, application: Application) : Navigator, AndroidNavigator(topActivityProvider, application) {
-
-    override fun navigateToFeedback() {
-        context.let {
-            if (it is Activity) {
-                Maoni.Builder(it, "$it.fileProvider")
-                        .withDefaultToEmailAddress("feedback.gameframe@gmail.com")
-                        .withHeader(R.drawable.feedback_header)
-                        .build()
-                        .start(it)
-            } else {
-                Toast.makeText(it, R.string.unknown_error, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
+    fun navigateToFeedback()
 }

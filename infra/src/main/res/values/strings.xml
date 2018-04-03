@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="unknown_error">Something unexpected went wrong.</string>
+    <string name="operation_failed">Operation failed</string>
+    <string name="feedback">Feedback</string>
 </resources>

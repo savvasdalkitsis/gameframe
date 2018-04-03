@@ -16,7 +16,6 @@
  */
 package com.savvasdalkitsis.gameframe.feature.ip.presenter
 
-import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.view.IpSetupView
@@ -26,8 +25,7 @@ import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
 import com.savvasdalkitsis.gameframe.infra.base.plusAssign
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 
-class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,
-                       private val ipRepository: IpRepository,
+class IpSetupPresenter(private val ipRepository: IpRepository,
                        private val ipDiscoveryUseCase: IpDiscoveryUseCase,
                        private val wifiUseCase: WifiUseCase): BasePresenter<IpSetupView>() {
     
@@ -48,7 +46,7 @@ class IpSetupPresenter(private val gameFrameUseCase: GameFrameUseCase,
         managedStreams += ipDiscoveryUseCase.monitoredIps()
                 .compose(RxTransformers.schedulersFlowable())
                 .subscribe( { view?.tryingAddress(it) }, { })
-        managedStreams += gameFrameUseCase.discoverGameFrameIp()
+        managedStreams += ipDiscoveryUseCase.discoverGameFrameIp()
                 .compose(RxTransformers.schedulers<IpAddress>())
                 .doOnSuccess { view?.displayIdleView() }
                 .subscribe(

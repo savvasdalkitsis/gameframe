@@ -19,35 +19,27 @@ package com.savvasdalkitsis.gameframe.injector.usecase
 import com.savvasdalkitsis.gameframe.feature.account.usecase.FirebaseAuthenticationUseCase
 import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector.bmpUseCase
 import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
-import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
-import com.savvasdalkitsis.gameframe.infra.injector.TopActivityProviderInjector.topActivityProvider
+import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipRepository
 import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector.wifiUseCase
 import com.savvasdalkitsis.gameframe.feature.storage.injector.StorageInjector
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
 import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector.application
+import com.savvasdalkitsis.gameframe.infra.injector.TopActivityProviderInjector.topActivityProvider
 import com.savvasdalkitsis.gameframe.injector.feature.gameframe.api.GameFrameApiInjector.gameFrameApi
-import com.savvasdalkitsis.gameframe.injector.feature.ip.repository.IpRepositoryInjector.ipRepository
 import com.savvasdalkitsis.gameframe.injector.feature.workspace.WorkspaceStorageInjector.localWorkspaceStorage
 import com.savvasdalkitsis.gameframe.injector.feature.workspace.WorkspaceStorageInjector.workspaceStorage
-import com.savvasdalkitsis.gameframe.injector.infra.network.OkHttpClientInjector.okHttpClient
 import com.savvasdalkitsis.gameframe.injector.infra.parsing.GsonInjector.gson
 
 object UseCaseInjector {
 
-    private val IP_DISCOVERY_USE_CASE = IpDiscoveryUseCase()
-
     fun gameFrameUseCase() = GameFrameUseCase(
-            okHttpClient(1).build(),
             gameFrameApi(),
-            ipDiscoveryUseCase(),
             StorageInjector.localStorageUseCase(),
             bmpUseCase(),
             ipRepository(),
             wifiUseCase()
     )
-
-    fun ipDiscoveryUseCase() = IP_DISCOVERY_USE_CASE
 
     fun workspaceUseCase() = WorkspaceUseCase(gson(), workspaceStorage(), localWorkspaceStorage())
 

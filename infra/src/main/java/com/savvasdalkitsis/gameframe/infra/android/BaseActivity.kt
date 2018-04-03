@@ -24,10 +24,10 @@ import android.text.Spanned
 import android.text.style.AbsoluteSizeSpan
 import android.view.MenuItem
 import butterknife.ButterKnife
-import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.infra.R
 import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
 import com.savvasdalkitsis.gameframe.infra.base.BaseView
-import com.savvasdalkitsis.gameframe.injector.feature.navigation.NavigatorInjector
+import com.savvasdalkitsis.gameframe.infra.injector.InfrastructureInjector
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 abstract class BaseActivity<V: BaseView, out P: BasePresenter<V>> : AppCompatActivity() {
@@ -36,7 +36,7 @@ abstract class BaseActivity<V: BaseView, out P: BasePresenter<V>> : AppCompatAct
     abstract val presenter: P
     abstract val view: V
 
-    private val navigator = NavigatorInjector.feedbackNavigator()
+    private val navigator = InfrastructureInjector.feedbackNavigator()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

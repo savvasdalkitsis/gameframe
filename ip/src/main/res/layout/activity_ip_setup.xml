@@ -26,6 +26,7 @@
         android:layout_gravity="center"
         android:layout_margin="16dp">
 
+        <!--suppress AndroidElementNotAllowed -->
         <include
             layout="@layout/view_ip_text_view"
             android:layout_width="match_parent"
@@ -35,6 +36,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp" />
 
+        <!--suppress AndroidElementNotAllowed -->
         <TextView
             android:id="@+id/view_discover_title"
             android:layout_width="wrap_content"

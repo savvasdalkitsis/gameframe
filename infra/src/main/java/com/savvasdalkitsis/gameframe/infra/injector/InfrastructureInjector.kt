@@ -14,19 +14,14 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.ip.usecase
+package com.savvasdalkitsis.gameframe.infra.injector
 
-import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
-import io.reactivex.Flowable
-import io.reactivex.processors.BehaviorProcessor
+import com.savvasdalkitsis.gameframe.infra.injector.TopActivityProviderInjector.topActivityProvider
+import com.savvasdalkitsis.gameframe.infra.navigation.AndroidFeedbackNavigator
+import com.savvasdalkitsis.gameframe.infra.navigation.FeedbackNavigator
+import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector.application
 
-class IpDiscoveryUseCase {
+object InfrastructureInjector {
 
-    private val processor = BehaviorProcessor.create<IpAddress>()
-
-    fun monitoredIps(): Flowable<IpAddress> = processor
-
-    fun emitMonitoredAddress(ip: IpAddress) {
-        processor.onNext(ip)
-    }
+    fun feedbackNavigator(): FeedbackNavigator = AndroidFeedbackNavigator(topActivityProvider(), application())
 }

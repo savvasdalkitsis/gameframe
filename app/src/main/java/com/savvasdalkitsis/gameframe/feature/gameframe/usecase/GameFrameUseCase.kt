@@ -16,35 +16,28 @@
  */
 package com.savvasdalkitsis.gameframe.feature.gameframe.usecase
 
-import android.util.Log
 import com.savvasdalkitsis.gameframe.feature.bitmap.usecase.BmpUseCase
 import com.savvasdalkitsis.gameframe.feature.control.model.*
 import com.savvasdalkitsis.gameframe.feature.gameframe.api.CommandResponse
 import com.savvasdalkitsis.gameframe.feature.gameframe.api.GameFrameApi
 import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGameFrameException
 import com.savvasdalkitsis.gameframe.feature.gameframe.model.GameFrameCommandError
-import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpNotFoundException
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
-import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
-import com.savvasdalkitsis.gameframe.feature.storage.usecase.LocalStorageUseCase
 import com.savvasdalkitsis.gameframe.feature.networking.model.WifiNotEnabledException
 import com.savvasdalkitsis.gameframe.feature.networking.usecase.WifiUseCase
+import com.savvasdalkitsis.gameframe.feature.storage.usecase.LocalStorageUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.asBitmap
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Maybe
-import io.reactivex.Single
 import io.reactivex.functions.Function
-import okhttp3.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import java.io.File
-import java.io.IOException
 import java.util.Collections.singletonMap
 
-class GameFrameUseCase(private val okHttpClient: OkHttpClient,
-                       private val gameFrameApi: GameFrameApi,
-                       private val ipDiscoveryUseCase: IpDiscoveryUseCase,
+class GameFrameUseCase(private val gameFrameApi: GameFrameApi,
                        private val localStorageUseCase: LocalStorageUseCase,
                        private val bmpUseCase: BmpUseCase,
                        private val ipRepository: IpRepository,
@@ -67,23 +60,6 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
     fun setClockFace(clockFace: ClockFace) = setParam(clockFace.queryParamName)
 
     fun removeFolder(name: String) = issueCommand("rmdir", name)
-
-    fun discoverGameFrameIp(): Single<IpAddress> = wifiUseCase.getDeviceIp()
-            .flattenAsFlowable(wholePart4Subrange())
-            .concatMap { ip ->
-                ipDiscoveryUseCase.emitMonitoredAddress(ip)
-                var result: Flowable<IpAddress> = Flowable.empty<IpAddress>()
-                try {
-                    if (isFromGameFrame(ping(ip))) {
-                        result = Flowable.just(ip)
-                    }
-                } catch (e: IOException) {
-                    Log.w(GameFrameUseCase::class.java.name, "Error trying to call " + ip, e)
-                }
-                result
-            }
-            .firstOrError()
-            .onErrorResumeNext { e -> Single.error<IpAddress>(IpNotFoundException("Game Frame IP not found", e)) }
 
     fun uploadAndDisplay(name: String, colorGrid: Grid): Completable =
             localStorageUseCase.saveFile(dirName = "bmp/$name", fileName = "0.bmp",
@@ -115,18 +91,6 @@ class GameFrameUseCase(private val okHttpClient: OkHttpClient,
     }
 
     private fun play(name: String) = issueCommand("play", name)
-    private fun wholePart4Subrange() = { ip: IpAddress ->
-        (0..255).map { it.toString() }.map { ip.copy(part4 = it) }
-    }
-
-    private fun isFromGameFrame(response: Response) =
-            response.isSuccessful && response.headers().get("Server")?.startsWith("Webduino/") ?: false
-
-    @Throws(IOException::class)
-    private fun ping(ip: IpAddress) = okHttpClient.newCall(Request.Builder()
-            .url("http://" + ip.toString() + "/command")
-            .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "next="))
-            .build()).execute()
 
     private fun param(key: String, value: String = "") = singletonMap(key, value)
 
