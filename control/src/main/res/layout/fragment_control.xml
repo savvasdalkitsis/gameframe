@@ -64,6 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <!--suppress AndroidDomInspection -->
                 <ImageView
                     android:id="@+id/view_brightness_low"
                     style="?attr/actionButtonStyle"
@@ -86,6 +87,7 @@
                     android:progress="1"
                     tools:ignore="RtlHardcoded" />
 
+                <!--suppress AndroidDomInspection -->
                 <ImageView
                     android:id="@+id/view_brightness_high"
                     style="?attr/actionButtonStyle"

@@ -17,29 +17,15 @@
 package com.savvasdalkitsis.gameframe.injector.usecase
 
 import com.savvasdalkitsis.gameframe.feature.account.usecase.FirebaseAuthenticationUseCase
-import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector.bmpUseCase
-import com.savvasdalkitsis.gameframe.feature.device.usecase.GameFrameUseCase
-import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipRepository
-import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector.wifiUseCase
-import com.savvasdalkitsis.gameframe.feature.storage.injector.StorageInjector
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
 import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector.application
 import com.savvasdalkitsis.gameframe.infra.injector.TopActivityProviderInjector.topActivityProvider
-import com.savvasdalkitsis.gameframe.injector.feature.gameframe.api.GameFrameApiInjector.gameFrameApi
 import com.savvasdalkitsis.gameframe.injector.feature.workspace.WorkspaceStorageInjector.localWorkspaceStorage
 import com.savvasdalkitsis.gameframe.injector.feature.workspace.WorkspaceStorageInjector.workspaceStorage
 import com.savvasdalkitsis.gameframe.injector.infra.parsing.GsonInjector.gson
 
 object UseCaseInjector {
-
-    fun gameFrameUseCase() = GameFrameUseCase(
-            gameFrameApi(),
-            StorageInjector.localStorageUseCase(),
-            bmpUseCase(),
-            ipRepository(),
-            wifiUseCase()
-    )
 
     fun workspaceUseCase() = WorkspaceUseCase(gson(), workspaceStorage(), localWorkspaceStorage())
 

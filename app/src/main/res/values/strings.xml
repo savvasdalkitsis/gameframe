@@ -1,17 +1,9 @@
 <resources>
     <string name="app_name">Game Frame</string>
     <string name="setup">Setup</string>
-    <string name="success">Success</string>
     <string name="power">Power</string>
     <string name="game_frame_power">Game Frame Power</string>
-    <string name="menu">Menu</string>
-    <string name="next">Next</string>
     <string name="discover_game_frame_ip">Discover Game Frame IP</string>
-    <string name="playback_mode">Playback Mode</string>
-    <string name="cycle_interval">Cycle Interval</string>
-    <string name="display_mode">Display Mode</string>
-    <string name="clock_face">Clock Face</string>
-    <string name="game_frame_ip_not_found">Game Frame IP not found.\nSet it up now?</string>
     <string name="manage">Manage</string>
     <string name="draw">Draw</string>
     <string name="error_communicating">There was an error communicating with the GameFrame</string>
@@ -36,7 +28,6 @@
     <string name="tools">Tools</string>
     <string name="change_tool">Change tool:</string>
     <string name="display_layer_borders">Display layer borders</string>
-    <string name="game_frame_ip">Game Frame IP: %1$s</string>
     <string name="save">Save</string>
     <string name="send_to_game_frame">Send to GameFrame</string>
     <string name="open_drawing">Open previously saved drawing</string>

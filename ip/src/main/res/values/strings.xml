@@ -7,8 +7,4 @@
     <string name="trying_to_find_game_frame">Trying to find the Game Frame on your local network</string>
     <string name="game_frame_ip_found">Game Frame IP found</string>
     <string name="ip_separator">.</string>
-    <string name="ip_address_part_1">IP address part 1</string>
-    <string name="ip_address_part_2">IP address part 2</string>
-    <string name="ip_address_part_3">IP address part 3</string>
-    <string name="ip_address_part_4">IP address part 4</string>
 </resources>

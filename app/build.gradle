@@ -60,6 +60,7 @@ dependencies {
     implementation project(':composition')
     implementation project(':ip')
     implementation project(':device')
+    implementation project(':control')
     implementation (
             "com.google.firebase:firebase-crash:$gms_version",
             "com.google.firebase:firebase-auth:$firebase_version",
@@ -72,8 +73,6 @@ dependencies {
             "com.android.support:gridlayout-v7:$support_version",
             "com.google.android.gms:play-services-wearable:$gms_version",
             "com.jakewharton:butterknife:$butterknife_version",
-            "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version",
-            "com.squareup.retrofit2:converter-gson:$retrofit_version",
             "com.squareup.okhttp3:logging-interceptor:$okhttp_version",
             "uk.co.chrisjenx:calligraphy:$calligraphy_version",
             "com.afollestad.material-dialogs:core:$material_dialogs_version",

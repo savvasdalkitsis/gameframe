@@ -1,35 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="playback_mode">
-        <item>Sequential</item>
-        <item>Shuffle</item>
-        <item>Shuffle (No Animation)</item>
-    </string-array>
-
-    <string-array name="cycle_interval">
-        <item>10 Seconds</item>
-        <item>30 Seconds</item>
-        <item>1 Minute</item>
-        <item>5 Minutes</item>
-        <item>15 Minutes</item>
-        <item>30 Minutes</item>
-        <item>1 Hour</item>
-        <item>Infinite</item>
-    </string-array>
-
-    <string-array name="display_mode">
-        <item>Gallery</item>
-        <item>Clock</item>
-        <item>Effects</item>
-    </string-array>
-
-    <string-array name="clock_face">
-        <item>Color</item>
-        <item>Muted</item>
-        <item>Shadow</item>
-        <item>Binary 1</item>
-        <item>Binary 2</item>
-    </string-array>
 
     <integer-array name="palette_ms_paint">
         <item>0xff000000</item>

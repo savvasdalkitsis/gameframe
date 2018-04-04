@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.savvasdalkitsis.gameframe.feature.ip.view.IpTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/view_ip_text_view"
     android:orientation="horizontal"
     android:layout_width="wrap_content"
@@ -8,7 +9,6 @@
 
     <EditText
         android:id="@+id/view_ip_text_view_part_1"
-        android:hint="@string/ip_address_part_1"
         android:minHeight="48dp"
         android:inputType="phone"
         android:digits="0123456789"
@@ -17,7 +17,8 @@
         android:gravity="center_horizontal"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:ignore="LabelFor" />
 
     <TextView
         android:textSize="24sp"
@@ -27,7 +28,6 @@
 
     <EditText
         android:id="@+id/view_ip_text_view_part_2"
-        android:hint="@string/ip_address_part_2"
         android:minHeight="48dp"
         android:inputType="phone"
         android:digits="0123456789"
@@ -36,7 +36,8 @@
         android:gravity="center_horizontal"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:ignore="LabelFor" />
 
     <TextView
         android:textSize="24sp"
@@ -46,7 +47,6 @@
 
     <EditText
         android:id="@+id/view_ip_text_view_part_3"
-        android:hint="@string/ip_address_part_3"
         android:minHeight="48dp"
         android:inputType="phone"
         android:digits="0123456789"
@@ -55,7 +55,8 @@
         android:gravity="center_horizontal"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:ignore="LabelFor" />
 
     <TextView
         android:textSize="24sp"
@@ -65,7 +66,6 @@
 
     <EditText
         android:id="@+id/view_ip_text_view_part_4"
-        android:hint="@string/ip_address_part_4"
         android:minHeight="48dp"
         android:inputType="phone"
         android:digits="0123456789"
@@ -74,6 +74,7 @@
         android:gravity="center_horizontal"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        tools:ignore="LabelFor" />
 
 </com.savvasdalkitsis.gameframe.feature.ip.view.IpTextView>

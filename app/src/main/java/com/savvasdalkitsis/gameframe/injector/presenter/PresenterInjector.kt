@@ -22,7 +22,8 @@ import com.savvasdalkitsis.gameframe.feature.account.presenter.AccountPresenter
 import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector.bitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.changelog.injector.ChangelogInjector.changeLogUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.CompositionInjector.blendUseCase
-import com.savvasdalkitsis.gameframe.feature.control.presenter.ControlPresenter
+import com.savvasdalkitsis.gameframe.feature.device.injector.DeviceInjector
+import com.savvasdalkitsis.gameframe.feature.device.injector.DeviceInjector.gameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.home.presenter.HomePresenter
 import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipNavigator
 import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipRepository
@@ -33,13 +34,10 @@ import com.savvasdalkitsis.gameframe.feature.workspace.injector.WorkspaceInjecto
 import com.savvasdalkitsis.gameframe.feature.workspace.presenter.WorkspacePresenter
 import com.savvasdalkitsis.gameframe.injector.feature.workspace.WorkspaceStorageInjector.firebaseWorkspaceStorage
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.authenticationUseCase
-import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.gameFrameUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.stringUseCase
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.workspaceUseCase
 
 object PresenterInjector {
-
-    fun controlPresenter() = ControlPresenter(gameFrameUseCase(), ipRepository(), ipNavigator(), wifiUseCase())
 
     fun widgetPresenter() =
             WidgetPresenter(gameFrameUseCase(), ipRepository(), ipNavigator())

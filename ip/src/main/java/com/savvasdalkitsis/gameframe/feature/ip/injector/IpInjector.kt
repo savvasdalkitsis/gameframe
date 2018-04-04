@@ -2,6 +2,7 @@ package com.savvasdalkitsis.gameframe.feature.ip.injector
 
 import com.savvasdalkitsis.gameframe.feature.ip.navigation.AndroidIpNavigator
 import com.savvasdalkitsis.gameframe.feature.ip.navigation.IpNavigator
+import com.savvasdalkitsis.gameframe.feature.ip.network.IpBaseHostInterceptor
 import com.savvasdalkitsis.gameframe.feature.ip.presenter.IpSetupPresenter
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.ip.repository.PreferenceIpRepository
@@ -11,6 +12,7 @@ import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjec
 import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector.application
 import com.savvasdalkitsis.gameframe.infra.injector.RxSharedPreferencesInjector
 import com.savvasdalkitsis.gameframe.infra.injector.TopActivityProviderInjector.topActivityProvider
+import okhttp3.Interceptor
 
 object IpInjector {
 
@@ -22,4 +24,6 @@ object IpInjector {
 
     fun ipSetupPresenter() =
             IpSetupPresenter(ipRepository(), IP_DISCOVERY_USE_CASE, NetworkingInjector.wifiUseCase())
+
+    fun ipBaseHostInterceptor(): Interceptor = IpBaseHostInterceptor(ipRepository())
 }
