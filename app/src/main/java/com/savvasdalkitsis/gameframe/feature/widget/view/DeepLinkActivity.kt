@@ -14,13 +14,12 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.gameframe.view
+package com.savvasdalkitsis.gameframe.feature.widget.view
 
 import android.app.Activity
 import android.os.Bundle
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
-import com.savvasdalkitsis.gameframe.feature.widget.view.WidgetView
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 
 class DeepLinkActivity : Activity(), WidgetView {

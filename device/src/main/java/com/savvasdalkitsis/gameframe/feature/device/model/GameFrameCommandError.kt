@@ -14,19 +14,8 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.control.model
+package com.savvasdalkitsis.gameframe.feature.device.model
 
-enum class DisplayMode(val queryParamName: String, private val level: Int) {
+import com.savvasdalkitsis.gameframe.feature.device.api.CommandResponse
 
-    GALLERY("m0", 0),
-    CLOCK("m1", 1),
-    EFFECTS("m2", 2);
-
-    companion object {
-
-        fun from(level: Int): DisplayMode {
-            return values().firstOrNull { it.level == level }
-                    ?: if (level < 0) GALLERY else EFFECTS
-        }
-    }
-}
+internal class GameFrameCommandError(msg: String, val response: CommandResponse) : Throwable(msg)

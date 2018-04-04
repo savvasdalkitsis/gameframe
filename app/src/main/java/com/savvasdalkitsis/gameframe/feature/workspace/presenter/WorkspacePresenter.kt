@@ -19,8 +19,8 @@ package com.savvasdalkitsis.gameframe.feature.workspace.presenter
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.bitmap.usecase.BitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
-import com.savvasdalkitsis.gameframe.feature.gameframe.model.AlreadyExistsOnGameFrameException
-import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
+import com.savvasdalkitsis.gameframe.feature.device.model.AlreadyExistsOnGameFrameException
+import com.savvasdalkitsis.gameframe.feature.device.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.history.model.MomentList
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
@@ -285,7 +285,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
         } else {
             val name = project.name as String
             managedStreams +=
-                gameFrameUseCase.uploadAndDisplay(name, grid)
+                gameFrameUseCase.uploadAndDisplay(name, grid.asBitmap())
                         .compose(RxTransformers.schedulers())
                         .subscribe({ view?.showSuccess() }, { e -> when (e) {
                             is AlreadyExistsOnGameFrameException -> view?.drawingAlreadyExists(name, grid, e)

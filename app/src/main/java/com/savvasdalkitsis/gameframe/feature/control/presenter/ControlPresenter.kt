@@ -17,9 +17,9 @@
 package com.savvasdalkitsis.gameframe.feature.control.presenter
 
 import android.util.Log
-import com.savvasdalkitsis.gameframe.feature.control.model.*
 import com.savvasdalkitsis.gameframe.feature.control.view.ControlView
-import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
+import com.savvasdalkitsis.gameframe.feature.device.model.*
+import com.savvasdalkitsis.gameframe.feature.device.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
 import com.savvasdalkitsis.gameframe.feature.ip.navigation.IpNavigator
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository

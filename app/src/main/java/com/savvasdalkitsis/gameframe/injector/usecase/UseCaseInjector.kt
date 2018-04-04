@@ -18,7 +18,7 @@ package com.savvasdalkitsis.gameframe.injector.usecase
 
 import com.savvasdalkitsis.gameframe.feature.account.usecase.FirebaseAuthenticationUseCase
 import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector.bmpUseCase
-import com.savvasdalkitsis.gameframe.feature.gameframe.usecase.GameFrameUseCase
+import com.savvasdalkitsis.gameframe.feature.device.usecase.GameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipRepository
 import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector.wifiUseCase
 import com.savvasdalkitsis.gameframe.feature.storage.injector.StorageInjector

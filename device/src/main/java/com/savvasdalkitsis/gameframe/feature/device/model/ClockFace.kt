@@ -14,7 +14,7 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.control.model
+package com.savvasdalkitsis.gameframe.feature.device.model
 
 enum class ClockFace(val queryParamName: String, private val level: Int) {
 

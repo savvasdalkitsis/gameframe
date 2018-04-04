@@ -14,8 +14,6 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.gameframe.model
+package com.savvasdalkitsis.gameframe.feature.device.model
 
-import com.savvasdalkitsis.gameframe.feature.gameframe.api.CommandResponse
-
-internal class GameFrameCommandError(msg: String, val response: CommandResponse) : Throwable(msg)
+class AlreadyExistsOnGameFrameException(msg: String, cause: Throwable? = null) : Exception(msg, cause)

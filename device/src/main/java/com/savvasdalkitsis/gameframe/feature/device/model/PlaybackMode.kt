@@ -14,6 +14,19 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.gameframe.api
+package com.savvasdalkitsis.gameframe.feature.device.model
 
-data class CommandResponse(val status: String? = null, val message: String? = null)
+enum class PlaybackMode(val queryParamName: String, private val level: Int) {
+
+    SEQUENTIAL("p0", 0),
+    SHUFFLE("p1", 1),
+    SHUFFLE_NO_ANIMATION("p2", 2);
+
+    companion object {
+
+        fun from(level: Int): PlaybackMode {
+            return values().firstOrNull { it.level == level }
+                    ?: if (level < 0) SEQUENTIAL else SHUFFLE_NO_ANIMATION
+        }
+    }
+}

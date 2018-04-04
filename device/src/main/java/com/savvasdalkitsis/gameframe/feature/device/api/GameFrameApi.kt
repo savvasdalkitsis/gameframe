@@ -14,7 +14,7 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.gameframe.api
+package com.savvasdalkitsis.gameframe.feature.device.api
 
 import io.reactivex.Completable
 import io.reactivex.Maybe

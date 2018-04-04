@@ -26,8 +26,8 @@ import android.widget.SeekBar
 import butterknife.OnClick
 import butterknife.OnItemSelected
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.feature.control.model.*
 import com.savvasdalkitsis.gameframe.feature.control.presenter.ControlPresenter
+import com.savvasdalkitsis.gameframe.feature.device.model.*
 import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
 import com.savvasdalkitsis.gameframe.infra.android.BaseFragment
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener

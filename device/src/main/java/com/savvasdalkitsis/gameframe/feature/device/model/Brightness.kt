@@ -14,19 +14,24 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.control.model
+package com.savvasdalkitsis.gameframe.feature.device.model
 
-enum class PlaybackMode(val queryParamName: String, private val level: Int) {
+enum class Brightness(val queryParamName: String, private val level: Int) {
 
-    SEQUENTIAL("p0", 0),
-    SHUFFLE("p1", 1),
-    SHUFFLE_NO_ANIMATION("p2", 2);
+    LEVEL_0("b0", 0),
+    LEVEL_1("b1", 1),
+    LEVEL_2("b2", 2),
+    LEVEL_3("b3", 3),
+    LEVEL_4("b4", 4),
+    LEVEL_5("b5", 5),
+    LEVEL_6("b6", 6),
+    LEVEL_7("b7", 7);
 
     companion object {
 
-        fun from(level: Int): PlaybackMode {
+        fun from(level: Int): Brightness {
             return values().firstOrNull { it.level == level }
-                    ?: if (level < 0) SEQUENTIAL else SHUFFLE_NO_ANIMATION
+                    ?: if (level < 0) LEVEL_0 else LEVEL_7
         }
     }
 }
