@@ -17,7 +17,7 @@
 package com.savvasdalkitsis.gameframe.feature.widget.presenter
 
 import android.util.Log
-import com.savvasdalkitsis.gameframe.feature.device.usecase.GameFrameUseCase
+import com.savvasdalkitsis.gameframe.feature.device.usecase.DeviceUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.navigation.IpNavigator
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.widget.view.PowerTileService
@@ -27,15 +27,15 @@ import com.savvasdalkitsis.gameframe.infra.base.plusAssign
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import io.reactivex.Completable
 
-class WidgetPresenter(private val gameFrameUseCase: GameFrameUseCase,
+class WidgetPresenter(private val deviceUseCase: DeviceUseCase,
                       private val ipRepository: IpRepository,
                       private val navigator: IpNavigator): BasePresenter<WidgetView>() {
 
-    fun menu() = perform(gameFrameUseCase.menu())
+    fun menu() = perform(deviceUseCase.menu())
 
-    fun next() = perform(gameFrameUseCase.next())
+    fun next() = perform(deviceUseCase.next())
 
-    fun power() = perform(gameFrameUseCase.togglePower())
+    fun power() = perform(deviceUseCase.togglePower())
 
     private fun perform(operation: Completable) {
         managedStreams += ipRepository.ipAddress

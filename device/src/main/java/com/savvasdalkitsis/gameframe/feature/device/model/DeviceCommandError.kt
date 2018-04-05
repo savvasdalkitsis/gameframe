@@ -16,4 +16,6 @@
  */
 package com.savvasdalkitsis.gameframe.feature.device.model
 
-class AlreadyExistsOnGameFrameException(msg: String, cause: Throwable? = null) : Exception(msg, cause)
+import com.savvasdalkitsis.gameframe.feature.device.api.CommandResponse
+
+internal class DeviceCommandError(msg: String, val response: CommandResponse) : Throwable(msg)

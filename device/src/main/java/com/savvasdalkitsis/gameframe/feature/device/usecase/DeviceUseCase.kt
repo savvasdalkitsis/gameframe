@@ -19,7 +19,7 @@ package com.savvasdalkitsis.gameframe.feature.device.usecase
 import com.savvasdalkitsis.gameframe.feature.bitmap.model.Bitmap
 import com.savvasdalkitsis.gameframe.feature.bitmap.usecase.BmpUseCase
 import com.savvasdalkitsis.gameframe.feature.device.api.CommandResponse
-import com.savvasdalkitsis.gameframe.feature.device.api.GameFrameApi
+import com.savvasdalkitsis.gameframe.feature.device.api.DeviceApi
 import com.savvasdalkitsis.gameframe.feature.device.model.*
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.networking.model.WifiNotEnabledException
@@ -34,11 +34,11 @@ import okhttp3.RequestBody
 import java.io.File
 import java.util.Collections.singletonMap
 
-class GameFrameUseCase(private val gameFrameApi: GameFrameApi,
-                       private val localStorageUseCase: LocalStorageUseCase,
-                       private val bmpUseCase: BmpUseCase,
-                       private val ipRepository: IpRepository,
-                       private val wifiUseCase: WifiUseCase) {
+class DeviceUseCase(private val deviceApi: DeviceApi,
+                    private val localStorageUseCase: LocalStorageUseCase,
+                    private val bmpUseCase: BmpUseCase,
+                    private val ipRepository: IpRepository,
+                    private val wifiUseCase: WifiUseCase) {
 
     fun togglePower() = issueCommand("power")
 
@@ -68,8 +68,8 @@ class GameFrameUseCase(private val gameFrameApi: GameFrameApi,
 
     private fun createFolder(name: String): Completable  = issueCommand("mkdir", name)
             .onErrorResumeNext {
-                if (it is GameFrameCommandError && (it.response.message?.contains("exists")) == true) {
-                    Completable.error(AlreadyExistsOnGameFrameException("Could not create folder on game frame with name '$name' as it already exists", it))
+                if (it is DeviceCommandError && (it.response.message?.contains("exists")) == true) {
+                    Completable.error(AlreadyExistsOnDeviceException("Could not create folder on game frame with name '$name' as it already exists", it))
                 } else {
                     Completable.error(it)
                 }
@@ -78,7 +78,7 @@ class GameFrameUseCase(private val gameFrameApi: GameFrameApi,
     private fun uploadFile(file: File): Completable {
         val requestFile = RequestBody.create(MediaType.parse("image/bmp"), file)
         val filePart = MultipartBody.Part.createFormData("my_file[]", "0.bmp", requestFile)
-        return gameFrameApi.upload(filePart)
+        return deviceApi.upload(filePart)
                 .to(mapResponse())
                 .onErrorResumeNext { error -> wifiUseCase.isWifiEnabled()
                         .flatMapCompletable { enabled ->
@@ -102,7 +102,7 @@ class GameFrameUseCase(private val gameFrameApi: GameFrameApi,
 
     private fun issueCommand(key: String, value: String = ""): Completable =
             ipRepository.ipAddress
-                    .flatMapCompletable { gameFrameApi.command(param(key, value)).to(mapResponse()) }
+                    .flatMapCompletable { deviceApi.command(param(key, value)).to(mapResponse()) }
                     .onErrorResumeNext(changeErrorToWifiIfNotEnabled())
 
     private fun changeErrorToWifiIfNotEnabled(): (Throwable) -> Completable = { error ->
@@ -112,10 +112,10 @@ class GameFrameUseCase(private val gameFrameApi: GameFrameApi,
         }
     }
 
-    private fun setParam(key: String): Completable = gameFrameApi.set(param(key))
+    private fun setParam(key: String): Completable = deviceApi.set(param(key))
 
     private fun wrap(response: CommandResponse) =
-            GameFrameCommandError("Command was not successful. response: $response", response)
+            DeviceCommandError("Command was not successful. response: $response", response)
 
     private fun isSuccess(response: CommandResponse?) = "success" == response?.status
 

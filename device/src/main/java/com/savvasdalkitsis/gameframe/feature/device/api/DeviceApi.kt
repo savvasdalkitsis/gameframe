@@ -14,8 +14,26 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.device.model
+package com.savvasdalkitsis.gameframe.feature.device.api
 
-import com.savvasdalkitsis.gameframe.feature.device.api.CommandResponse
+import io.reactivex.Completable
+import io.reactivex.Maybe
+import okhttp3.MultipartBody
+import retrofit2.http.*
 
-internal class GameFrameCommandError(msg: String, val response: CommandResponse) : Throwable(msg)
+interface DeviceApi {
+
+    @FormUrlEncoded
+    @POST("command")
+    @Headers("Connection: close")
+    fun command(@FieldMap(encoded = true) fields: Map<String, String>): Maybe<CommandResponse>
+
+    @GET("set")
+    @Headers("Connection: close")
+    fun set(@QueryMap params: Map<String, String>): Completable
+
+    @Multipart
+    @POST("upload")
+    @Headers("Connection: close")
+    fun upload(@Part file: MultipartBody.Part): Maybe<CommandResponse>
+}

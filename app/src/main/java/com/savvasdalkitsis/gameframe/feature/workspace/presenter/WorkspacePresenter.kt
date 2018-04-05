@@ -19,8 +19,8 @@ package com.savvasdalkitsis.gameframe.feature.workspace.presenter
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.bitmap.usecase.BitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
-import com.savvasdalkitsis.gameframe.feature.device.model.AlreadyExistsOnGameFrameException
-import com.savvasdalkitsis.gameframe.feature.device.usecase.GameFrameUseCase
+import com.savvasdalkitsis.gameframe.feature.device.model.AlreadyExistsOnDeviceException
+import com.savvasdalkitsis.gameframe.feature.device.usecase.DeviceUseCase
 import com.savvasdalkitsis.gameframe.feature.history.model.MomentList
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
@@ -50,7 +50,7 @@ import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 
-class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase: GameFrameUseCase,
+class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: DeviceUseCase,
                                                    private val blendUseCase: BlendUseCase,
                                                    private val workspaceUseCase: WorkspaceUseCase,
                                                    private val stringUseCase: StringUseCase,
@@ -274,7 +274,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
 
     fun replaceDrawing(name: String, colorGrid: Grid) {
         view?.displayProgress()
-        managedStreams += gameFrameUseCase.removeFolder(name)
+        managedStreams += deviceUseCase.removeFolder(name)
                 .compose(RxTransformers.schedulers())
                 .subscribe({ upload(colorGrid) }, { view?.operationFailed(it) })
     }
@@ -285,10 +285,10 @@ class WorkspacePresenter<Options, in BitmapSource>(private val gameFrameUseCase:
         } else {
             val name = project.name as String
             managedStreams +=
-                gameFrameUseCase.uploadAndDisplay(name, grid.asBitmap())
+                deviceUseCase.uploadAndDisplay(name, grid.asBitmap())
                         .compose(RxTransformers.schedulers())
                         .subscribe({ view?.showSuccess() }, { e -> when (e) {
-                            is AlreadyExistsOnGameFrameException -> view?.drawingAlreadyExists(name, grid, e)
+                            is AlreadyExistsOnDeviceException -> view?.drawingAlreadyExists(name, grid, e)
                             is IpBaseHostMissingException -> {
                                 view?.operationFailed(e)
                                 ipNavigator.navigateToIpSetup()
