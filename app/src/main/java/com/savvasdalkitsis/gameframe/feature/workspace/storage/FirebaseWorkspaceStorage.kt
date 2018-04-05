@@ -7,7 +7,7 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.gson.Gson
-import com.savvasdalkitsis.gameframe.feature.account.usecase.AuthenticationUseCase
+import com.savvasdalkitsis.gameframe.feature.authentication.usecase.AuthenticationUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.model.SaveContainer
 import io.reactivex.Completable
 import io.reactivex.Single

@@ -22,7 +22,7 @@ import android.view.Menu
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.feature.account.model.SignedInAccount
+import com.savvasdalkitsis.gameframe.feature.authentication.model.SignedInAccount
 import com.savvasdalkitsis.gameframe.feature.account.presenter.AccountPresenter
 import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
 import com.savvasdalkitsis.gameframe.kotlin.Action

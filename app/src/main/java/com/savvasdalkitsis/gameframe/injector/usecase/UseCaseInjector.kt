@@ -16,11 +16,9 @@
  */
 package com.savvasdalkitsis.gameframe.injector.usecase
 
-import com.savvasdalkitsis.gameframe.feature.account.usecase.FirebaseAuthenticationUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
 import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector.application
-import com.savvasdalkitsis.gameframe.infra.injector.TopActivityProviderInjector.topActivityProvider
 import com.savvasdalkitsis.gameframe.injector.feature.workspace.WorkspaceStorageInjector.localWorkspaceStorage
 import com.savvasdalkitsis.gameframe.injector.feature.workspace.WorkspaceStorageInjector.workspaceStorage
 import com.savvasdalkitsis.gameframe.injector.infra.parsing.GsonInjector.gson
@@ -31,5 +29,4 @@ object UseCaseInjector {
 
     fun stringUseCase() = StringUseCase(application())
 
-    fun authenticationUseCase() = FirebaseAuthenticationUseCase(topActivityProvider())
 }

@@ -14,18 +14,12 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.account.usecase
+package com.savvasdalkitsis.gameframe.feature.authentication.model
 
-import com.savvasdalkitsis.gameframe.feature.account.model.Account
-import io.reactivex.Flowable
-import io.reactivex.Single
+import android.net.Uri
 
-interface AuthenticationUseCase<in AuthenticationData> {
+sealed class Account
 
-    fun accountState(): Flowable<Account>
-    fun userId(): Single<String>
-    fun signIn()
-    fun signOut()
-    fun deleteAccount()
-    fun handleResult(requestCode: Int, resultCode: Int, authenticationData: AuthenticationData?)
-}
+data class SignedInAccount(val name: String?, val id: String, val image: Uri?): Account()
+class SignedOutAccount: Account()
+class AccountStateError: Account()

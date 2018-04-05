@@ -14,7 +14,7 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.feature.account.usecase
+package com.savvasdalkitsis.gameframe.feature.authentication.usecase
 
 import android.app.Activity
 import android.content.Intent
@@ -24,8 +24,8 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.feature.account.model.*
+import com.savvasdalkitsis.gameframe.feature.authentication.R
+import com.savvasdalkitsis.gameframe.feature.authentication.model.*
 import com.savvasdalkitsis.gameframe.infra.TopActivityProvider
 import io.reactivex.Flowable
 import io.reactivex.Single

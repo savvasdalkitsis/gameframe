@@ -1,7 +1,7 @@
 package com.savvasdalkitsis.gameframe.feature.workspace.storage
 
-import com.savvasdalkitsis.gameframe.feature.account.model.SignedInAccount
-import com.savvasdalkitsis.gameframe.feature.account.usecase.AuthenticationUseCase
+import com.savvasdalkitsis.gameframe.feature.authentication.model.SignedInAccount
+import com.savvasdalkitsis.gameframe.feature.authentication.usecase.AuthenticationUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.model.SaveContainer
 import io.reactivex.Completable
 import io.reactivex.Single
