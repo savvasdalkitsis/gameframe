@@ -24,14 +24,14 @@ import android.content.Context
 import android.content.Intent
 import android.support.annotation.LayoutRes
 import android.widget.RemoteViews
-import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.feature.widget.R
+import com.savvasdalkitsis.gameframe.feature.injector.WidgetInjector
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
-import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 
 abstract class ClickableWidgetProvider : AppWidgetProvider(), WidgetView {
 
     private val messageDisplay = MessageDisplayInjector.toastMessageDisplay()
-    protected val presenter = PresenterInjector.widgetPresenter()
+    protected val presenter = WidgetInjector.widgetPresenter()
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         val remoteViews = RemoteViews(context.packageName, layoutResId())
@@ -39,11 +39,11 @@ abstract class ClickableWidgetProvider : AppWidgetProvider(), WidgetView {
 
         remoteViews.setOnClickPendingIntent(R.id.view_widget_action, getPendingSelfIntent(context, CLICKED))
         appWidgetManager.updateAppWidget(watchWidget, remoteViews)
-        presenter.bindView(this)
     }
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
+        presenter.bindView(this)
         if (CLICKED == intent.action) {
             onClick()
         }
@@ -64,6 +64,6 @@ abstract class ClickableWidgetProvider : AppWidgetProvider(), WidgetView {
 
     companion object {
 
-        private val CLICKED = "click"
+        private const val CLICKED = "click"
     }
 }

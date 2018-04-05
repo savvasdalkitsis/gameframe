@@ -28,7 +28,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.ColorChooserDialog
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
-import com.savvasdalkitsis.gameframe.feature.home.view.HomeActivity
+import com.savvasdalkitsis.gameframe.feature.message.Snackbars
 import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.model.Grid
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.element.palette.model.Palette
@@ -43,12 +43,11 @@ import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
 import com.savvasdalkitsis.gameframe.feature.workspace.presenter.WorkspacePresenter
 import com.savvasdalkitsis.gameframe.infra.android.BaseFragment
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
-import com.savvasdalkitsis.gameframe.feature.message.Snackbars
+import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.workspacePresenter
 import com.savvasdalkitsis.gameframe.kotlin.Action
 import com.savvasdalkitsis.gameframe.kotlin.TypeAction
 import com.savvasdalkitsis.gameframe.kotlin.gone
 import com.savvasdalkitsis.gameframe.kotlin.visible
-import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.workspacePresenter
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import io.github.yavski.fabspeeddial.CustomFabSpeedDial
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter
@@ -214,7 +213,7 @@ class WorkspaceFragment : BaseFragment<WorkspaceView<Menu>, WorkspacePresenter<M
 
     override fun onSwatchLongPressed(swatch: SwatchView) {
         swatchToModify = swatch
-        ColorChooserDialog.Builder(context as HomeActivity, R.string.change_color)
+        ColorChooserDialog.Builder(context!!, R.string.change_color)
                 .show(activity)
     }
 

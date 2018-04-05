@@ -22,9 +22,9 @@ import com.savvasdalkitsis.gameframe.feature.account.presenter.AccountPresenter
 import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector.bitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.changelog.injector.ChangelogInjector.changeLogUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.CompositionInjector.blendUseCase
-import com.savvasdalkitsis.gameframe.feature.device.injector.DeviceInjector
 import com.savvasdalkitsis.gameframe.feature.device.injector.DeviceInjector.gameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.home.presenter.HomePresenter
+import com.savvasdalkitsis.gameframe.feature.injector.WidgetInjector
 import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipNavigator
 import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipRepository
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector.messageDisplay
@@ -38,9 +38,6 @@ import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.stringUseC
 import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.workspaceUseCase
 
 object PresenterInjector {
-
-    fun widgetPresenter() =
-            WidgetPresenter(gameFrameUseCase(), ipRepository(), ipNavigator())
 
     fun workspacePresenter() = WorkspacePresenter<Menu, View>(gameFrameUseCase(),
             blendUseCase(), workspaceUseCase(), stringUseCase(), messageDisplay(), workspaceNavigator(),

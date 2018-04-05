@@ -16,26 +16,32 @@
  */
 package com.savvasdalkitsis.gameframe.feature.widget.view
 
-import android.app.Activity
-import android.os.Bundle
-import com.savvasdalkitsis.gameframe.R
+import android.annotation.TargetApi
+import android.os.Build
+import android.service.quicksettings.TileService
+import com.savvasdalkitsis.gameframe.feature.widget.R
+import com.savvasdalkitsis.gameframe.feature.injector.WidgetInjector
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
-import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 
-class DeepLinkActivity : Activity(), WidgetView {
+@TargetApi(Build.VERSION_CODES.N)
+class PowerTileService : TileService(), WidgetView {
 
-    private val presenter = PresenterInjector.widgetPresenter()
+    private val presenter = WidgetInjector.widgetPresenter()
     private val messageDisplay = MessageDisplayInjector.toastMessageDisplay()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreate() {
+        super.onCreate()
         presenter.bindView(this)
-        when (intent.data.host) {
-            "power" -> presenter.power()
-            "next" -> presenter.next()
-            "menu" -> presenter.menu()
-        }
-        finish()
+    }
+
+    override fun onClick() {
+        super.onClick()
+        presenter.power()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.stop()
     }
 
     override fun operationError() {

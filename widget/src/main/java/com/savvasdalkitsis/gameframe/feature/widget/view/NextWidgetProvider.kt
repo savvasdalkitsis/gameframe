@@ -16,13 +16,13 @@
  */
 package com.savvasdalkitsis.gameframe.feature.widget.view
 
-import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.feature.widget.R
 
-class MenuWidgetProvider : ClickableWidgetProvider() {
+class NextWidgetProvider : ClickableWidgetProvider() {
 
-    override fun layoutResId() = R.layout.widget_menu
+    override fun layoutResId() = R.layout.widget_next
 
     override fun onClick() {
-        presenter.menu()
+        presenter.next()
     }
 }

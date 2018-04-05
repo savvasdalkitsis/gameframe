@@ -16,7 +16,7 @@
  */
 package com.savvasdalkitsis.gameframe.feature.widget.view
 
-import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.feature.widget.R
 
 class PowerWidgetProvider : ClickableWidgetProvider() {
 

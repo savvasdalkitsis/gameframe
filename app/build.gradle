@@ -61,6 +61,7 @@ dependencies {
     implementation project(':ip')
     implementation project(':device')
     implementation project(':control')
+    implementation project(':widget')
     implementation (
             "com.google.firebase:firebase-crash:$gms_version",
             "com.google.firebase:firebase-auth:$firebase_version",
