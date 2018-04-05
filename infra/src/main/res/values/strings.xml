@@ -4,4 +4,7 @@
     <string name="operation_failed">Operation failed</string>
     <string name="feedback">Feedback</string>
     <string name="success">Success</string>
+    <string name="game_frame_power">Game Frame Power</string>
+    <string name="next">Next</string>
+    <string name="menu">Menu</string>
 </resources>

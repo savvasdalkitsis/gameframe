@@ -2,7 +2,7 @@ package com.savvasdalkitsis.gameframe.feature.wear.view
 
 import com.google.android.gms.wearable.MessageEvent
 import com.google.android.gms.wearable.WearableListenerService
-import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.feature.wear.R
 import com.savvasdalkitsis.gameframe.feature.injector.WidgetInjector
 import com.savvasdalkitsis.gameframe.feature.widget.view.WidgetView
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector

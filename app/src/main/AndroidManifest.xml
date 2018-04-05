@@ -60,58 +60,6 @@
             android:label="@string/account"
             android:name=".feature.account.view.AccountActivity" />
 
-        <service
-            android:name=".feature.widget.view.PowerTileService"
-            android:icon="@drawable/ic_block_power"
-            android:label="@string/game_frame_power"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
-        </service>
-
-        <service android:name=".feature.wear.view.WatchMessagingService">
-            <intent-filter>
-                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
-                <data android:scheme="wear" android:host="*"
-                    android:path="/command" />
-            </intent-filter>
-        </service>
-
-        <receiver
-            android:name=".feature.widget.view.PowerWidgetProvider"
-            android:label="@string/power">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/power_appwidget_info" />
-        </receiver>
-        <receiver
-            android:name=".feature.widget.view.NextWidgetProvider"
-            android:label="@string/next">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/next_appwidget_info" />
-        </receiver>
-        <receiver
-            android:name=".feature.widget.view.MenuWidgetProvider"
-            android:label="@string/menu">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/menu_appwidget_info" />
-        </receiver>
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.savvasdalkitsis.gameframe.fileProvider"

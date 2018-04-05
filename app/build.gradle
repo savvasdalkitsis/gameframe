@@ -62,6 +62,7 @@ dependencies {
     implementation project(':device')
     implementation project(':control')
     implementation project(':widget')
+    implementation project(':wear')
     implementation (
             "com.google.firebase:firebase-crash:$gms_version",
             "com.google.firebase:firebase-auth:$firebase_version",
@@ -72,7 +73,6 @@ dependencies {
             "com.android.support:design:$support_version",
             "com.android.support:cardview-v7:$support_version",
             "com.android.support:gridlayout-v7:$support_version",
-            "com.google.android.gms:play-services-wearable:$gms_version",
             "com.jakewharton:butterknife:$butterknife_version",
             "com.squareup.okhttp3:logging-interceptor:$okhttp_version",
             "uk.co.chrisjenx:calligraphy:$calligraphy_version",

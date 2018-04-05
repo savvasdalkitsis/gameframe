@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">Game Frame</string>
     <string name="setup">Setup</string>
-    <string name="power">Power</string>
-    <string name="game_frame_power">Game Frame Power</string>
     <string name="discover_game_frame_ip">Discover Game Frame IP</string>
     <string name="manage">Manage</string>
     <string name="draw">Draw</string>
