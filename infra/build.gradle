@@ -33,7 +33,6 @@ dependencies {
             "com.github.andrewlord1990:snackbarbuilder:$snackbarbuilder_version",
             "com.androidadvance:topsnackbar:$topsnackbar_version",
             "io.github.yavski:fab-speed-dial:$fab_speed_dial_version",
-            "com.jakewharton:butterknife:$butterknife_version",
     )
     implementation ("org.rm3l:maoni:$maoni_version@aar") { transitive = true }
     api(

@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -50,22 +48,7 @@ repositories {
 dependencies {
     wearApp project(':watch')
     implementation project(':infra')
-    implementation project(':message')
-    implementation project(':storage')
-    implementation project(':networking')
-    implementation project(':history')
-    implementation project(':changelog')
-    implementation project(':styles')
-    implementation project(':bitmap')
-    implementation project(':composition')
-    implementation project(':ip')
-    implementation project(':device')
-    implementation project(':control')
-    implementation project(':widget')
     implementation project(':wear')
-    implementation project(':authentication')
-    implementation project(':workspace')
-    implementation project(':account')
     implementation project(':home')
     implementation (
             "com.google.android.gms:play-services-auth:$firebase_version",
@@ -73,15 +56,10 @@ dependencies {
             "com.android.support:appcompat-v7:$support_version",
             "com.android.support:design:$support_version",
             "com.android.support:cardview-v7:$support_version",
-            "com.afollestad.material-dialogs:core:$material_dialogs_version",
-            "com.afollestad.material-dialogs:commons:$material_dialogs_version",
-            "com.jakewharton:butterknife:$butterknife_version",
-            "com.squareup.okhttp3:logging-interceptor:$okhttp_version",
             "uk.co.chrisjenx:calligraphy:$calligraphy_version",
             "com.android.support:multidex:$multidex_version",
             "com.facebook.fresco:fresco:$fresco_version",
             "com.google.firebase:firebase-crash:$gms_version",
-            "com.jakewharton.rxbinding2:rxbinding-kotlin:$rx_binding_version",
     )
     implementation ("com.facebook.android:facebook-android-sdk:4.27.0") {
         exclude group: 'com.facebook.fresco', module: 'drawee'
@@ -89,7 +67,6 @@ dependencies {
     }
     implementation("com.twitter.sdk.android:twitter-core:3.0.0@aar") { transitive = true }
     compile "com.google.firebase:firebase-perf:$gms_version"
-    kapt "com.jakewharton:butterknife-compiler:$butterknife_version"
 }
 
 gradle.taskGraph.whenReady { taskGraph ->

@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -31,8 +30,6 @@ dependencies {
     implementation project(":networking")
     implementation(
             "com.android.support:design:$support_version",
-            "com.jakewharton:butterknife:$butterknife_version",
             "io.reactivex.rxjava2:rxjava:$rxjava_version",
     )
-    kapt "com.jakewharton:butterknife-compiler:$butterknife_version"
 }
