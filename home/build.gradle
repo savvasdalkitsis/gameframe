@@ -1,0 +1,41 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
+
+    defaultConfig {
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+        versionCode app_version_code
+        versionName app_version
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation project(":infra")
+    implementation project(":changelog")
+    implementation project(":account")
+    implementation project(":ip")
+    implementation project(":control")
+    implementation project(":workspace")
+    implementation(
+            "io.reactivex.rxjava2:rxjava:$rxjava_version",
+            "com.android.support:support-annotations:$support_version",
+            "com.android.support:design:$support_version",
+            "com.afollestad.material-dialogs:core:$material_dialogs_version",
+            "com.afollestad.material-dialogs:commons:$material_dialogs_version",
+    )
+}

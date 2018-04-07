@@ -14,17 +14,12 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.injector.presenter
+package com.savvasdalkitsis.gameframe.feature.home.injector
 
-import com.savvasdalkitsis.gameframe.feature.account.presenter.AccountPresenter
-import com.savvasdalkitsis.gameframe.feature.authentication.injector.AuthenticationInjector.authenticationUseCase
 import com.savvasdalkitsis.gameframe.feature.changelog.injector.ChangelogInjector.changeLogUseCase
 import com.savvasdalkitsis.gameframe.feature.home.presenter.HomePresenter
-import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector.messageDisplay
-import com.savvasdalkitsis.gameframe.feature.workspace.injector.WorkspaceInjector.firebaseWorkspaceStorage
-import com.savvasdalkitsis.gameframe.feature.workspace.injector.WorkspaceInjector.workspaceUseCase
 
-object PresenterInjector {
+object HomeInjector {
 
     fun homePresenter() = HomePresenter(changeLogUseCase())
 

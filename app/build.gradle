@@ -66,6 +66,7 @@ dependencies {
     implementation project(':authentication')
     implementation project(':workspace')
     implementation project(':account')
+    implementation project(':home')
     implementation (
             "com.google.android.gms:play-services-auth:$firebase_version",
             "com.google.gms:google-services:$google_services_version",

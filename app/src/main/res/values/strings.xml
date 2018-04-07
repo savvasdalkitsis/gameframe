@@ -2,8 +2,6 @@
     <string name="app_name">Game Frame</string>
     <string name="setup">Setup</string>
     <string name="discover_game_frame_ip">Discover Game Frame IP</string>
-    <string name="manage">Manage</string>
-    <string name="draw">Draw</string>
     <string name="tools">Tools</string>
     <string name="select_login_provider">Select one of the providers to log in</string>
     <string name="google">Google</string>
