@@ -28,5 +28,4 @@ object PresenterInjector {
 
     fun homePresenter() = HomePresenter(changeLogUseCase())
 
-    fun accountPresenter() = AccountPresenter(authenticationUseCase(), workspaceUseCase(), firebaseWorkspaceStorage(), messageDisplay())
 }

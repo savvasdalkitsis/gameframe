@@ -65,6 +65,7 @@ dependencies {
     implementation project(':wear')
     implementation project(':authentication')
     implementation project(':workspace')
+    implementation project(':account')
     implementation (
             "com.google.android.gms:play-services-auth:$firebase_version",
             "com.google.gms:google-services:$google_services_version",
@@ -78,7 +79,6 @@ dependencies {
             "uk.co.chrisjenx:calligraphy:$calligraphy_version",
             "com.android.support:multidex:$multidex_version",
             "com.facebook.fresco:fresco:$fresco_version",
-            "com.android.support.constraint:constraint-layout:$constraint_layout_version",
             "com.google.firebase:firebase-crash:$gms_version",
             "com.jakewharton.rxbinding2:rxbinding-kotlin:$rx_binding_version",
     )

@@ -21,15 +21,15 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
-import com.savvasdalkitsis.gameframe.R
-import com.savvasdalkitsis.gameframe.feature.authentication.model.SignedInAccount
+import com.savvasdalkitsis.gameframe.feature.account.R
+import com.savvasdalkitsis.gameframe.feature.account.injector.AccountInjector
 import com.savvasdalkitsis.gameframe.feature.account.presenter.AccountPresenter
+import com.savvasdalkitsis.gameframe.feature.authentication.model.SignedInAccount
+import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
 import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
 import com.savvasdalkitsis.gameframe.kotlin.Action
 import com.savvasdalkitsis.gameframe.kotlin.gone
 import com.savvasdalkitsis.gameframe.kotlin.visible
-import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
-import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 import kotlinx.android.synthetic.main.activity_account.*
 import kotlinx.android.synthetic.main.activity_account_logged_in.*
 import kotlinx.android.synthetic.main.activity_account_logged_out.*
@@ -37,7 +37,7 @@ import kotlinx.android.synthetic.main.activity_account_logged_out.*
 class AccountActivity : BaseActivity<AccountView, AccountPresenter<Intent>>(), AccountView {
 
     override val layoutId = R.layout.activity_account
-    override val presenter: AccountPresenter<Intent> = PresenterInjector.accountPresenter()
+    override val presenter: AccountPresenter<Intent> = AccountInjector.accountPresenter()
     override val view = this
 
     private val messageDisplay = MessageDisplayInjector.messageDisplay()

@@ -4,24 +4,7 @@
     <string name="discover_game_frame_ip">Discover Game Frame IP</string>
     <string name="manage">Manage</string>
     <string name="draw">Draw</string>
-    <string name="upload">Upload</string>
     <string name="tools">Tools</string>
-    <string name="account">Account</string>
     <string name="select_login_provider">Select one of the providers to log in</string>
     <string name="google">Google</string>
-    <string name="hello_name">Hello \n%s</string>
-    <string name="log_out">Log out</string>
-    <string name="delete_account">Delete Account</string>
-    <string name="log_in">Log in</string>
-    <string name="log_in_upsell">Looks you are not logged in.\nLog in to synchronize your drawings so you never lose them</string>
-    <string name="sign_in_error">Something went wrong. Try again.</string>
-    <string name="delete_account_verification">Are you sure you want to delete your account? This is irreversible. All your online saved drawings will be lost</string>
-    <string name="upload_saved_projects">Upload saved projects</string>
-    <string name="upload_saved_projects_description">Would you like to upload your saved projects to your account? (CAREFUL! existing projects on your account will be overridden by local ones if they have the same name)</string>
-    <string name="skip">Skip</string>
-    <string name="projects_upload_finished">Projects uploaded successfully</string>
-    <string name="projects_failed_to_upload">Some (or all) projects failed to upload</string>
-    <string name="projects_upload_started">Started uploading projects</string>
-    <string name="re_upload_projects">Re-upload local projects</string>
-    <string name="no_projects_to_upload">There are no saved projects to upload</string>
 </resources>

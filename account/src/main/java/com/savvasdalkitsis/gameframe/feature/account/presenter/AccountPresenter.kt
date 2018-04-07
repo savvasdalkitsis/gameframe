@@ -17,11 +17,11 @@
 package com.savvasdalkitsis.gameframe.feature.account.presenter
 
 import android.util.Log
-import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.feature.account.R
+import com.savvasdalkitsis.gameframe.feature.account.view.AccountView
 import com.savvasdalkitsis.gameframe.feature.authentication.model.Account
 import com.savvasdalkitsis.gameframe.feature.authentication.model.SignedInAccount
 import com.savvasdalkitsis.gameframe.feature.authentication.usecase.AuthenticationUseCase
-import com.savvasdalkitsis.gameframe.feature.account.view.AccountView
 import com.savvasdalkitsis.gameframe.feature.message.MessageDisplay
 import com.savvasdalkitsis.gameframe.feature.workspace.model.SaveContainer
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceItem
