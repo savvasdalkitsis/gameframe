@@ -1,1 +1,1 @@
-include ':app', ':watch', ':infra', ':message', ':kotlin', ':storage', ':networking', ':history', ':changelog', ':styles', ':bitmap', ':composition', ':ip', ':device', ':control', ':widget', ':wear', ':authentication'
+include ':app', ':watch', ':infra', ':message', ':kotlin', ':storage', ':networking', ':history', ':changelog', ':styles', ':bitmap', ':composition', ':ip', ':device', ':control', ':widget', ':wear', ':authentication', ':workspace'

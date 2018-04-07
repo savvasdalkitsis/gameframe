@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.savvasdalkitsis.gameframe.feature.workspace.element.layer.view.LayerSettingsView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:divider="@drawable/layer_settings_divider"
+    android:showDividers="middle"
+    android:orientation="vertical"
+    android:padding="24dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:text="@string/transparency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <SeekBar
+        android:id="@+id/view_layer_alpha"
+        android:max="100"
+        android:progress="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:text="@string/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/view_layer_title"
+        android:textColor="@android:color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:ignore="LabelFor,RtlHardcoded,TextFields" />
+
+    <TextView
+        android:text="@string/blend_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/view_layer_blend_mode"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="RtlHardcoded" />
+
+    <TextView
+        android:text="@string/composition_operator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Spinner
+        android:id="@+id/view_layer_porter_duff"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="RtlHardcoded" />
+
+</com.savvasdalkitsis.gameframe.feature.workspace.element.layer.view.LayerSettingsView>

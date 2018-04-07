@@ -16,30 +16,15 @@
  */
 package com.savvasdalkitsis.gameframe.injector.presenter
 
-import android.view.Menu
-import android.view.View
 import com.savvasdalkitsis.gameframe.feature.account.presenter.AccountPresenter
-import com.savvasdalkitsis.gameframe.feature.authentication.injector.AuthenticationInjector
 import com.savvasdalkitsis.gameframe.feature.authentication.injector.AuthenticationInjector.authenticationUseCase
-import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector.bitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.changelog.injector.ChangelogInjector.changeLogUseCase
-import com.savvasdalkitsis.gameframe.feature.composition.CompositionInjector.blendUseCase
-import com.savvasdalkitsis.gameframe.feature.device.injector.DeviceInjector.gameFrameUseCase
 import com.savvasdalkitsis.gameframe.feature.home.presenter.HomePresenter
-import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipNavigator
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector.messageDisplay
-import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector.wifiUseCase
-import com.savvasdalkitsis.gameframe.feature.workspace.injector.WorkspaceInjector.workspaceNavigator
-import com.savvasdalkitsis.gameframe.feature.workspace.presenter.WorkspacePresenter
-import com.savvasdalkitsis.gameframe.injector.feature.workspace.WorkspaceStorageInjector.firebaseWorkspaceStorage
-import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.stringUseCase
-import com.savvasdalkitsis.gameframe.injector.usecase.UseCaseInjector.workspaceUseCase
+import com.savvasdalkitsis.gameframe.feature.workspace.injector.WorkspaceInjector.firebaseWorkspaceStorage
+import com.savvasdalkitsis.gameframe.feature.workspace.injector.WorkspaceInjector.workspaceUseCase
 
 object PresenterInjector {
-
-    fun workspacePresenter() = WorkspacePresenter<Menu, View>(gameFrameUseCase(),
-            blendUseCase(), workspaceUseCase(), stringUseCase(), messageDisplay(), workspaceNavigator(),
-            ipNavigator(), bitmapFileUseCase(), wifiUseCase())
 
     fun homePresenter() = HomePresenter(changeLogUseCase())
 

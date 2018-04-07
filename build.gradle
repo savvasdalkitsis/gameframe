@@ -32,6 +32,7 @@ buildscript {
         multidex_version = '1.0.1'
         constraint_layout_version = '1.0.2'
         rx_binding_version = '2.0.0'
+        gson_version = '2.7'
     }
     repositories {
         jcenter()

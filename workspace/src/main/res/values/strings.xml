@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tool_not_for_background">This tool cannot be applied to the background layer</string>
+    <string name="save">Save</string>
+    <string name="untitled">Untitled</string>
+    <string name="layer_borders_displaying">Displaying layer borders</string>
+    <string name="layer_borders_not_displaying">Hiding layer borders</string>
+    <string name="background">Background</string>
+    <string name="palette_name">Palette: %1$s</string>
+    <string name="change_tool">Change tool:</string>
+    <string name="palettes">Palettes</string>
+    <string name="add_new_palette">Add New Palette</string>
+    <string name="layers">Layers</string>
+    <string name="display_layer_borders">Display layer borders</string>
+    <string name="undo">Undo</string>
+    <string name="redo">Redo</string>
+    <string name="name_of_drawing">Name of drawing</string>
+    <string name="enter_name_for_drawing">Enter name for the drawing</string>
+    <string name="already_exists">Drawing already exists.</string>
+    <string name="replace">Replace</string>
+    <string name="change_color">Change color</string>
+    <string name="unsupported_version">Unsupported version</string>
+    <string name="unsupported_version_description">This app does not support the version of the saved file. There may be a newer version available that supports it. Try searching the Play Store for an update?</string>
+    <string name="play_store">Play Store</string>
+    <string name="cancel">Cancel</string>
+    <string name="load_project">Load Project</string>
+    <string name="delete_projects">Delete saved projects</string>
+    <string name="delete">Delete</string>
+    <string name="no_saved_projects">There are no saved projects</string>
+    <string name="do_not_dismiss">Do not dismiss</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="dismiss_changes_question">Dismiss changes?</string>
+    <string name="unsaved_changes">There are unsaved changes. Are you sure you want to dismiss them?</string>
+    <string name="new_project">Create new project</string>
+    <string name="open_drawing">Open previously saved drawing</string>
+    <string name="export_image">Export image</string>
+    <string name="send_to_game_frame">Send to GameFrame</string>
+    <string name="palette_settings">Palette settings</string>
+    <string name="layer_settings">Layer settings</string>
+    <string name="title">Title</string>
+    <string name="transparency">Transparency</string>
+    <string name="name">Name</string>
+    <string name="blend_mode">Blend Mode</string>
+    <string name="composition_operator">Composition Operator</string>
+</resources>

@@ -64,26 +64,23 @@ dependencies {
     implementation project(':widget')
     implementation project(':wear')
     implementation project(':authentication')
+    implementation project(':workspace')
     implementation (
             "com.google.android.gms:play-services-auth:$firebase_version",
             "com.google.gms:google-services:$google_services_version",
             "com.android.support:appcompat-v7:$support_version",
             "com.android.support:design:$support_version",
             "com.android.support:cardview-v7:$support_version",
-            "com.android.support:gridlayout-v7:$support_version",
+            "com.afollestad.material-dialogs:core:$material_dialogs_version",
+            "com.afollestad.material-dialogs:commons:$material_dialogs_version",
             "com.jakewharton:butterknife:$butterknife_version",
             "com.squareup.okhttp3:logging-interceptor:$okhttp_version",
             "uk.co.chrisjenx:calligraphy:$calligraphy_version",
-            "com.afollestad.material-dialogs:core:$material_dialogs_version",
-            "com.afollestad.material-dialogs:commons:$material_dialogs_version",
-            "com.sothree.slidinguppanel:library:$slidinguppanel_version",
-            "io.github.yavski:fab-speed-dial:$fab_speed_dial_version",
             "com.android.support:multidex:$multidex_version",
             "com.facebook.fresco:fresco:$fresco_version",
             "com.android.support.constraint:constraint-layout:$constraint_layout_version",
             "com.google.firebase:firebase-crash:$gms_version",
             "com.jakewharton.rxbinding2:rxbinding-kotlin:$rx_binding_version",
-            "com.google.firebase:firebase-firestore:$firebase_version"
     )
     implementation ("com.facebook.android:facebook-android-sdk:4.27.0") {
         exclude group: 'com.facebook.fresco', module: 'drawee'
