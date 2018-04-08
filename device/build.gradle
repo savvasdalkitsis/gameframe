@@ -25,7 +25,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation project(":infra")
-    implementation project(":networking")
     implementation project(":bitmap")
     implementation project(":ip")
     implementation project(":storage")

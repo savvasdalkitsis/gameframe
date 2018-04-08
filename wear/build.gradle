@@ -24,9 +24,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    api project(":infra")
     implementation project(":message")
     implementation project(":widget")
-    implementation project(":infra")
     implementation(
         "com.google.android.gms:play-services-wearable:$gms_version",
     )

@@ -4,16 +4,16 @@ import android.view.Menu
 import android.view.View
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.savvasdalkitsis.gameframe.feature.authentication.injector.AuthenticationInjector
-import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector
-import com.savvasdalkitsis.gameframe.feature.composition.CompositionInjector
+import com.savvasdalkitsis.gameframe.feature.authentication.injector.AuthenticationInjector.authenticationUseCase
+import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector.bitmapFileUseCase
+import com.savvasdalkitsis.gameframe.feature.composition.CompositionInjector.blendUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.model.BlendMode
 import com.savvasdalkitsis.gameframe.feature.composition.model.PorterDuffOperator
-import com.savvasdalkitsis.gameframe.feature.device.injector.DeviceInjector
-import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector
-import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
-import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector
-import com.savvasdalkitsis.gameframe.feature.storage.injector.StorageInjector
+import com.savvasdalkitsis.gameframe.feature.device.injector.DeviceInjector.deviceCase
+import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipNavigator
+import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector.messageDisplay
+import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector.wifiUseCase
+import com.savvasdalkitsis.gameframe.feature.storage.injector.StorageInjector.localStorageUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
 import com.savvasdalkitsis.gameframe.feature.workspace.navigation.AndroidWorkspaceNavigator
 import com.savvasdalkitsis.gameframe.feature.workspace.navigation.WorkspaceNavigator
@@ -33,19 +33,20 @@ object WorkspaceInjector {
 
     fun workspaceNavigator(): WorkspaceNavigator = AndroidWorkspaceNavigator(topActivityProvider(), application())
 
-    fun workspacePresenter() = WorkspacePresenter<Menu, View>(DeviceInjector.gameFrameUseCase(),
-            CompositionInjector.blendUseCase(), workspaceUseCase(), stringUseCase(), MessageDisplayInjector.messageDisplay(), workspaceNavigator(),
-            IpInjector.ipNavigator(), BitmapInjector.bitmapFileUseCase(), NetworkingInjector.wifiUseCase())
+    fun workspacePresenter() = WorkspacePresenter<Menu, View>(deviceCase(), blendUseCase(),
+            workspaceUseCase(), stringUseCase(), messageDisplay(), workspaceNavigator(),
+            ipNavigator(), bitmapFileUseCase(), wifiUseCase())
 
     fun workspaceUseCase() = WorkspaceUseCase(gson(), workspaceStorage(), localWorkspaceStorage())
 
+    fun firebaseWorkspaceStorage() = FirebaseWorkspaceStorage(authenticationUseCase(), gson())
+
+    private fun localWorkspaceStorage() = LocalWorkspaceStorage(gson(), localStorageUseCase())
+
     private fun stringUseCase() = StringUseCase(application())
 
-    fun workspaceStorage() = AuthenticationAwareWorkspaceStorage(AuthenticationInjector.authenticationUseCase(), localWorkspaceStorage(), firebaseWorkspaceStorage())
-
-    fun localWorkspaceStorage() = LocalWorkspaceStorage(gson(), StorageInjector.localStorageUseCase())
-
-    fun firebaseWorkspaceStorage() = FirebaseWorkspaceStorage(AuthenticationInjector.authenticationUseCase(), gson())
+    private fun workspaceStorage() = AuthenticationAwareWorkspaceStorage(authenticationUseCase(),
+            localWorkspaceStorage(), firebaseWorkspaceStorage())
 
     private fun gson(): Gson = GsonBuilder()
             .let { workspaceSerialization(it) }

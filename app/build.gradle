@@ -47,7 +47,6 @@ repositories {
 
 dependencies {
     wearApp project(':watch')
-    implementation project(':infra')
     implementation project(':wear')
     implementation project(':home')
     implementation (

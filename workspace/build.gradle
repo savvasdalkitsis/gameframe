@@ -25,14 +25,13 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(":infra")
+    api project(":infra")
     implementation project(":history")
     implementation project(":message")
     implementation project(":bitmap")
     implementation project(":composition")
     implementation project(":device")
     implementation project(":ip")
-    implementation project(":networking")
     implementation project(":storage")
     implementation project(":authentication")
     implementation(

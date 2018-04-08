@@ -24,8 +24,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(":kotlin")
-    implementation project(':infra')
+    api project(':infra')
     implementation(
             "io.reactivex.rxjava2:rxjava:$rxjava_version",
             "com.squareup.okhttp3:logging-interceptor:$okhttp_version",

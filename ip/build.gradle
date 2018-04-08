@@ -25,9 +25,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation project(":infra")
+    api project(":networking")
     implementation project(":message")
-    implementation project(":networking")
     implementation(
             "com.android.support:design:$support_version",
             "io.reactivex.rxjava2:rxjava:$rxjava_version",
