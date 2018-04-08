@@ -3,6 +3,27 @@
     package="com.savvasdalkitsis.gameframe.feature.widget">
     <application>
 
+        <activity
+            android:name="view.DeepLinkActivity"
+            android:theme="@style/Theme.Transparent">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="power"
+                    android:scheme="gameframe" />
+                <data
+                    android:host="next"
+                    android:scheme="gameframe" />
+                <data
+                    android:host="menu"
+                    android:scheme="gameframe" />
+            </intent-filter>
+        </activity>
+
         <service
             android:name=".view.PowerTileService"
             android:icon="@drawable/ic_block_power"

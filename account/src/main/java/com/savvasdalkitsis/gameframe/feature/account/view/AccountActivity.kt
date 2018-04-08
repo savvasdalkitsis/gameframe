@@ -57,7 +57,7 @@ class AccountActivity : BaseActivity<AccountView, AccountPresenter<Intent>>(), A
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_setup_ip, menu)
+        menuInflater.inflate(R.menu.menu_account, menu)
         return true
     }
 
