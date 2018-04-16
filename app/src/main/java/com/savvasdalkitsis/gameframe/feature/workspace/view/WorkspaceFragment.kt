@@ -23,7 +23,6 @@ import android.support.design.internal.NavigationMenu
 import android.support.v4.widget.DrawerLayout
 import android.util.Log
 import android.view.*
-import butterknife.OnClick
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.ColorChooserDialog
 import com.savvasdalkitsis.gameframe.R
@@ -104,6 +103,20 @@ class WorkspaceFragment : BaseFragment<WorkspaceView<Menu>, WorkspacePresenter<M
                 setFabState()
             }
         })
+
+        view_draw_open_layers.setOnClickListener { drawer.openDrawer(GRAVITY_LAYERS) }
+        view_draw_open_palette.setOnClickListener { drawer.openDrawer(GRAVITY_PALETTES) }
+
+        listOf(view_draw_tools_change, view_draw_tools_current).forEach {
+            it.setOnClickListener {
+                view_draw_sliding_up_panel.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+            }
+        }
+        listOf(view_draw_add_palette, view_draw_add_palette_title).forEach {
+            it.setOnClickListener {
+                addNewPalette()
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -276,25 +289,6 @@ class WorkspaceFragment : BaseFragment<WorkspaceView<Menu>, WorkspacePresenter<M
         view_draw_palette_name.text = paletteName
     }
 
-    @Suppress("unused")
-    @OnClick(R.id.view_draw_open_layers)
-    fun openLayers() {
-        drawer.openDrawer(GRAVITY_LAYERS)
-    }
-
-    @Suppress("unused")
-    @OnClick(R.id.view_draw_open_palette)
-    fun openPalette() {
-        drawer.openDrawer(GRAVITY_PALETTES)
-    }
-
-    @Suppress("unused")
-    @OnClick(R.id.view_draw_tools_change, R.id.view_draw_tools_current)
-    fun changeTool() {
-        view_draw_sliding_up_panel.panelState = SlidingUpPanelLayout.PanelState.EXPANDED
-    }
-
-    @OnClick(R.id.view_draw_add_palette, R.id.view_draw_add_palette_title)
     fun addNewPalette() {
         AddPaletteView.show(context!!, drawer, object : AddNewPaletteSelectedListener {
             override fun onAddNewPalletSelected(palette: Palette) {

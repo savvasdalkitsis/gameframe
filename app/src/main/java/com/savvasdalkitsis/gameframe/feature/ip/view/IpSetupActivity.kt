@@ -21,13 +21,12 @@ import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.view.ViewPropertyAnimator
-import butterknife.OnClick
 import com.savvasdalkitsis.gameframe.R
+import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
+import com.savvasdalkitsis.gameframe.feature.ip.presenter.IpSetupPresenter
 import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
 import com.savvasdalkitsis.gameframe.infra.android.Snackbars
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector.ipSetupPresenter
-import com.savvasdalkitsis.gameframe.feature.ip.model.IpAddress
-import com.savvasdalkitsis.gameframe.feature.ip.presenter.IpSetupPresenter
 import kotlinx.android.synthetic.main.activity_ip_setup.*
 import kotlinx.android.synthetic.main.view_ip_text_view.*
 
@@ -40,6 +39,10 @@ class IpSetupActivity : BaseActivity<IpSetupView, IpSetupPresenter>(), IpSetupVi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        view_setup.setOnClickListener { presenter.setup(view_ip_text_view.ipAddress) }
+        view_cancel_discover.setOnClickListener { presenter.cancelDiscover() }
+        view_discover.setOnClickListener { presenter.discoverIp() }
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -67,24 +70,6 @@ class IpSetupActivity : BaseActivity<IpSetupView, IpSetupPresenter>(), IpSetupVi
 
     override fun displayIpAddress(ipAddress: IpAddress) {
         view_ip_text_view.bind(ipAddress)
-    }
-
-    @Suppress("unused")
-    @OnClick(R.id.view_setup)
-    fun setup() {
-        presenter.setup(view_ip_text_view.ipAddress)
-    }
-
-    @Suppress("unused")
-    @OnClick(R.id.view_cancel_discover)
-    fun cancelDiscover() {
-        presenter.cancelDiscover()
-    }
-
-    @Suppress("unused")
-    @OnClick(R.id.view_discover)
-    fun discover() {
-        presenter.discoverIp()
     }
 
     override fun errorDiscoveringIpAddress(throwable: Throwable) {

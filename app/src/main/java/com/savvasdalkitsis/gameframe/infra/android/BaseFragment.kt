@@ -21,7 +21,6 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import butterknife.ButterKnife
 import com.savvasdalkitsis.gameframe.base.BasePresenter
 import com.savvasdalkitsis.gameframe.base.BaseView
 
@@ -32,9 +31,7 @@ abstract class BaseFragment<V: BaseView, out P: BasePresenter<V>>: Fragment() {
     abstract val view: V
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(layoutId, container, false)
-        ButterKnife.bind(this, view)
-        return view
+        return inflater.inflate(layoutId, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

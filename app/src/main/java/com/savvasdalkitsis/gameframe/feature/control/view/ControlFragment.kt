@@ -21,10 +21,9 @@ import android.support.annotation.ArrayRes
 import android.support.design.widget.FloatingActionButton
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
-import butterknife.OnClick
-import butterknife.OnItemSelected
 import com.savvasdalkitsis.gameframe.R
 import com.savvasdalkitsis.gameframe.feature.control.model.*
 import com.savvasdalkitsis.gameframe.feature.control.presenter.ControlPresenter
@@ -37,7 +36,7 @@ import com.savvasdalkitsis.gameframe.infra.kotlin.visible
 import com.savvasdalkitsis.gameframe.injector.presenter.PresenterInjector
 import kotlinx.android.synthetic.main.fragment_control.*
 
-class ControlFragment : BaseFragment<ControlView, ControlPresenter>(), ControlView, FragmentSelectedListener {
+class ControlFragment : BaseFragment<ControlView, ControlPresenter>(), ControlView, FragmentSelectedListener, AdapterView.OnItemSelectedListener {
 
     override val presenter = PresenterInjector.controlPresenter()
     override val view = this
@@ -59,6 +58,17 @@ class ControlFragment : BaseFragment<ControlView, ControlPresenter>(), ControlVi
         view_cycle_interval.adapter = adapter(R.array.cycle_interval)
         view_display_mode.adapter = adapter(R.array.display_mode)
         view_clock_face.adapter = adapter(R.array.clock_face)
+
+        view_menu.setOnClickListener { presenter.menu() }
+        view_next.setOnClickListener { presenter.next() }
+        view_control_setup.setOnClickListener { presenter.setup() }
+        view_brightness_low.setOnClickListener { view_brightness.incrementProgressBy(-1) }
+        view_brightness_high.setOnClickListener { view_brightness.incrementProgressBy(1) }
+
+        view_playback_mode.onItemSelectedListener = this
+        view_cycle_interval.onItemSelectedListener = this
+        view_display_mode.onItemSelectedListener = this
+        view_clock_face.onItemSelectedListener = this
     }
 
     override fun onResume() {
@@ -76,49 +86,17 @@ class ControlFragment : BaseFragment<ControlView, ControlPresenter>(), ControlVi
         fab.gone()
     }
 
-    @OnClick(R.id.view_menu)
-    fun menu() {
-        presenter.menu()
+    override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+        when (view) {
+            view_playback_mode -> presenter.changePlaybackMode(PlaybackMode.from(position))
+            view_cycle_interval -> presenter.changeCycleInterval(CycleInterval.from(position))
+            view_display_mode -> presenter.changeDisplayMode(DisplayMode.from(position))
+            view_clock_face -> presenter.changeClockFace(ClockFace.from(position))
+        }
     }
 
-    @OnClick(R.id.view_next)
-    fun next() {
-        presenter.next()
-    }
-
-    @OnClick(R.id.view_control_setup)
-    fun setup() {
-        presenter.setup()
-    }
-
-    @OnClick(R.id.view_brightness_low)
-    fun brightnessLow() {
-        view_brightness.incrementProgressBy(-1)
-    }
-
-    @OnClick(R.id.view_brightness_high)
-    fun brightnessHigh() {
-        view_brightness.incrementProgressBy(1)
-    }
-
-    @OnItemSelected(R.id.view_playback_mode)
-    fun playbackMode(position: Int) {
-        presenter.changePlaybackMode(PlaybackMode.from(position))
-    }
-
-    @OnItemSelected(R.id.view_cycle_interval)
-    fun cycleInterval(position: Int) {
-        presenter.changeCycleInterval(CycleInterval.from(position))
-    }
-
-    @OnItemSelected(R.id.view_display_mode)
-    fun displayMode(position: Int) {
-        presenter.changeDisplayMode(DisplayMode.from(position))
-    }
-
-    @OnItemSelected(R.id.view_clock_face)
-    fun clockFace(position: Int) {
-        presenter.changeClockFace(ClockFace.from(position))
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Not needed
     }
 
     override fun operationSuccess() = Snackbars.success(coordinator, R.string.success)
