@@ -5,8 +5,8 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
 
     signingConfigs {
         release {
@@ -19,8 +19,8 @@ android {
 
     defaultConfig {
         applicationId "com.savvasdalkitsis.gameframe"
-        minSdkVersion 16
-        targetSdkVersion 26
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
         versionCode app_version_code
         versionName app_version
         manifestPlaceholders = [fabric_api_key: FABRIC_API_KEY]
