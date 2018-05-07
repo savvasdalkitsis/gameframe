@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
-        android:background="@color/colorPrimary"
+        android:background="?attr/colorPrimary"
         app:itemIconTint="@drawable/nav_item_selector"
         app:itemTextColor="@drawable/nav_item_selector"
         app:layout_behavior="com.savvasdalkitsis.gameframe.infra.view.BottomNavigationBehavior"

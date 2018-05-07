@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_clear_white_48px"
-            app:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="?attr/colorPrimary"
             app:fabSize="normal" />
 
         <ProgressBar

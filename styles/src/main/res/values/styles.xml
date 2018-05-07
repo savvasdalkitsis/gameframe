@@ -3,13 +3,13 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/gameFrameColorPrimary</item>
+        <item name="colorPrimaryDark">@color/gameFrameColorPrimaryDark</item>
+        <item name="colorAccent">@color/gameFrameColorAccent</item>
         <item name="android:buttonStyle">@style/AppTheme.ButtonStyle</item>
-        <item name="colorButtonNormal">@color/colorPrimary</item>
+        <item name="colorButtonNormal">@color/gameFrameColorPrimary</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:navigationBarColor" tools:targetApi="21">@color/colorPrimary</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/gameFrameColorPrimary</item>
     </style>
 
     <style name="AppTheme.Dialog" parent="Theme.AppCompat.Light.Dialog">
@@ -21,7 +21,7 @@
     </style>
 
     <style name="AppTheme.Dialog.ButtonStyle" parent="Widget.AppCompat.Button">>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/gameFrameColorPrimary</item>
     </style>
 
     <style name="Theme.Transparent" parent="android:Theme">
@@ -34,13 +34,13 @@
     </style>
 
     <style name="AlertDialog.Changelog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/gameFrameColorAccent</item>
+        <item name="android:textColorPrimary">@color/gameFrameColorPrimary</item>
         <item name="android:windowTitleStyle">@style/AlertDialogChangelogStyleTitle</item>
     </style>
 
     <style name="AlertDialogChangelogStyleTitle" parent="Base.DialogWindowTitle.AppCompat">
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textColor">@color/gameFrameColorPrimaryDark</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Title</item>
     </style>
 

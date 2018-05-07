@@ -26,13 +26,13 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:src="@drawable/ic_palette_white_48px"
-                app:backgroundTint="@color/colorPrimaryDark"
+                app:backgroundTint="?attr/colorPrimaryDark"
                 app:fabSize="mini"
                 tools:ignore="ContentDescription,RtlHardcoded"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/view_draw_open_layers"
-                app:backgroundTint="@color/colorPrimaryDark"
+                app:backgroundTint="?attr/colorPrimaryDark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
@@ -45,7 +45,7 @@
             <com.savvasdalkitsis.gameframe.feature.workspace.element.tools.view.ToolFabView
                 android:id="@+id/view_draw_tools_current"
                 style="?attr/actionButtonStyle"
-                app:backgroundTint="@color/colorPrimaryDark"
+                app:backgroundTint="?attr/colorPrimaryDark"
                 tools:src="@drawable/ic_create_white_48px"
                 android:layout_alignTop="@id/view_draw_open_palette"
                 android:layout_marginRight="16dp"

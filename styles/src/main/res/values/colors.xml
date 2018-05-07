@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#c62828</color>
-    <color name="colorPrimaryDark">#b71c1c</color>
-    <color name="colorAccent">#1e88e5</color>
+    <color name="gameFrameColorPrimary">#c62828</color>
+    <color name="gameFrameColorPrimaryDark">#b71c1c</color>
+    <color name="gameFrameColorAccent">#1e88e5</color>
     <color name="success">#66bb6a</color>
     <color name="error">#e57373</color>
     <color name="progress">#ff852d</color>
