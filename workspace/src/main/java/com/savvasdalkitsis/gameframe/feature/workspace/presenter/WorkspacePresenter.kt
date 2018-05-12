@@ -163,7 +163,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: De
 
     private fun projectsDeleted(names: List<String>) = {
         view?.showSuccess()
-        if (names.contains(project.name)) {
+        if (project.name in names) {
             project.name = null
             displayProjectName()
         }

@@ -50,7 +50,6 @@ import com.savvasdalkitsis.gameframe.kotlin.visible
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import io.github.yavski.fabspeeddial.CustomFabSpeedDial
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter
-import kotlinx.android.synthetic.main.fragment_workspace.*
 
 @SuppressLint("RtlHardcoded")
 private const val GRAVITY_PALETTES = Gravity.LEFT
@@ -185,25 +184,25 @@ class WorkspaceFragment : BaseFragment<WorkspaceView<Menu>, WorkspacePresenter<M
     }
 
     override fun enableUndo(options: Menu) {
-        setMenuAlpha(options, R.id.menu_undo, 255)
+        options[R.id.menu_undo]?.alpha(255)
     }
 
     override fun disableUndo(options: Menu) {
-        setMenuAlpha(options, R.id.menu_undo, 125)
+        options[R.id.menu_undo]?.alpha(125)
     }
 
     override fun enableRedo(options: Menu) {
-        setMenuAlpha(options, R.id.menu_redo, 255)
+        options[R.id.menu_redo]?.alpha(255)
     }
 
     override fun disableRedo(options: Menu) {
-        setMenuAlpha(options, R.id.menu_redo, 125)
+        options[R.id.menu_redo]?.alpha(125)
     }
 
-    private fun setMenuAlpha(options: Menu, id: Int, alpha: Int) {
-        options.findItem(id)?.let { item ->
-            item.icon.alpha = alpha
-        }
+    private operator fun Menu.get(id: Int): MenuItem? = findItem(id)
+
+    private fun MenuItem.alpha(alpha: Int) {
+        icon.alpha = alpha
     }
 
     override fun onFragmentSelected() {
