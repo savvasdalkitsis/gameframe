@@ -2,4 +2,5 @@
 <resources>
     <string name="manage">Manage</string>
     <string name="draw">Draw</string>
+    <string name="power">Power</string>
 </resources>

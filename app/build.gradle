@@ -21,7 +21,6 @@ android {
         targetSdkVersion target_sdk_version
         versionCode app_version_code
         versionName app_version
-        manifestPlaceholders = [fabric_api_key: FABRIC_API_KEY]
         resValue "string", "facebook_application_id", FACEBOOK_APPLICATION_ID
         resValue "string", "facebook_login_protocol_scheme", FACEBOOK_LOGIN_PROTOCOL_SCHEME
         resValue "string", "twitter_consumer_key", TWITTER_CONSUMER_KEY
@@ -78,7 +77,7 @@ gradle.taskGraph.whenReady { taskGraph ->
 private static String readPass(String type) {
     def pass
     if (System.console() == null) {
-        throw new InvalidUserDataException("Need console to enter password.")
+        throw new InvalidUserDataException("Need console to enter password. Try running with --no-daemon")
     } else {
         pass = System.console().readPassword("\nPlease enter key passphrase for $type: \n\n")
         pass = new String(pass)
