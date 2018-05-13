@@ -2,5 +2,4 @@
 <paths>
     <external-path path="Android/data/${applicationId}/cache" name="files_root" />
     <external-path name="external_files" path="."/>
-    <cache-path name="maoni-shares" path="." />
 </paths>

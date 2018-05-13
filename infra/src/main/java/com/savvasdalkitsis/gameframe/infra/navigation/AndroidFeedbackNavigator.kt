@@ -22,15 +22,19 @@ import android.widget.Toast
 import com.savvasdalkitsis.gameframe.infra.R
 import com.savvasdalkitsis.gameframe.infra.TopActivityProvider
 import org.rm3l.maoni.Maoni
+import org.rm3l.maoni.email.MaoniEmailListener
+
+private const val FEEDBACK_EMAIL_ADDRESS = "feedback.gameframe@gmail.com"
 
 class AndroidFeedbackNavigator(topActivityProvider: TopActivityProvider, application: Application) : FeedbackNavigator, AndroidNavigator(topActivityProvider, application) {
 
     override fun navigateToFeedback() {
         context.let {
             if (it is Activity) {
-                Maoni.Builder(it, "$it.fileProvider")
-                        .withDefaultToEmailAddress("feedback.gameframe@gmail.com")
+                Maoni.Builder(it, "${it.packageName}.maoniFileProvider")
+                        .withDefaultToEmailAddress(FEEDBACK_EMAIL_ADDRESS)
                         .withHeader(R.drawable.feedback_header)
+                        .withListener(MaoniEmailListener(it, FEEDBACK_EMAIL_ADDRESS))
                         .build()
                         .start(it)
             } else {
