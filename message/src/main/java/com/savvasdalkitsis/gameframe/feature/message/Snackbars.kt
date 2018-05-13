@@ -29,7 +29,6 @@ import com.github.andrewlord1990.snackbarbuilder.SnackbarBuilder
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
 import com.savvasdalkitsis.gameframe.infra.R
 import com.savvasdalkitsis.gameframe.infra.injector.TopActivityProviderInjector
-import com.savvasdalkitsis.gameframe.infra.kotlin.attribute
 import com.savvasdalkitsis.gameframe.kotlin.ViewAction
 
 
@@ -59,7 +58,7 @@ object Snackbars {
         if (view != null) {
             TSnackbar.make(view, message, TSnackbar.LENGTH_SHORT).apply {
                 val content = this.view
-                content.setBackgroundResource(content.context.attribute(R.attr.colorAccent))
+                content.setBackgroundResource(R.color.gameFrameColorAccent)
                 val textView = content.findViewById<TextView>(com.androidadvance.topsnackbar.R.id.snackbar_text)
                 textView.setTextColor(Color.WHITE)
             }.show()
