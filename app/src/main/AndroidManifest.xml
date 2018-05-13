@@ -4,12 +4,6 @@
     package="com.savvasdalkitsis.gameframe">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="18" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
@@ -20,110 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity
-            android:name=".feature.home.view.HomeActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/shortcuts" />
-        </activity>
-        <activity
-            android:name=".feature.ip.view.IpSetupActivity"
-            android:label="@string/setup_ip_address"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name=".feature.gameframe.view.DeepLinkActivity"
-            android:theme="@style/Theme.Transparent">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="power"
-                    android:scheme="gameframe" />
-                <data
-                    android:host="next"
-                    android:scheme="gameframe" />
-                <data
-                    android:host="menu"
-                    android:scheme="gameframe" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:label="@string/account"
-            android:name=".feature.account.view.AccountActivity" />
-
-        <service
-            android:name=".feature.widget.view.PowerTileService"
-            android:icon="@drawable/ic_block_power"
-            android:label="@string/game_frame_power"
-            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
-        </service>
-
-        <service android:name=".feature.wear.view.WatchMessagingService">
-            <intent-filter>
-                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
-                <data android:scheme="wear" android:host="*"
-                    android:path="/command" />
-            </intent-filter>
-        </service>
-
-        <receiver
-            android:name=".feature.widget.view.PowerWidgetProvider"
-            android:label="@string/power">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/power_appwidget_info" />
-        </receiver>
-        <receiver
-            android:name=".feature.widget.view.NextWidgetProvider"
-            android:label="@string/next">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/next_appwidget_info" />
-        </receiver>
-        <receiver
-            android:name=".feature.widget.view.MenuWidgetProvider"
-            android:label="@string/menu">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/menu_appwidget_info" />
-        </receiver>
-
-        <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.savvasdalkitsis.gameframe.fileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-        </provider>
     </application>
 
 </manifest>

@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -48,45 +47,25 @@ repositories {
 
 dependencies {
     wearApp project(':watch')
+    implementation project(':wear')
+    implementation project(':home')
     implementation (
-            "com.google.firebase:firebase-crash:$gms_version",
-            "com.google.firebase:firebase-auth:$firebase_version",
             "com.google.android.gms:play-services-auth:$firebase_version",
             "com.google.gms:google-services:$google_services_version",
-            "com.firebaseui:firebase-ui-auth:3.1.0",
             "com.android.support:appcompat-v7:$support_version",
             "com.android.support:design:$support_version",
             "com.android.support:cardview-v7:$support_version",
-            "com.android.support:gridlayout-v7:$support_version",
-            "com.google.android.gms:play-services-wearable:$gms_version",
-            "com.squareup.retrofit2:retrofit:$retrofit_version",
-            "io.reactivex.rxjava2:rxandroid:$rxandroid_version",
-            "io.reactivex.rxjava2:rxjava:$rxjava_version",
-            "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version",
-            "com.squareup.retrofit2:converter-gson:$retrofit_version",
-            "com.squareup.okhttp3:logging-interceptor:$okhttp_version",
-            "com.github.andrewlord1990:snackbarbuilder:$snackbarbuilder_version",
             "uk.co.chrisjenx:calligraphy:$calligraphy_version",
-            "com.afollestad.material-dialogs:core:$material_dialogs_version",
-            "com.afollestad.material-dialogs:commons:$material_dialogs_version",
-            "commons-io:commons-io:$commons_io_version",
-            "com.sothree.slidinguppanel:library:$slidinguppanel_version",
-            "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version",
-            "io.github.yavski:fab-speed-dial:$fab_speed_dial_version",
-            "com.androidadvance:topsnackbar:$topsnackbar_version",
-            "us.feras.mdv:markdownview:$markdownview_version",
             "com.android.support:multidex:$multidex_version",
             "com.facebook.fresco:fresco:$fresco_version",
-            "com.android.support.constraint:constraint-layout:$constraint_layout_version",
-            "com.jakewharton.rxbinding2:rxbinding-kotlin:$rx_binding_version",
-            "com.google.firebase:firebase-firestore:$firebase_version"
+            "com.google.firebase:firebase-crash:$gms_version",
     )
     implementation ("com.facebook.android:facebook-android-sdk:4.27.0") {
         exclude group: 'com.facebook.fresco', module: 'drawee'
+        exclude group: 'com.android.support', module: 'customtabs'
     }
     implementation("com.twitter.sdk.android:twitter-core:3.0.0@aar") { transitive = true }
     compile "com.google.firebase:firebase-perf:$gms_version"
-    implementation ("org.rm3l:maoni:$maoni_version@aar") { transitive = true }
 }
 
 gradle.taskGraph.whenReady { taskGraph ->

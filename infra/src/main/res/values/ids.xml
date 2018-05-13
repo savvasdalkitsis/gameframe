@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="snackbar" type="id"/>
+    <item name="view_coordinator" type="id"/>
+    <item name="action_feedback" type="id"/>
+</resources>

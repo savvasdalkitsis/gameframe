@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="playback_mode">Playback Mode</string>
+    <string name="cycle_interval">Cycle Interval</string>
+    <string name="display_mode">Display Mode</string>
+    <string name="clock_face">Clock Face</string>
+    <string name="game_frame_ip_not_found">Game Frame IP not found.\nSet it up now?</string>
+    <string name="game_frame_ip">Game Frame IP: %1$s</string>
+</resources>

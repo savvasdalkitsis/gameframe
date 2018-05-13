@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.savvasdalkitsis.gameframe.feature.account">
+    <application>
+
+        <activity
+            android:label="@string/account"
+            android:name=".view.AccountActivity" />
+    </application>
+</manifest>

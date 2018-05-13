@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.savvasdalkitsis.gameframe.infra">
+    <application>
+        <provider
+            android:name="com.savvasdalkitsis.gameframe.infra.feedback.MaoniFileProvider"
+            android:authorities="com.savvasdalkitsis.gameframe.maoniFileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/infa_file_paths" />
+        </provider>
+    </application>
+</manifest>

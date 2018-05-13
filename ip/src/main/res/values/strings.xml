@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="enter_ip_address">Enter IP address</string>
+    <string name="setup_ip_address">Setup IP address</string>
+    <string name="wifi_not_enabled">Wifi is not enabled</string>
+    <string name="enable">Enable</string>
+    <string name="trying_to_find_game_frame">Trying to find the Game Frame on your local network</string>
+    <string name="game_frame_ip_found">Game Frame IP found</string>
+    <string name="ip_separator">.</string>
+    <string name="discover_game_frame_ip">Discover Game Frame IP</string>
+</resources>

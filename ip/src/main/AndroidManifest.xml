@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.savvasdalkitsis.gameframe.feature.ip" >
+    <application>
+        <activity
+            android:name=".view.IpSetupActivity"
+            android:label="@string/setup_ip_address"
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize" />
+    </application>
+</manifest>

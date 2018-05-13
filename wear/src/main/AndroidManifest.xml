@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.savvasdalkitsis.gameframe.feature.wear" >
+    <application>
+        <service android:name=".view.WatchMessagingService">
+            <intent-filter>
+                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+                <data android:scheme="wear" android:host="*"
+                    android:path="/command" />
+            </intent-filter>
+        </service>
+    </application>
+</manifest>

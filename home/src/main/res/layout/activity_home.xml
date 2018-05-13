@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/view_coordinator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/bottom_navigation">
+
+        <ViewSwitcher
+            android:id="@+id/fragment_switcher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <fragment
+                android:id="@+id/fragment_manage"
+                android:name="com.savvasdalkitsis.gameframe.feature.control.view.ControlFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <fragment
+                android:id="@+id/fragment_workspace"
+                android:name="com.savvasdalkitsis.gameframe.feature.workspace.view.WorkspaceFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </ViewSwitcher>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/view_fab_control"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_power_settings_new_white_48px"
+            android:visibility="gone"
+            app:layout_anchor="@id/fragment_switcher"
+            app:layout_anchorGravity="bottom|right"
+            app:fabSize="normal"
+            tools:ignore="RtlHardcoded" />
+
+        <io.github.yavski.fabspeeddial.CustomFabSpeedDial
+            android:id="@+id/view_fab_workspace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:visibility="gone"
+            app:layout_behavior="com.savvasdalkitsis.gameframe.infra.android.RespectSnackbarBehavior"
+            app:layout_anchor="@id/fragment_switcher"
+            app:layout_anchorGravity="bottom|right"
+            app:fabDrawable="@drawable/ic_import_export_white_48px"
+            app:fabGravity="bottom_end"
+            app:fabMenu="@menu/menu_workspace_operations"
+            app:fabSize="normal"
+            app:touchGuard="false"
+            tools:ignore="RtlHardcoded" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="?attr/colorPrimary"
+        app:itemIconTint="@drawable/nav_item_selector"
+        app:itemTextColor="@drawable/nav_item_selector"
+        app:layout_behavior="com.savvasdalkitsis.gameframe.infra.view.BottomNavigationBehavior"
+        app:menu="@menu/bottom_navigation_main" />
+
+</RelativeLayout>

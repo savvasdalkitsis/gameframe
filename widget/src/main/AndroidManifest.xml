@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.savvasdalkitsis.gameframe.feature.widget">
+    <application>
+
+        <activity
+            android:name=".view.DeepLinkActivity"
+            android:theme="@style/Theme.Transparent">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="power"
+                    android:scheme="gameframe" />
+                <data
+                    android:host="next"
+                    android:scheme="gameframe" />
+                <data
+                    android:host="menu"
+                    android:scheme="gameframe" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".view.PowerTileService"
+            android:icon="@drawable/ic_block_power"
+            android:label="@string/game_frame_power"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".view.PowerWidgetProvider"
+            android:label="@string/power">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/power_appwidget_info" />
+        </receiver>
+        <receiver
+            android:name=".view.NextWidgetProvider"
+            android:label="@string/next">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/next_appwidget_info" />
+        </receiver>
+        <receiver
+            android:name=".view.MenuWidgetProvider"
+            android:label="@string/menu">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/menu_appwidget_info" />
+        </receiver>
+    </application>
+</manifest>

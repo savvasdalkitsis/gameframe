@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.savvasdalkitsis.gameframe.feature.workspace.element.palette.view.PaletteSettingsView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:divider="@drawable/layer_settings_divider"
+    android:showDividers="middle"
+    android:orientation="vertical"
+    android:padding="24dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:text="@string/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/view_palette_title"
+        tools:text="Palette Name"
+        android:selectAllOnFocus="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="LabelFor,TextFields" />
+
+</com.savvasdalkitsis.gameframe.feature.workspace.element.palette.view.PaletteSettingsView>
