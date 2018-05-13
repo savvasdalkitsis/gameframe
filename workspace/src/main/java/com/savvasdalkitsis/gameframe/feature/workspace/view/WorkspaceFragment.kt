@@ -50,6 +50,7 @@ import com.savvasdalkitsis.gameframe.kotlin.visible
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import io.github.yavski.fabspeeddial.CustomFabSpeedDial
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter
+import kotlinx.android.synthetic.main.fragment_workspace.*
 
 @SuppressLint("RtlHardcoded")
 private const val GRAVITY_PALETTES = Gravity.LEFT
