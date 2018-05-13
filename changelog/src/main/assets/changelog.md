@@ -10,7 +10,7 @@ body {
 </style>
 
 #### v1.3
-##### ?
+##### 19 May 2018
 
 * Added Android Wear support
 * Online sync functionality. You can now create an online account so you never lose your drawings
