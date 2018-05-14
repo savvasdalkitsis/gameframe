@@ -29,6 +29,7 @@ import com.savvasdalkitsis.gameframe.feature.networking.usecase.WifiUseCase
 import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
 import com.savvasdalkitsis.gameframe.infra.base.plusAssign
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
+import com.savvasdalkitsis.gameframe.infra.rx.logErrors
 import io.reactivex.Completable
 import io.reactivex.CompletableTransformer
 
@@ -75,7 +76,7 @@ class ControlPresenter(private val deviceUseCase: DeviceUseCase,
     }
 
     private fun runCommandAndIgnoreResult(command: Completable) {
-        managedStreams += runCommand(command).subscribe({ }, { })
+        managedStreams += runCommand(command).subscribe({ }, logErrors())
     }
 
     fun enableWifi() {

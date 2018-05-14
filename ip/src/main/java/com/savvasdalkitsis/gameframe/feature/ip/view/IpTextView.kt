@@ -76,6 +76,7 @@ class IpTextView : LinearLayout {
         part2.text = ipAddress.part2
         part3.text = ipAddress.part3
         part4.text = ipAddress.part4
+        part1.requestFocus()
     }
 
     override fun setEnabled(enabled: Boolean) {
@@ -92,8 +93,10 @@ class IpTextView : LinearLayout {
         override fun afterTextChanged(editable: Editable) {
             rebuildIpAddress()
             ipChangedListener?.onIpChangedListener(ipAddress)
-            if (editable.toString().length == 3) {
-                textView.focusSearch(View.FOCUS_FORWARD).requestFocus()
+            editable.toString().let {
+                if (it.length == 3 || it == "0") {
+                    textView.focusSearch(View.FOCUS_FORWARD)?.requestFocus()
+                }
             }
         }
 

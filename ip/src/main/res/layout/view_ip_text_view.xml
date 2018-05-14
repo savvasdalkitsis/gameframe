@@ -70,11 +70,12 @@
         android:inputType="phone"
         android:digits="0123456789"
         android:maxLength="3"
-        android:imeOptions="actionNext"
+        android:imeOptions="actionDone"
         android:gravity="center_horizontal"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:nextFocusForward="@id/view_ip_text_view_part_1"
         tools:ignore="LabelFor" />
 
 </com.savvasdalkitsis.gameframe.feature.ip.view.IpTextView>

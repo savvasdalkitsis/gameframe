@@ -30,6 +30,7 @@ import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
 import com.savvasdalkitsis.gameframe.infra.base.plusAssign
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
+import com.savvasdalkitsis.gameframe.infra.rx.logErrors
 import io.reactivex.Flowable
 
 private val TAG = AccountPresenter<*>::javaClass.name
@@ -82,7 +83,7 @@ class AccountPresenter<in AuthenticationData>(private val authenticationUseCase:
     private fun uploadLocallySavedProjects() {
         workspaceUseCase.locallySavedProjects()
                 .compose(RxTransformers.schedulers<List<WorkspaceItem>>())
-                .subscribe(::savedProjectsLoaded, {})
+                .subscribe(::savedProjectsLoaded, logErrors())
     }
 
     private fun savedProjectsLoaded(projects: List<WorkspaceItem>) {
