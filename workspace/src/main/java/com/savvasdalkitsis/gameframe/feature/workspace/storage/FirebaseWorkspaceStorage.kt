@@ -46,7 +46,7 @@ class FirebaseWorkspaceStorage(private val authenticationUseCase: Authentication
     }
 
     override fun saveWorkspace(name: String, workspaceModel: SaveContainer) =
-            simpleActionForDrawing(name) { set(KEY to gson.toJson(workspaceModel)) }
+            simpleActionForDrawing(name) { set(mapOf(KEY to gson.toJson(workspaceModel))) }
 
     override fun listProjectNames(): Single<List<String>> =
             forDrawings { (collection, emitter) ->
