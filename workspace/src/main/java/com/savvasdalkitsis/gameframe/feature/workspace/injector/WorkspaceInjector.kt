@@ -26,13 +26,10 @@ import com.savvasdalkitsis.gameframe.feature.composition.CompositionInjector.ble
 import com.savvasdalkitsis.gameframe.feature.composition.model.BlendMode
 import com.savvasdalkitsis.gameframe.feature.composition.model.PorterDuffOperator
 import com.savvasdalkitsis.gameframe.feature.device.injector.DeviceInjector.deviceCase
-import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipNavigator
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector.messageDisplay
 import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector.wifiUseCase
 import com.savvasdalkitsis.gameframe.feature.storage.injector.StorageInjector.localStorageUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
-import com.savvasdalkitsis.gameframe.feature.workspace.navigation.AndroidWorkspaceNavigator
-import com.savvasdalkitsis.gameframe.feature.workspace.navigation.WorkspaceNavigator
 import com.savvasdalkitsis.gameframe.feature.workspace.presenter.WorkspacePresenter
 import com.savvasdalkitsis.gameframe.feature.workspace.serialization.BlendModeAdapter
 import com.savvasdalkitsis.gameframe.feature.workspace.serialization.PorterDuffAdapter
@@ -40,22 +37,24 @@ import com.savvasdalkitsis.gameframe.feature.workspace.serialization.WorkspaceMo
 import com.savvasdalkitsis.gameframe.feature.workspace.storage.AuthenticationAwareWorkspaceStorage
 import com.savvasdalkitsis.gameframe.feature.workspace.storage.FirebaseWorkspaceStorage
 import com.savvasdalkitsis.gameframe.feature.workspace.storage.LocalWorkspaceStorage
+import com.savvasdalkitsis.gameframe.feature.workspace.usecase.AccountPromptUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
 import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector.application
-import com.savvasdalkitsis.gameframe.infra.injector.TopActivityProviderInjector.topActivityProvider
+import com.savvasdalkitsis.gameframe.infra.injector.InfrastructureInjector.navigator
+import com.savvasdalkitsis.gameframe.infra.injector.RxSharedPreferencesInjector
 
 object WorkspaceInjector {
 
-    private fun workspaceNavigator(): WorkspaceNavigator = AndroidWorkspaceNavigator(topActivityProvider(), application())
-
     fun workspacePresenter() = WorkspacePresenter<Menu, View>(deviceCase(), blendUseCase(),
-            workspaceUseCase(), stringUseCase(), messageDisplay(), workspaceNavigator(),
-            ipNavigator(), bitmapFileUseCase(), wifiUseCase())
+            workspaceUseCase(), stringUseCase(), messageDisplay(), navigator(),
+            bitmapFileUseCase(), wifiUseCase(), accountPromptUseCase())
 
     fun workspaceUseCase() = WorkspaceUseCase(gson(), workspaceStorage(), localWorkspaceStorage())
 
     fun firebaseWorkspaceStorage() = FirebaseWorkspaceStorage(authenticationUseCase(), gson())
+
+    private fun accountPromptUseCase() = AccountPromptUseCase(RxSharedPreferencesInjector.rxSharedPreferences())
 
     private fun localWorkspaceStorage() = LocalWorkspaceStorage(gson(), localStorageUseCase())
 

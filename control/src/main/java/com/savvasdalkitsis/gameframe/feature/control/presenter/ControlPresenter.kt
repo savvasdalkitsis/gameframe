@@ -21,13 +21,13 @@ import com.savvasdalkitsis.gameframe.feature.control.view.ControlView
 import com.savvasdalkitsis.gameframe.feature.device.model.*
 import com.savvasdalkitsis.gameframe.feature.device.usecase.DeviceUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
-import com.savvasdalkitsis.gameframe.feature.ip.navigation.IpNavigator
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
 import com.savvasdalkitsis.gameframe.feature.networking.model.WifiNotEnabledException
 import com.savvasdalkitsis.gameframe.feature.networking.usecase.WifiUseCase
 import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
 import com.savvasdalkitsis.gameframe.infra.base.plusAssign
+import com.savvasdalkitsis.gameframe.infra.navigation.Navigator
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import com.savvasdalkitsis.gameframe.infra.rx.logErrors
 import io.reactivex.Completable
@@ -35,7 +35,7 @@ import io.reactivex.CompletableTransformer
 
 class ControlPresenter(private val deviceUseCase: DeviceUseCase,
                        private val ipRepository: IpRepository,
-                       private val navigator: IpNavigator,
+                       private val navigator: Navigator,
                        private val wifiUseCase: WifiUseCase): BasePresenter<ControlView>() {
 
     fun loadIpAddress() {

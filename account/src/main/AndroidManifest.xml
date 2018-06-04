@@ -5,6 +5,14 @@
 
         <activity
             android:label="@string/account"
-            android:name=".view.AccountActivity" />
+            android:name=".view.AccountActivity">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="gameframe"
+                    android:host="navigation"
+                    android:pathPattern="/account"/>
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

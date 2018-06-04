@@ -445,4 +445,15 @@ class WorkspaceFragment : BaseFragment<WorkspaceView<Menu>, WorkspacePresenter<M
         Snackbars.error(coordinator(), R.string.operation_failed)
         stopProgress()
     }
+
+    override fun upsellAccount(takeMeThere: Action, continueSaving: Action) {
+        MaterialDialog.Builder(context!!)
+                .title(R.string.save_drawings_on_cloud)
+                .content(R.string.never_lose_your_drawings)
+                .positiveText(R.string.yes_please)
+                .negativeText(R.string.no_just_save)
+                .onPositive { _,_ -> takeMeThere()}
+                .onNegative { _,_ -> continueSaving()}
+                .show()
+    }
 }

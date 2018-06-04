@@ -42,4 +42,8 @@
     <string name="name">Name</string>
     <string name="blend_mode">Blend Mode</string>
     <string name="composition_operator">Composition Operator</string>
+    <string name="save_drawings_on_cloud">Save your drawings on the cloud</string>
+    <string name="never_lose_your_drawings">Never lose your drawings by saving them on the cloud by creating a free account</string>
+    <string name="yes_please">Yes please</string>
+    <string name="no_just_save">No. Just save my drawing please</string>
 </resources>

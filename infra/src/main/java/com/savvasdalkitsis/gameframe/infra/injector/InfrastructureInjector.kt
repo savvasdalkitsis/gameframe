@@ -16,12 +16,12 @@
  */
 package com.savvasdalkitsis.gameframe.infra.injector
 
-import com.savvasdalkitsis.gameframe.infra.injector.TopActivityProviderInjector.topActivityProvider
-import com.savvasdalkitsis.gameframe.infra.navigation.AndroidFeedbackNavigator
-import com.savvasdalkitsis.gameframe.infra.navigation.FeedbackNavigator
 import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector.application
+import com.savvasdalkitsis.gameframe.infra.injector.TopActivityProviderInjector.topActivityProvider
+import com.savvasdalkitsis.gameframe.infra.navigation.AndroidNavigator
+import com.savvasdalkitsis.gameframe.infra.navigation.Navigator
 
 object InfrastructureInjector {
 
-    fun feedbackNavigator(): FeedbackNavigator = AndroidFeedbackNavigator(topActivityProvider(), application())
+    fun navigator(): Navigator = AndroidNavigator(topActivityProvider(), application())
 }

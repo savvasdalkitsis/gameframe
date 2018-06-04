@@ -23,7 +23,6 @@ import com.savvasdalkitsis.gameframe.feature.device.usecase.DeviceUseCase
 import com.savvasdalkitsis.gameframe.feature.history.model.MomentList
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
-import com.savvasdalkitsis.gameframe.feature.ip.navigation.IpNavigator
 import com.savvasdalkitsis.gameframe.feature.message.MessageDisplay
 import com.savvasdalkitsis.gameframe.feature.networking.model.WifiNotEnabledException
 import com.savvasdalkitsis.gameframe.feature.networking.usecase.WifiUseCase
@@ -36,13 +35,14 @@ import com.savvasdalkitsis.gameframe.feature.workspace.element.grid.view.GridTou
 import com.savvasdalkitsis.gameframe.feature.workspace.element.layer.model.Layer
 import com.savvasdalkitsis.gameframe.feature.workspace.model.Project
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
-import com.savvasdalkitsis.gameframe.feature.workspace.navigation.WorkspaceNavigator
+import com.savvasdalkitsis.gameframe.feature.workspace.usecase.AccountPromptUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.UnsupportedProjectVersionException
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.view.WorkspaceView
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
 import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
 import com.savvasdalkitsis.gameframe.infra.base.plusAssign
+import com.savvasdalkitsis.gameframe.infra.navigation.Navigator
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import com.savvasdalkitsis.gameframe.kotlin.Action
 import com.savvasdalkitsis.gameframe.kotlin.or
@@ -55,10 +55,10 @@ class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: De
                                                    private val workspaceUseCase: WorkspaceUseCase,
                                                    private val stringUseCase: StringUseCase,
                                                    private val messageDisplay: MessageDisplay,
-                                                   private val navigator: WorkspaceNavigator,
-                                                   private val ipNavigator: IpNavigator,
+                                                   private val navigator: Navigator,
                                                    private val bitmapFileUseCase: BitmapFileUseCase<BitmapSource>,
-                                                   private val wifiUseCase: WifiUseCase) : GridTouchedListener, BasePresenter<WorkspaceView<Options>>() {
+                                                   private val wifiUseCase: WifiUseCase,
+                                                   private val accountPromptUseCase: AccountPromptUseCase) : GridTouchedListener, BasePresenter<WorkspaceView<Options>>() {
 
     private lateinit var gridDisplay: GridDisplay
     private var tempName: String? = null
@@ -93,16 +93,27 @@ class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: De
         view?.displayProgress()
         project.name?.let { tempName = it }
         tempName?.let { name ->
-            tempName = null
-            managedStreams += workspaceUseCase.saveProject(name, present)
-                    .compose(RxTransformers.schedulers())
-                    .subscribe(
-                            {
-                                projectChangedSuccessfully(name)
-                                successAction?.invoke()
-                            },
-                            projectSaveFailed()
-                    )
+            if (accountPromptUseCase.hasSeenAccountPrompt()) {
+                tempName = null
+                managedStreams += workspaceUseCase.saveProject(name, present)
+                        .compose(RxTransformers.schedulers())
+                        .subscribe(
+                                {
+                                    projectChangedSuccessfully(name)
+                                    successAction?.invoke()
+                                },
+                                projectSaveFailed()
+                        )
+            } else {
+                accountPromptUseCase.markChangeLogSeen()
+                view?.upsellAccount(
+                        takeMeThere = {
+                            tempName = null
+                            view?.stopProgress()
+                            navigator.navigateToAccount()
+                        },
+                        continueSaving = { saveWorkspace(successAction) })
+            }
         } ?: view?.askForFileName(R.string.save, {
             tempName = it
             saveWorkspace(successAction)
@@ -291,7 +302,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: De
                             is AlreadyExistsOnDeviceException -> view?.drawingAlreadyExists(name, grid, e)
                             is IpBaseHostMissingException -> {
                                 view?.operationFailed(e)
-                                ipNavigator.navigateToIpSetup()
+                                navigator.navigateToIpSetup()
                             }
                             is WifiNotEnabledException -> view?.wifiNotEnabledError(e)else -> view?.operationFailed(e)
                         } })

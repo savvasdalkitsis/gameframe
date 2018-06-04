@@ -6,6 +6,14 @@
             android:name=".view.IpSetupActivity"
             android:label="@string/setup_ip_address"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.intent.action.VIEW"/>
+                <data android:scheme="gameframe"
+                    android:host="navigation"
+                    android:pathPattern="/ip_setup"/>
+            </intent-filter>
+        </activity>
     </application>
 </manifest>

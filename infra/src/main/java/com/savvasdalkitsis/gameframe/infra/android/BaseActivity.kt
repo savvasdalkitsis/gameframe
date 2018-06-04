@@ -35,7 +35,7 @@ abstract class BaseActivity<V: BaseView, out P: BasePresenter<V>> : AppCompatAct
     abstract val presenter: P
     abstract val view: V
 
-    private val navigator = InfrastructureInjector.feedbackNavigator()
+    private val navigator = InfrastructureInjector.navigator()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

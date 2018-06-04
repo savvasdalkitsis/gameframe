@@ -28,6 +28,7 @@ import com.savvasdalkitsis.gameframe.kotlin.TypeAction
 interface WorkspaceView<in O>: BaseView {
 
     fun askForFileName(positiveText: Int, nameEntered: TypeAction<String>, cancelAction: Action)
+    fun upsellAccount(takeMeThere: Action, continueSaving: Action)
     fun displayProgress()
     fun stopProgress()
     fun drawingAlreadyExists(name: String, colorGrid: Grid, e: Throwable)
