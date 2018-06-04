@@ -17,4 +17,5 @@
     <string name="log_in">Log in</string>
     <string name="log_in_upsell">Looks you are not logged in.\nLog in to synchronize your drawings so you never lose them</string>
     <string name="re_upload_projects">Re-upload local projects</string>
+    <string name="privacy_policy_html"><a href="http://bit.ly/2sFxPLc">Privacy policy</a></string>
 </resources>

@@ -18,6 +18,7 @@ package com.savvasdalkitsis.gameframe.feature.account.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.Menu
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
@@ -49,6 +50,9 @@ class AccountActivity : BaseActivity<AccountView, AccountPresenter<Intent>>(), A
         view_account_log_out.setOnClickListener { presenter.logOut() }
         view_account_re_upload.setOnClickListener { presenter.reUpload() }
         view_account_delete_account.setOnClickListener { presenter.deleteAccount() }
+        listOf(view_account_privacy_policy_logged_in, view_account_privacy_policy_logged_out).forEach {
+            it.movementMethod = LinkMovementMethod.getInstance()
+        }
     }
 
     public override fun onStart() {
