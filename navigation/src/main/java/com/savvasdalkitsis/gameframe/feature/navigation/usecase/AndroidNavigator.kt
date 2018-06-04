@@ -14,7 +14,7 @@
  *
  * 'Game Frame' is a registered trademark of LEDSEQ
  */
-package com.savvasdalkitsis.gameframe.infra.navigation
+package com.savvasdalkitsis.gameframe.feature.navigation.usecase
 
 import android.app.Activity
 import android.app.Application
@@ -24,28 +24,27 @@ import android.content.Intent
 import android.net.Uri
 import android.support.v4.content.FileProvider
 import android.util.Log
-import android.widget.Toast
-import com.savvasdalkitsis.gameframe.infra.R
+import com.savvasdalkitsis.gameframe.feature.analytics.injector.AnalyticsInjector
 import com.savvasdalkitsis.gameframe.infra.TopActivityProvider
 import io.reactivex.Completable
-import org.rm3l.maoni.Maoni
-import org.rm3l.maoni.email.MaoniEmailListener
 import java.io.File
-import kotlin.reflect.KClass
-
-private const val FEEDBACK_EMAIL_ADDRESS = "feedback.gameframe@gmail.com"
 
 open class AndroidNavigator(private val topActivityProvider: TopActivityProvider, private val application: Application) : Navigator {
 
+    private val analytics = AnalyticsInjector.analytics()
+
     override fun navigateToAccount() {
+        analytics.logEvent("navigation", "target" to "account")
         context.startActivity(wrap(gameFrameNavigation("account")))
     }
 
     override fun navigateToIpSetup() {
+        analytics.logEvent("navigation", "target" to "ip_setup")
         context.startActivity(wrap(gameFrameNavigation("ip_setup")))
     }
 
     override fun navigateToPlayStore() {
+        analytics.logEvent("navigation", "target" to "play_store")
         val appPackageName = context.packageName
         try {
             context.startActivity(intentForUrl("market://details?id=$appPackageName"))
@@ -55,6 +54,7 @@ open class AndroidNavigator(private val topActivityProvider: TopActivityProvider
     }
 
     override fun navigateToShareImageFile(file: File, name: String): Completable = Completable.create { emitter ->
+        analytics.logEvent("navigation", "target" to "share_image")
         val uri = FileProvider.getUriForFile(context, "${context.packageName}.fileProvider", file)
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "image/*"
@@ -66,21 +66,6 @@ open class AndroidNavigator(private val topActivityProvider: TopActivityProvider
         } catch (e: android.content.ActivityNotFoundException) {
             Log.w(AndroidNavigator::class.java.name, "Could not share image", e)
             emitter.onError(e)
-        }
-    }
-
-    override fun navigateToFeedback() {
-        context.let {
-            if (it is Activity) {
-                Maoni.Builder(it, "${it.packageName}.maoniFileProvider")
-                        .withDefaultToEmailAddress(FEEDBACK_EMAIL_ADDRESS)
-                        .withHeader(R.drawable.feedback_header)
-                        .withListener(MaoniEmailListener(it, FEEDBACK_EMAIL_ADDRESS))
-                        .build()
-                        .start(it)
-            } else {
-                Toast.makeText(it, R.string.unknown_error, Toast.LENGTH_SHORT).show()
-            }
         }
     }
 
@@ -98,6 +83,6 @@ open class AndroidNavigator(private val topActivityProvider: TopActivityProvider
                 `package` = context.packageName
             }
 
-    val context: Context
+    private val context: Context
         get() = topActivityProvider.topActivity ?: application
 }

@@ -20,6 +20,7 @@ import android.view.Menu
 import android.view.View
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.savvasdalkitsis.gameframe.feature.analytics.injector.AnalyticsInjector.analytics
 import com.savvasdalkitsis.gameframe.feature.authentication.injector.AuthenticationInjector.authenticationUseCase
 import com.savvasdalkitsis.gameframe.feature.bitmap.injector.BitmapInjector.bitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.CompositionInjector.blendUseCase
@@ -27,6 +28,7 @@ import com.savvasdalkitsis.gameframe.feature.composition.model.BlendMode
 import com.savvasdalkitsis.gameframe.feature.composition.model.PorterDuffOperator
 import com.savvasdalkitsis.gameframe.feature.device.injector.DeviceInjector.deviceCase
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector.messageDisplay
+import com.savvasdalkitsis.gameframe.feature.navigation.injector.NavigationInjection.navigator
 import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector.wifiUseCase
 import com.savvasdalkitsis.gameframe.feature.storage.injector.StorageInjector.localStorageUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.model.WorkspaceModel
@@ -41,14 +43,13 @@ import com.savvasdalkitsis.gameframe.feature.workspace.usecase.AccountPromptUseC
 import com.savvasdalkitsis.gameframe.feature.workspace.usecase.WorkspaceUseCase
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
 import com.savvasdalkitsis.gameframe.infra.injector.ApplicationInjector.application
-import com.savvasdalkitsis.gameframe.infra.injector.InfrastructureInjector.navigator
 import com.savvasdalkitsis.gameframe.infra.injector.RxSharedPreferencesInjector
 
 object WorkspaceInjector {
 
     fun workspacePresenter() = WorkspacePresenter<Menu, View>(deviceCase(), blendUseCase(),
             workspaceUseCase(), stringUseCase(), messageDisplay(), navigator(),
-            bitmapFileUseCase(), wifiUseCase(), accountPromptUseCase())
+            bitmapFileUseCase(), wifiUseCase(), accountPromptUseCase(), analytics())
 
     fun workspaceUseCase() = WorkspaceUseCase(gson(), workspaceStorage(), localWorkspaceStorage())
 

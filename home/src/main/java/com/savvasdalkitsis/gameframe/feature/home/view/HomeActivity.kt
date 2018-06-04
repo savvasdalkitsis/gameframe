@@ -22,10 +22,12 @@ import android.support.annotation.ColorInt
 import android.view.Menu
 import android.view.MenuItem
 import com.afollestad.materialdialogs.color.ColorChooserDialog
+import com.savvasdalkitsis.gameframe.feature.analytics.injector.AnalyticsInjector
 import com.savvasdalkitsis.gameframe.feature.changelog.view.ChangeLogDialogFragment
 import com.savvasdalkitsis.gameframe.feature.home.R
 import com.savvasdalkitsis.gameframe.feature.home.injector.HomeInjector
 import com.savvasdalkitsis.gameframe.feature.home.presenter.HomePresenter
+import com.savvasdalkitsis.gameframe.feature.navigation.injector.NavigationInjection
 import com.savvasdalkitsis.gameframe.infra.android.BaseActivity
 import com.savvasdalkitsis.gameframe.infra.android.FragmentSelectedListener
 import com.savvasdalkitsis.gameframe.infra.injector.InfrastructureInjector
@@ -33,7 +35,8 @@ import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity<HomeView, HomePresenter>(), ColorChooserDialog.ColorCallback, HomeView {
 
-    private val navigator = InfrastructureInjector.navigator()
+    private val navigator = NavigationInjection.navigator()
+    private val analytics = AnalyticsInjector.analytics()
     override val presenter = HomeInjector.homePresenter()
     override val view = this
 
@@ -77,6 +80,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), ColorChooserDialog
             }
             R.id.action_manage -> {
                 if (fragment_switcher.displayedChild != 0) {
+                    analytics.logEvent("navigation", "target" to "manage")
                     fragment_switcher.displayedChild = 0
                     notifyFragmentUnselected(R.id.fragment_workspace)
                     notifyFragmentSelected(R.id.fragment_manage)
@@ -85,6 +89,7 @@ class HomeActivity : BaseActivity<HomeView, HomePresenter>(), ColorChooserDialog
             }
             R.id.action_draw -> {
                 if (fragment_switcher.displayedChild != 1) {
+                    analytics.logEvent("navigation", "target" to "draw")
                     fragment_switcher.displayedChild = 1
                     notifyFragmentUnselected(R.id.fragment_manage)
                     notifyFragmentSelected(R.id.fragment_workspace)

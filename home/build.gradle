@@ -30,6 +30,8 @@ dependencies {
     implementation project(":ip")
     implementation project(":control")
     implementation project(":workspace")
+    implementation project(":navigation")
+    implementation project(":analytics")
     implementation(
             "io.reactivex.rxjava2:rxjava:$rxjava_version",
             "com.android.support:support-annotations:$support_version",

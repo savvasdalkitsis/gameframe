@@ -25,6 +25,7 @@ import android.util.Log
 import android.view.*
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.color.ColorChooserDialog
+import com.savvasdalkitsis.gameframe.feature.analytics.injector.AnalyticsInjector
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.message.Snackbars
 import com.savvasdalkitsis.gameframe.feature.workspace.R
@@ -64,6 +65,7 @@ class WorkspaceFragment : BaseFragment<WorkspaceView<Menu>, WorkspacePresenter<M
 
     private lateinit var fab: CustomFabSpeedDial
     private lateinit var drawer: DrawerLayout
+    private val analytics = AnalyticsInjector.analytics()
     override val presenter = workspacePresenter()
     override val view = this
     private var swatchToModify: SwatchView? = null
@@ -103,6 +105,16 @@ class WorkspaceFragment : BaseFragment<WorkspaceView<Menu>, WorkspacePresenter<M
             }
         })
 
+        drawer.addDrawerListener(object: DrawerLayout.SimpleDrawerListener() {
+            override fun onDrawerOpened(drawerView: View) {
+                if (drawer.isDrawerOpen(GRAVITY_LAYERS)) {
+                    analytics.logEvent("layers_open")
+                }
+                if (drawer.isDrawerOpen(GRAVITY_PALETTES)) {
+                    analytics.logEvent("palettes_open")
+                }
+            }
+        })
         view_draw_open_layers.setOnClickListener {
             drawer.openDrawer(GRAVITY_LAYERS)
         }
@@ -318,6 +330,7 @@ class WorkspaceFragment : BaseFragment<WorkspaceView<Menu>, WorkspacePresenter<M
 
     private fun addNewPaletteOperation() = object : SimpleMenuListenerAdapter() {
         override fun onPrepareMenu(navigationMenu: NavigationMenu?): Boolean {
+            analytics.logEvent("add_new_palette")
             addNewPalette()
             return false
         }
@@ -325,12 +338,19 @@ class WorkspaceFragment : BaseFragment<WorkspaceView<Menu>, WorkspacePresenter<M
 
     private fun addNewLayerOperation() = object : SimpleMenuListenerAdapter() {
         override fun onPrepareMenu(navigationMenu: NavigationMenu?): Boolean {
+            analytics.logEvent("add_new_layer")
             view_draw_layers.addNewLayer()
             return false
         }
     }
 
     private fun standardOperation() = object : SimpleMenuListenerAdapter() {
+
+        override fun onPrepareMenu(navigationMenu: NavigationMenu?): Boolean {
+            analytics.logEvent("workspace_fab_open")
+            return true
+        }
+
         override fun onMenuItemSelected(menuItem: MenuItem) = when (menuItem.itemId) {
             R.id.operation_upload -> {
                 presenter.upload(view_draw_led_grid_view.colorGrid)

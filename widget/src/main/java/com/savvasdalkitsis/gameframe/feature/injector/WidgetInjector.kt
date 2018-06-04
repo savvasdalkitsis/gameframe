@@ -18,8 +18,8 @@ package com.savvasdalkitsis.gameframe.feature.injector
 
 import com.savvasdalkitsis.gameframe.feature.device.injector.DeviceInjector.deviceCase
 import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipRepository
+import com.savvasdalkitsis.gameframe.feature.navigation.injector.NavigationInjection.navigator
 import com.savvasdalkitsis.gameframe.feature.widget.presenter.WidgetPresenter
-import com.savvasdalkitsis.gameframe.infra.injector.InfrastructureInjector.navigator
 
 object WidgetInjector {
 

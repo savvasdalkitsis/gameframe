@@ -24,6 +24,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.annotation.LayoutRes
 import android.widget.RemoteViews
+import com.savvasdalkitsis.gameframe.feature.analytics.injector.AnalyticsInjector
 import com.savvasdalkitsis.gameframe.feature.widget.R
 import com.savvasdalkitsis.gameframe.feature.injector.WidgetInjector
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
@@ -32,6 +33,7 @@ abstract class ClickableWidgetProvider : AppWidgetProvider(), WidgetView {
 
     private val messageDisplay = MessageDisplayInjector.toastMessageDisplay()
     protected val presenter = WidgetInjector.widgetPresenter()
+    protected val analytics = AnalyticsInjector.analytics()
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
         val remoteViews = RemoteViews(context.packageName, layoutResId())
@@ -39,6 +41,7 @@ abstract class ClickableWidgetProvider : AppWidgetProvider(), WidgetView {
 
         remoteViews.setOnClickPendingIntent(R.id.view_widget_action, getPendingSelfIntent(context, CLICKED))
         appWidgetManager.updateAppWidget(watchWidget, remoteViews)
+        analytics.logEvent("widget_event", "event" to "update")
     }
 
     override fun onReceive(context: Context, intent: Intent) {

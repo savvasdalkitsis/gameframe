@@ -29,6 +29,9 @@ dependencies {
     implementation project(":ip")
     implementation project(":device")
     implementation project(":message")
+    implementation project(":analytics")
+    implementation project(":navigation")
+
     implementation(
             "io.reactivex.rxjava2:rxjava:$rxjava_version",
             "com.android.support:design:$support_version",

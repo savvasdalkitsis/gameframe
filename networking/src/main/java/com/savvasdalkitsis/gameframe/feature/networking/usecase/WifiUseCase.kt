@@ -18,14 +18,19 @@ package com.savvasdalkitsis.gameframe.feature.networking.usecase
 
 import android.net.wifi.WifiManager
 import android.text.format.Formatter
+import com.savvasdalkitsis.gameframe.feature.analytics.Analytics
 import com.savvasdalkitsis.gameframe.feature.networking.model.IpAddress
 import io.reactivex.Single
 
-class WifiUseCase(private val wifiManager: WifiManager) {
+class WifiUseCase(private val wifiManager: WifiManager,
+                  private val analytics: Analytics) {
 
     fun isWifiEnabled(): Single<Boolean> = Single.just(wifiManager.isWifiEnabled)
 
-    fun enableWifi() = wifiManager.setWifiEnabled(true)
+    fun enableWifi() {
+        analytics.logEvent("enable_wifi")
+        wifiManager.isWifiEnabled = true
+    }
 
     @Suppress("DEPRECATION")
     fun getDeviceIp(): Single<IpAddress> = Single.defer {

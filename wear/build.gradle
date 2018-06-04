@@ -27,6 +27,7 @@ dependencies {
     api project(":infra")
     implementation project(":message")
     implementation project(":widget")
+    implementation project(":analytics")
     implementation(
         "com.google.android.gms:play-services-wearable:$gms_version",
     )

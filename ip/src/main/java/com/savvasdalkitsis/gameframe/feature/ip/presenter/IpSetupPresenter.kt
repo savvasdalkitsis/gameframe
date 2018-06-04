@@ -16,6 +16,7 @@
  */
 package com.savvasdalkitsis.gameframe.feature.ip.presenter
 
+import com.savvasdalkitsis.gameframe.feature.analytics.Analytics
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
 import com.savvasdalkitsis.gameframe.feature.ip.usecase.IpDiscoveryUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.view.IpSetupView
@@ -28,7 +29,8 @@ import com.savvasdalkitsis.gameframe.infra.rx.logErrors
 
 class IpSetupPresenter(private val ipRepository: IpRepository,
                        private val ipDiscoveryUseCase: IpDiscoveryUseCase,
-                       private val wifiUseCase: WifiUseCase): BasePresenter<IpSetupView>() {
+                       private val wifiUseCase: WifiUseCase,
+                       private val analytics: Analytics): BasePresenter<IpSetupView>() {
     
     fun start() {
         loadStoredIp()
@@ -38,11 +40,13 @@ class IpSetupPresenter(private val ipRepository: IpRepository,
     }
 
     fun setup(ipAddress: IpAddress) {
+        analytics.logEvent("setup_ip")
         ipRepository.saveIpAddress(ipAddress)
         view?.addressSaved(ipAddress)
     }
 
     fun discoverIp() {
+        analytics.logEvent("discover_ip")
         view?.displayDiscovering()
         managedStreams += ipDiscoveryUseCase.monitoredIps()
                 .compose(RxTransformers.schedulersFlowable())
@@ -60,6 +64,7 @@ class IpSetupPresenter(private val ipRepository: IpRepository,
     }
 
     fun cancelDiscover() {
+        analytics.logEvent("cancel_discover_ip")
         clearStreams()
         loadStoredIp()
     }

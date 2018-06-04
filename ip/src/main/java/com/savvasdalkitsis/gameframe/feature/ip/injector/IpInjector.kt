@@ -16,6 +16,7 @@
  */
 package com.savvasdalkitsis.gameframe.feature.ip.injector
 
+import com.savvasdalkitsis.gameframe.feature.analytics.injector.AnalyticsInjector
 import com.savvasdalkitsis.gameframe.feature.ip.network.IpBaseHostInterceptor
 import com.savvasdalkitsis.gameframe.feature.ip.presenter.IpSetupPresenter
 import com.savvasdalkitsis.gameframe.feature.ip.repository.IpRepository
@@ -33,7 +34,8 @@ object IpInjector {
     fun ipRepository(): IpRepository = PreferenceIpRepository(RxSharedPreferencesInjector.rxSharedPreferences())
 
     fun ipSetupPresenter() =
-            IpSetupPresenter(ipRepository(), IP_DISCOVERY_USE_CASE, NetworkingInjector.wifiUseCase())
+            IpSetupPresenter(ipRepository(), IP_DISCOVERY_USE_CASE, NetworkingInjector.wifiUseCase(),
+                    AnalyticsInjector.analytics())
 
     fun ipBaseHostInterceptor(): Interceptor = IpBaseHostInterceptor(ipRepository())
 }

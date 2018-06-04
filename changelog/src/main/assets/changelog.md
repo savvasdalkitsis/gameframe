@@ -9,6 +9,11 @@ body {
 }
 </style>
 
+#### v1.4
+##### ?
+
+* Adding anonymized analytics to help track which features are being used in order to focus improvements
+
 #### v1.3
 ##### 19 May 2018
 

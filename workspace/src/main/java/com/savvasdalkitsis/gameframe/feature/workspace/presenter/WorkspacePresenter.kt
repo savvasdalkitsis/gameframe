@@ -16,6 +16,7 @@
  */
 package com.savvasdalkitsis.gameframe.feature.workspace.presenter
 
+import com.savvasdalkitsis.gameframe.feature.analytics.Analytics
 import com.savvasdalkitsis.gameframe.feature.bitmap.usecase.BitmapFileUseCase
 import com.savvasdalkitsis.gameframe.feature.composition.usecase.BlendUseCase
 import com.savvasdalkitsis.gameframe.feature.device.model.AlreadyExistsOnDeviceException
@@ -24,6 +25,7 @@ import com.savvasdalkitsis.gameframe.feature.history.model.MomentList
 import com.savvasdalkitsis.gameframe.feature.history.usecase.HistoryUseCase
 import com.savvasdalkitsis.gameframe.feature.ip.model.IpBaseHostMissingException
 import com.savvasdalkitsis.gameframe.feature.message.MessageDisplay
+import com.savvasdalkitsis.gameframe.feature.navigation.usecase.Navigator
 import com.savvasdalkitsis.gameframe.feature.networking.model.WifiNotEnabledException
 import com.savvasdalkitsis.gameframe.feature.networking.usecase.WifiUseCase
 import com.savvasdalkitsis.gameframe.feature.workspace.R
@@ -42,7 +44,6 @@ import com.savvasdalkitsis.gameframe.feature.workspace.view.WorkspaceView
 import com.savvasdalkitsis.gameframe.infra.android.StringUseCase
 import com.savvasdalkitsis.gameframe.infra.base.BasePresenter
 import com.savvasdalkitsis.gameframe.infra.base.plusAssign
-import com.savvasdalkitsis.gameframe.infra.navigation.Navigator
 import com.savvasdalkitsis.gameframe.infra.rx.RxTransformers
 import com.savvasdalkitsis.gameframe.kotlin.Action
 import com.savvasdalkitsis.gameframe.kotlin.or
@@ -58,7 +59,8 @@ class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: De
                                                    private val navigator: Navigator,
                                                    private val bitmapFileUseCase: BitmapFileUseCase<BitmapSource>,
                                                    private val wifiUseCase: WifiUseCase,
-                                                   private val accountPromptUseCase: AccountPromptUseCase) : GridTouchedListener, BasePresenter<WorkspaceView<Options>>() {
+                                                   private val accountPromptUseCase: AccountPromptUseCase,
+                                                   private val analytics: Analytics) : GridTouchedListener, BasePresenter<WorkspaceView<Options>>() {
 
     private lateinit var gridDisplay: GridDisplay
     private var tempName: String? = null
@@ -90,6 +92,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: De
     }
 
     fun saveWorkspace(successAction: Action? = null) {
+        analytics.logEvent("save_workspace", "name" to tempName.orEmpty())
         view?.displayProgress()
         project.name?.let { tempName = it }
         tempName?.let { name ->
@@ -105,14 +108,18 @@ class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: De
                                 projectSaveFailed()
                         )
             } else {
-                accountPromptUseCase.markChangeLogSeen()
+                accountPromptUseCase.markAccountUpsellSeen()
                 view?.upsellAccount(
                         takeMeThere = {
+                            analytics.logEvent("upsell_account")
                             tempName = null
                             view?.stopProgress()
                             navigator.navigateToAccount()
                         },
-                        continueSaving = { saveWorkspace(successAction) })
+                        continueSaving = {
+                            analytics.logEvent("skip_upsell_account")
+                            saveWorkspace(successAction)
+                        })
             }
         } ?: view?.askForFileName(R.string.save, {
             tempName = it
@@ -147,6 +154,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: De
     fun deleteProjects(names: List<String>? = null) {
         view?.displayProgress()
         managedStreams += if (names?.isEmpty() == false) {
+            analytics.logEvent("deleting_projects", "count" to "${names.size}")
             Flowable.fromIterable(names)
                     .flatMapCompletable(workspaceUseCase::deleteProject)
                     .compose(RxTransformers.schedulers())
@@ -266,6 +274,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: De
 
     fun selectedOptionBorders() {
         displayLayoutBorders = !displayLayoutBorders
+        analytics.logEvent("layer_borders_toggle", "display" to "$displayLayoutBorders")
         render(present.layers)
         messageDisplay.show(
                 if (displayLayoutBorders)
@@ -276,10 +285,12 @@ class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: De
     }
 
     fun selectedOptionUndo() {
+        analytics.logEvent("undo")
         history.stepBackInTime()
     }
 
     fun selectedOptionRedo() {
+        analytics.logEvent("redo")
         history.stepForwardInTime()
     }
 
@@ -294,6 +305,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: De
         if (needsSave()) {
             saveWorkspace { upload(grid) }
         } else {
+            analytics.logEvent("upload_project")
             val name = project.name as String
             managedStreams +=
                 deviceUseCase.uploadAndDisplay(name, grid.asBitmap())
@@ -311,6 +323,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: De
     }
 
     fun takeUserToPlayStore() {
+        analytics.logEvent("take_user_to_play_store")
         navigator.navigateToPlayStore()
     }
 
@@ -318,6 +331,7 @@ class WorkspacePresenter<Options, in BitmapSource>(private val deviceUseCase: De
         if (needsSave()) {
             saveWorkspace { exportImage(bitmapSource) }
         } else {
+            analytics.logEvent("export_image")
             val name = project.name as String
             managedStreams += bitmapFileUseCase.getFileFor(bitmapSource, name)
                     .flatMapCompletable { navigator.navigateToShareImageFile(it, name) }

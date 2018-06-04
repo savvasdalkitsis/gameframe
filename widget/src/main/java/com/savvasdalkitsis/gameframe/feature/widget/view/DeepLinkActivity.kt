@@ -18,6 +18,7 @@ package com.savvasdalkitsis.gameframe.feature.widget.view
 
 import android.app.Activity
 import android.os.Bundle
+import com.savvasdalkitsis.gameframe.feature.analytics.injector.AnalyticsInjector
 import com.savvasdalkitsis.gameframe.feature.widget.R
 import com.savvasdalkitsis.gameframe.feature.injector.WidgetInjector
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector
@@ -26,19 +27,33 @@ class DeepLinkActivity : Activity(), WidgetView {
 
     private val presenter = WidgetInjector.widgetPresenter()
     private val messageDisplay = MessageDisplayInjector.toastMessageDisplay()
+    private val analytics = AnalyticsInjector.analytics()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter.bindView(this)
         when (intent.data.host) {
-            "power" -> presenter.power()
-            "next" -> presenter.next()
-            "menu" -> presenter.menu()
+            "power" -> {
+                log("power")
+                presenter.power()
+            }
+            "menu" -> {
+                log("menu")
+                presenter.menu()
+            }
+            "next" -> {
+                log("next")
+                presenter.next()
+            }
         }
         finish()
     }
 
     override fun operationError() {
         messageDisplay.show(R.string.error_communicating)
+    }
+
+    private fun log(action: String) {
+        analytics.logEvent("deep_link_event", "event" to action)
     }
 }

@@ -19,6 +19,7 @@ package com.savvasdalkitsis.gameframe.feature.account.presenter
 import android.util.Log
 import com.savvasdalkitsis.gameframe.feature.account.R
 import com.savvasdalkitsis.gameframe.feature.account.view.AccountView
+import com.savvasdalkitsis.gameframe.feature.analytics.Analytics
 import com.savvasdalkitsis.gameframe.feature.authentication.model.Account
 import com.savvasdalkitsis.gameframe.feature.authentication.model.SignedInAccount
 import com.savvasdalkitsis.gameframe.feature.authentication.usecase.AuthenticationUseCase
@@ -38,7 +39,8 @@ private val TAG = AccountPresenter<*>::javaClass.name
 class AccountPresenter<in AuthenticationData>(private val authenticationUseCase: AuthenticationUseCase<AuthenticationData>,
                                               private val workspaceUseCase: WorkspaceUseCase,
                                               private val remoteWorkspaceStorage: WorkspaceStorage,
-                                              private val messageDisplay: MessageDisplay) : BasePresenter<AccountView>() {
+                                              private val messageDisplay: MessageDisplay,
+                                              private val analytics: Analytics) : BasePresenter<AccountView>() {
 
     fun start() {
         view?.displayLoading()
@@ -48,19 +50,24 @@ class AccountPresenter<in AuthenticationData>(private val authenticationUseCase:
     }
 
     fun logIn() {
+        analytics.logEvent("log_in")
         authenticationUseCase.signIn()
     }
 
     fun logOut() {
+        analytics.logEvent("log_out")
         authenticationUseCase.signOut()
     }
 
     fun reUpload() {
+        analytics.logEvent("re_upload")
         uploadLocallySavedProjects()
     }
 
     fun deleteAccount() {
+        analytics.logEvent("delete_account")
         view?.askUserToVerifyAccountDeletion {
+            analytics.logEvent("delete_account_verified")
             authenticationUseCase.deleteAccount()
         }
     }

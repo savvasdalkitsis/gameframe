@@ -16,7 +16,34 @@
  */
 package com.savvasdalkitsis.gameframe.infra.navigation
 
-interface FeedbackNavigator {
+import android.app.Activity
+import android.app.Application
+import android.content.Context
+import android.widget.Toast
+import com.savvasdalkitsis.gameframe.infra.R
+import com.savvasdalkitsis.gameframe.infra.TopActivityProvider
+import org.rm3l.maoni.Maoni
+import org.rm3l.maoni.email.MaoniEmailListener
 
-    fun navigateToFeedback()
+private const val FEEDBACK_EMAIL_ADDRESS = "feedback.gameframe@gmail.com"
+
+class FeedbackNavigator(private val topActivityProvider: TopActivityProvider, private val application: Application) {
+
+    private val context: Context
+        get() = topActivityProvider.topActivity ?: application
+
+    fun navigateToFeedback() {
+        context.let {
+            if (it is Activity) {
+                Maoni.Builder(it, "${it.packageName}.maoniFileProvider")
+                        .withDefaultToEmailAddress(FEEDBACK_EMAIL_ADDRESS)
+                        .withHeader(R.drawable.feedback_header)
+                        .withListener(MaoniEmailListener(it, FEEDBACK_EMAIL_ADDRESS))
+                        .build()
+                        .start(it)
+            } else {
+                Toast.makeText(it, R.string.unknown_error, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 }

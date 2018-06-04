@@ -17,6 +17,7 @@
 package com.savvasdalkitsis.gameframe.feature.account.injector
 
 import com.savvasdalkitsis.gameframe.feature.account.presenter.AccountPresenter
+import com.savvasdalkitsis.gameframe.feature.analytics.injector.AnalyticsInjector.analytics
 import com.savvasdalkitsis.gameframe.feature.authentication.injector.AuthenticationInjector.authenticationUseCase
 import com.savvasdalkitsis.gameframe.feature.message.injector.MessageDisplayInjector.messageDisplay
 import com.savvasdalkitsis.gameframe.feature.workspace.injector.WorkspaceInjector.firebaseWorkspaceStorage
@@ -24,5 +25,7 @@ import com.savvasdalkitsis.gameframe.feature.workspace.injector.WorkspaceInjecto
 
 object AccountInjector {
 
-    fun accountPresenter() = AccountPresenter(authenticationUseCase(), workspaceUseCase(), firebaseWorkspaceStorage(), messageDisplay())
+    fun accountPresenter() = AccountPresenter(authenticationUseCase(), workspaceUseCase(),
+            firebaseWorkspaceStorage(), messageDisplay(), analytics()
+    )
 }

@@ -23,6 +23,7 @@ class MenuWidgetProvider : ClickableWidgetProvider() {
     override fun layoutResId() = R.layout.widget_menu
 
     override fun onClick() {
+        analytics.logEvent("widget_event", "event" to "menu")
         presenter.menu()
     }
 }

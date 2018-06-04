@@ -23,6 +23,7 @@ class NextWidgetProvider : ClickableWidgetProvider() {
     override fun layoutResId() = R.layout.widget_next
 
     override fun onClick() {
+        analytics.logEvent("widget_event", "event" to "next")
         presenter.next()
     }
 }

@@ -23,6 +23,7 @@ class PowerWidgetProvider : ClickableWidgetProvider() {
     override fun layoutResId() = R.layout.widget_power
 
     override fun onClick() {
+        analytics.logEvent("widget_event", "event" to "power")
         presenter.power()
     }
 }

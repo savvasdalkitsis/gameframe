@@ -16,13 +16,14 @@
  */
 package com.savvasdalkitsis.gameframe.feature.control.injector
 
+import com.savvasdalkitsis.gameframe.feature.analytics.injector.AnalyticsInjector.analytics
 import com.savvasdalkitsis.gameframe.feature.control.presenter.ControlPresenter
 import com.savvasdalkitsis.gameframe.feature.device.injector.DeviceInjector.deviceCase
 import com.savvasdalkitsis.gameframe.feature.ip.injector.IpInjector.ipRepository
+import com.savvasdalkitsis.gameframe.feature.navigation.injector.NavigationInjection.navigator
 import com.savvasdalkitsis.gameframe.feature.networking.injector.NetworkingInjector.wifiUseCase
-import com.savvasdalkitsis.gameframe.infra.injector.InfrastructureInjector.navigator
 
 object ControlInjector {
 
-    fun controlPresenter() = ControlPresenter(deviceCase(), ipRepository(), navigator(), wifiUseCase())
+    fun controlPresenter() = ControlPresenter(deviceCase(), ipRepository(), navigator(), wifiUseCase(), analytics())
 }

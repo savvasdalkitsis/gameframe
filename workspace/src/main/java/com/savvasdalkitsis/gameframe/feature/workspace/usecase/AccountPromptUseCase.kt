@@ -9,7 +9,7 @@ class AccountPromptUseCase(private val preferences: RxSharedPreferences = RxShar
 
     fun hasSeenAccountPrompt(): Boolean = preferences.getBoolean(KEY).blockingGet()
 
-    fun markChangeLogSeen() {
+    fun markAccountUpsellSeen() {
         preferences.setBoolean(KEY, true)
     }
 }
