@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.firebase-perf'
 apply plugin: 'kotlin-android'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion compile_sdk_version
@@ -58,6 +59,7 @@ dependencies {
             "com.android.support:multidex:$multidex_version",
             "com.facebook.fresco:fresco:$fresco_version",
             "com.google.firebase:firebase-crash:$gms_version",
+            "com.crashlytics.sdk.android:crashlytics:$crashlytics_version",
     )
     implementation ("com.facebook.android:facebook-android-sdk:4.27.0") {
         exclude group: 'com.facebook.fresco', module: 'drawee'

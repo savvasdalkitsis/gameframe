@@ -32,10 +32,14 @@ buildscript {
         constraint_layout_version = '1.0.2'
         rx_binding_version = '2.0.0'
         gson_version = '2.7'
+        crashlytics_version = '2.9.3'
     }
     repositories {
         jcenter()
         google()
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.2'
@@ -45,6 +49,7 @@ buildscript {
         // in the individual module build.gradle files
         classpath 'com.google.gms:google-services:3.1.2'
         classpath 'com.google.firebase:firebase-plugins:1.1.2'
+        classpath 'io.fabric.tools:gradle:1.25.4'
     }
 }
 
