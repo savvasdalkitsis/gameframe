@@ -122,7 +122,8 @@
                 layout="@layout/view_palette"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/view_draw_palette_name"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="16dp"
                 android:layout_marginRight="100dp"
                 android:layout_marginLeft="16dp"
                 tools:ignore="RtlHardcoded" />
