@@ -10,9 +10,10 @@ body {
 </style>
 
 #### v1.4
-##### ?
+##### 27 Oct 2019
 
 * Adding anonymized analytics to help track which features are being used in order to focus improvements
+* Updating target SDK version to 28
 
 #### v1.3
 ##### 19 May 2018
