@@ -9,6 +9,11 @@ body {
 }
 </style>
 
+#### v1.5
+##### 25 Jul 2020
+
+* Fixing issue with newer versions of android where non https connections would be blocked
+
 #### v1.4
 ##### 27 Oct 2019
 
