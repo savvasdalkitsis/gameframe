@@ -13,6 +13,7 @@
         android:name=".GameFrameApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:networkSecurityConfig="@xml/security_config"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
     </application>
 
